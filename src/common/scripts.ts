@@ -3,7 +3,7 @@
  * for installing Chef components
  */
 
- import * as SHA256 from "crypto-js/sha256";
+import * as SHA256 from "crypto-js/sha256";
 import { readFileSync } from "fs";
 
 export class Scripts {
