@@ -12,3 +12,6 @@ local
 .nyc_output/
 coverage/
 .taskkey
+docs/_site
+docs/.sass_cache
+docs/

@@ -3,7 +3,7 @@
   "name": "chef.component.install",
   "friendlyName": "Install Chef Components",
   "description": "This task will install either Chef Workstation, InSpec or Ruby Gems into the Chef context",
-  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef/install-task.html",
+  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/install.html",
   "category": "Azure Pipelines",
   "author": "Chef",
   "version": {
