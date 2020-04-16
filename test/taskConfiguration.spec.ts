@@ -211,5 +211,21 @@ describe("Task Configuration", () => {
       sinon.assert.called(tlsetResult);
     });
   });
-  
+
+  /*
+  // ensure that the environment variables are set when the EnvVar input is specified
+  describe("Environment Variables", () => {
+
+    // configure the necessary inputs
+    before(() => {
+
+      inputs = {
+        "platform": LINUX, // setting the platform as the extension requires it, but it is no required for this test
+        "envvars": "FRED=bloggs\nFOO=bar"
+      };
+
+      tc = new TaskConfiguration();
+    });
+  });
+  */
 });

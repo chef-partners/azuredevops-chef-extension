@@ -58,6 +58,15 @@
       "label": "Arguments",
       "defaultValue": "",
       "helpMarkdown": "Arguments to pass to the component to execute"
+    },
+    {
+      "name": "envvars",
+      "type": "multiLine",
+      "label": "Environment Variables",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Allows the configuration of environment variables for the task.<br />Each key/value pair should be on a new line.<br />For example `KITCHEN_YAML=$(Build.SourcesDirectory)/build/kitchen.yml`",
+      "groupName": "advanced"
     }
   ],
   "execution": {

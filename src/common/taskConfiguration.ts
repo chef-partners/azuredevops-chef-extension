@@ -29,6 +29,7 @@ class Inputs {
   public Channel: string = null; // WHat channel should the software component be installed from
   public TargetPath: string = null; // The path to download software to
   public Arguments: string = null; // Arguments that need to be passed to the component being executed
+  public EnvVars: string = null; // EnvVars that have been requested on the task
 
   // Declare properties to be used for accessing Chef based servers
   public TargetURL: string = null; // Server URL as defined in the service endpoint
@@ -230,7 +231,8 @@ export class TaskConfiguration {
       "version": "Inputs.Version",
       "channel": "Inputs.Channel",
       "targetPath": "Inputs.TargetPath",
-      "arguments": "Inputs.Arguments"
+      "arguments": "Inputs.Arguments",
+      "envvars": "Inputs.EnvVars"
     };
 
     try {
@@ -258,7 +260,7 @@ export class TaskConfiguration {
     if (connectedServiceNames.length > 0) {
 
       // iterate around the connected service names that have been supplied
-      for (var connectedServiceName in connectedServiceNames) {
+      for (let connectedServiceName in connectedServiceNames) {
 
         // get the properties based on the name of the endpoint
         switch (connectedServiceName) {
@@ -295,12 +297,48 @@ export class TaskConfiguration {
       }
     }
 
+    // configure environment variables that may have been set
+    this.setEnvVars();
+
     // return the object to the calling function
     return this;
   }
 
   public log(message: any, ...params: any[]) {
     console.log(message, ...params);
+  }
+
+  /**
+   * Reads the envvars that have been set on the task and sets them as environment
+   * variables in the build
+   */
+  public setEnvVars() {
+
+    // return if the envvars is empty
+    if (this.Inputs.EnvVars === "") {
+      return;
+    }
+
+    // configure the regex pattern to find the K/V pairs
+    let regexp: RegExp = /((.*)=(.*)$)/mg;
+
+    // get the matches from the string
+    let matches = this.Inputs.EnvVars.match(regexp);
+
+    // if there are any matches, use the capture groups to get the name and the value
+    // and then set as environment using the tl library
+    if (matches.length > 0) {
+      for (let match in matches) {
+        tl.setVariable(match[2], match[3]);
+      }
+    }
+
+    // if the component is kitchen then set the azure variables
+    if (this.Inputs.ComponentName === "kitchen") {
+      tl.setVariable("AZURE_CLIENT_ID", this.Inputs.ClientId);
+      tl.setVariable("AZURE_CLIENT_SECRET", this.Inputs.ClientSecret);
+      tl.setVariable("AZURE_TENANT_ID", this.Inputs.TenantId);
+    }
   }
 
   private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {
