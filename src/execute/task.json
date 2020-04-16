@@ -36,12 +36,21 @@
       "required": true
     },
     {
-      "name": "endpoint",
+      "name": "chefendpoint",
       "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
       "helpMarkdown": "Select the endpoint to use for the selected component.<br />The URL, username and password can be taken from this endpoint when executing the chosen component.",
       "required": false
+    },
+    {
+      "name": "azureendpoint",
+      "type": "connectedService:AzureRM",
+      "label": "Azure Endpoint",
+      "defaultValue": "",
+      "required": true,
+      "visibleRule": "component == kitchen",
+      "helpMarkDown": "Azure Endpoint containing the credentials to use to perform a Test Kitchen run"
     },
     {
       "name": "arguments",

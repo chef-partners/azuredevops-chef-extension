@@ -85,4 +85,19 @@ export class Utils {
   public IsSudoInstalled(): boolean {
     return tl.exist(this.taskConfiguration.Paths.Sudo);
   }
+
+  public ReplaceTokens(): string {
+
+    let args: string = "";
+
+    // get the argument from the task configuration
+    args = this.taskConfiguration.Inputs.Arguments;
+
+    // replace the tokens
+    args = args.replace(/{URL}/, this.taskConfiguration.Inputs.TargetURL);
+    args = args.replace(/{USERNAME}/, this.taskConfiguration.Inputs.Username);
+    args = args.replace(/{PASSWORD}/, this.taskConfiguration.Inputs.Password);
+
+    return args;
+  }
 }

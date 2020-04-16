@@ -75,8 +75,14 @@ export class ExecuteComponent {
 
     // if there are any arguments add them to the command
     if (this.taskConfiguration.Inputs.Arguments !== "") {
+
+      // some of the arguments that are run require the items to be set on the command line
+      // there are some tokens that can be replaced with the information in the endpoint
+      // call the method to replace these tokens in the arguments
+      let args = this.utils.ReplaceTokens();
+
       cmdParts.push(
-        this.taskConfiguration.Inputs.Arguments
+        args
       );
     }
 

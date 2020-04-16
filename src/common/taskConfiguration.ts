@@ -30,6 +30,18 @@ class Inputs {
   public TargetPath: string = null; // The path to download software to
   public Arguments: string = null; // Arguments that need to be passed to the component being executed
 
+  // Declare properties to be used for accessing Chef based servers
+  public TargetURL: string = null; // Server URL as defined in the service endpoint
+  public SSLVerify: boolean = true; // State if SSL verification should be performed when using the TargetURL
+  public Username: string = null; // Username, nodename or clientname to be used when interacting wit the specified server
+  public Password: string = null; // Password, client key or user key when a username is specified
+
+  // Declare properties for Azure credentials when using Test Kitchen
+  public SubscriptionId: string = null;
+  public TenantId: string = null;
+  public ClientId: string = null;
+  public ClientSecret: string = null;
+
   public SudoIsSet(): boolean {
     let result: any = this.UseSudo;
     if (typeof result === "string") {
@@ -207,7 +219,7 @@ export class TaskConfiguration {
    * @param required 
    * @param connectedServiceName 
    */
-  public async getTaskParameters(connectedServiceName: string = null): Promise<TaskConfiguration> {
+  public async getTaskParameters(connectedServiceNames: string[] = []): Promise<TaskConfiguration> {
 
     // define a mapping of parameter names to object properties
     let mapping = {
@@ -240,6 +252,47 @@ export class TaskConfiguration {
 
     } catch (error) {
       throw new Error(sprintf("Task failed during initialisation. Error: %s", error.message));
+    }
+
+    // if a connected service has been specified, then attempt to get the necessary information
+    if (connectedServiceNames.length > 0) {
+
+      // iterate around the connected service names that have been supplied
+      for (var connectedServiceName in connectedServiceNames) {
+
+        // get the properties based on the name of the endpoint
+        switch (connectedServiceName) {
+
+          // Set the properties for an chef endpoint type
+          case "chefendpoint": {
+            let chefAuth = tl.getEndpointAuthorization(connectedServiceName, true);
+
+            this.Inputs.TargetURL = tl.getEndpointUrl(connectedServiceName, true);
+            this.Inputs.SSLVerify = !!+tl.getEndpointDataParameter(connectedServiceName, "sslVerify", true);
+            this.Inputs.Username = chefAuth.parameters.username;
+            this.Inputs.Password = chefAuth.parameters.password;
+
+            tl.debug(
+              sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
+            );
+
+            break;
+          }
+
+          // set the properties for an Azure endpoint type, which could be used by TK
+          case "azureendpoint": {
+
+            let azureAuth = tl.getEndpointAuthorization(connectedServiceName, true);
+
+            this.Inputs.SubscriptionId = tl.getEndpointDataParameter(connectedServiceName, "SubscriptionID", true);
+            this.Inputs.TenantId = azureAuth.parameters.tenantid;
+            this.Inputs.ClientId = azureAuth.parameters.serviceprincipalid;
+            this.Inputs.ClientSecret = azureAuth.parameters.serviceprincipalkey;
+
+            break;
+          }
+        }
+      }
     }
 
     // return the object to the calling function
