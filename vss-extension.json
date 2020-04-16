@@ -110,6 +110,7 @@
                                 "id": "password",
                                 "name": "Password",
                                 "description": "Password or private key (in PEM format) for the given username",
+                                "inputMode": "textarea",
                                 "isConfidential": true,
                                 "validation": {
                                     "isRequired": true,
