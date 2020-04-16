@@ -38,7 +38,7 @@
       "type": "string",
       "label": "Gem Name",
       "defaultValue": "",
-      "helpMarkdown": "Provide the name of the Gem to install. This will be installed into the context of Chef. CHef must be already installed",
+      "helpMarkdown": "Provide the name of the Gem to install. This will be installed into the context of Chef. Chef must be already installed",
       "visibleRule": "component == gem"
     },
     {

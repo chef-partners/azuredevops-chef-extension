@@ -36,6 +36,15 @@
       "required": true
     },
     {
+      "name": "endpoint",
+      "type": "connectedService:chefendpointv1",
+      "label": "Endpoint",
+      "defaultValue": "",
+      "helpMarkdown": "Select the endpoint to use for the selected component.<br />The URL, username and password can be taken from this endpoint when executing the chosen component.",
+      "visibleRule": "component == chef-client || component == knife",
+      "required": false
+    },
+    {
       "name": "arguments",
       "type": "string",
       "label": "Arguments",
