@@ -72,7 +72,7 @@ export class Utilities {
     // let pattern = new RegExp(this.taskConfiguration.Inputs.CookbookVersionRegex, "gm");
 
     // replace the version number in the cookbook file
-    // try {
+    try {
 
       replace({
         regex: this.taskConfiguration.Inputs.CookbookVersionRegex,
@@ -81,8 +81,8 @@ export class Utilities {
           this.taskConfiguration.Inputs.CookbookMetadataPath
         ]
       });
-    //} catch (err) {
-    //  tl.setResult(tl.TaskResult.Failed, err.message);
-    //}
+    } catch (err) {
+      tl.setResult(tl.TaskResult.Failed, err.message);
+    }
   }
 }
