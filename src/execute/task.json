@@ -27,11 +27,12 @@
       "defaultValue": "",
       "helpMarkdown": "Select the software component to execute",
       "options": {
+        "berks": "Berkshelf",
         "chef": "Chef",
         "chef-client": "Chef Infra Client",
+        "kitchen": "Test-Kitchen",
         "knife": "Knife",
-        "inspec": "Inspec",
-        "kitchen": "Test-Kitchen"
+        "inspec": "Inspec"
       },
       "required": true
     },

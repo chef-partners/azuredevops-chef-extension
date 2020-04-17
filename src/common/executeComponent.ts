@@ -41,6 +41,19 @@ export class ExecuteComponent {
 
     let cmdParts: string[] = [];
 
+    // perform any setup that is required for the command
+    // for example, in order for berkshelf to run a configuration file must be created
+    switch (this.taskConfiguration.Inputs.ComponentName) {
+      case "berks": {
+        this.utils.WriteFile(
+          this.taskConfiguration.Paths.BerksConfig,
+          JSON.stringify(this.generateBerksConfig())
+        );
+        
+        break;
+      }
+    }
+
     // get the command to be executed
     cmdParts = this.generateCmd();
 
@@ -87,5 +100,30 @@ export class ExecuteComponent {
     }
 
     return cmdParts;
+  }
+
+  public generateBerksConfig(): {} {
+
+    // write out the privatekey so that it can be used by berkshelf
+    try {
+      tl.writeFile(this.taskConfiguration.Paths.PrivateKey, this.taskConfiguration.Inputs.Password);
+    } catch (err) {
+      tl.setResult(tl.TaskResult.Failed, err.message);
+    }
+
+    // use the configuration of the task to build up the necessary configuration
+    // for Berkshelf
+    let config = {
+      "chef": {
+        "chef_server_url": this.taskConfiguration.Inputs.TargetURL,
+        "client_key": this.taskConfiguration.Paths.PrivateKey,
+        "node_name": this.taskConfiguration.Inputs.Username
+      },
+      "ssl": {
+        "verify": this.taskConfiguration.Inputs.SSLVerify
+      }
+    };
+
+    return config;
   }
 }

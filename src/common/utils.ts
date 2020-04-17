@@ -100,4 +100,12 @@ export class Utils {
 
     return args;
   }
+
+  public WriteFile(filename: string, contents: string) {
+    try {
+      tl.writeFile(filename, contents);
+    } catch (err) {
+      tl.setResult(tl.TaskResult.Failed, err.message);
+    }
+  }
 }

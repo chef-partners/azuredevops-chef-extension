@@ -12,8 +12,8 @@ import * as tl from "azure-pipelines-task-lib";
 import * as rimraf from "rimraf";
 
 // - Standard libs
-import { join as pathJoin } from "path";
-import { mkdirSync, existsSync } from "fs";
+import { join as pathJoin, basename } from "path";
+import { mkdirSync, existsSync, writeFileSync } from "fs";
 
 // - test libraries
 import { expect } from "chai";
@@ -30,6 +30,11 @@ const LINUX = "linux";
 let inputs = {};
 let getInput;
 let platform;
+let tlsetResult;
+let tlwriteFile;
+let tlgetEndpointUrl;
+let tlgetEndpointDataParameter;
+let tlgetEndpointAuthorizationParameter;
 let tc: TaskConfiguration;
 let ex: ExecuteComponent;
 
@@ -110,9 +115,99 @@ describe("Execute Components", () => {
 
       });
 
+
     });
   });
 
-  
+  // ensure that the berkshelf configuration is set correctly
+  describe("Berkshelf Configuration", () => {
+
+    before(() => {
+
+      // set the necessary inputs
+      inputs = {
+        "platform": LINUX,
+        "component": "berks",
+        "password": "foobar",
+        "targetUrl": "https://foobar.com/organization/fred",
+        "username": "unittest",
+        "sslVerify": false
+      };
+
+      // stub the azdo tasklib setResult function
+      tlsetResult = sinon.stub(tl, "setResult");
+
+      process.env.AGENT_TEMPDIRECTORY = tempDir();
+
+      // stub the azdo tasklib writeFile function
+      tlwriteFile = sinon.stub(tl, "writeFile").callsFake((path, content) => {
+
+        // get the filename of the path
+        let filename = basename(path);
+
+        // write out the file to the temp directory
+        writeFileSync(pathJoin(tempDir(), filename), content);
+      });
+
+      // stub out the getEndpointUrl so that the url is set correctly
+      tlgetEndpointUrl = sinon.stub(tl, "getEndpointUrl").callsFake((name, optional) => {
+        return inputs["targetUrl"];
+      });
+
+      // stub out the authroizationparameter function
+      tlgetEndpointAuthorizationParameter = sinon.stub(tl, "getEndpointAuthorizationParameter").callsFake((id, name, optional) => {
+        return inputs[name];
+      });
+
+      tlgetEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((id, name, optional) => {
+        return inputs[name];
+      });
+
+    });
+
+    after(() => {
+      getInput.restore();
+      tlsetResult.restore();
+      tlwriteFile.restore();
+      tlgetEndpointUrl.restore();
+      tlgetEndpointAuthorizationParameter.restore();
+      tlgetEndpointDataParameter.restore();
+
+      process.env.AGENT_TEMPDIRECTORY = "";
+    });
+
+    it("writes out the private key", async () => {
+      tc = new TaskConfiguration();
+      ex = new ExecuteComponent(tc);
+      await tc.getTaskParameters(["chefendpoint"]);
+
+      expect(existsSync(tc.Paths.PrivateKey)).to.be.true;
+    });
+
+    it("returns the correct configuration", async () => {
+      tc = new TaskConfiguration();
+      ex = new ExecuteComponent(tc);
+
+      await tc.getTaskParameters(["chefendpoint"]);
+
+      // create the expected object
+      let expected = {
+        "chef": {
+          "chef_server_url": inputs["targetUrl"],
+          "client_key": tc.Paths.PrivateKey,
+          "node_name": inputs["username"]
+        },
+        "ssl": {
+          "verify": inputs["sslVerify"]
+        }
+      };
+
+      // get the actual object
+      let actual = ex.generateBerksConfig();
+
+      // perform the test to make sure they are the ame
+      expect(actual).to.eql(expected);
+    });
+  });
 
 });

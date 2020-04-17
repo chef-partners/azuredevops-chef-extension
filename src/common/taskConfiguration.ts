@@ -62,6 +62,7 @@ class Inputs {
 
 class Paths {
   public Berks: string = null;
+  public BerksConfig: string = null;
   public Chef: string = null;
   public ChefClient: string = null;
   public ChefWorkstationDir: string = null;
@@ -69,6 +70,7 @@ class Paths {
   public Inspec: string = null;
   public Kitchen: string = null;
   public Knife: string = null;
+  public PrivateKey: string = null;
   public Script: string = null;
   public Sudo: string = "/usr/bin/sudo";
   public TmpDir: string;
@@ -107,6 +109,22 @@ class Paths {
     this.Kitchen = pathJoin(this.ChefWorkstationDir, "bin", sprintf("kitchen%s", extension));
     this.Knife = pathJoin(this.ChefWorkstationDir, "bin", sprintf("knife%s", extension));
 
+    // determine the full path to the privatekey
+    // this starts by working it out the name of the file
+    // this is done so that multiple keys can be written out by several tasks if so required
+    let filenameParts = [];
+    let privKeyFilename = "";
+    filenameParts.push("azdo");
+    process.env.AGENT_ID ? filenameParts.push(process.env.AGENT_ID) : false;
+    process.env.RELEASE_ENVIRONMENTID ? filenameParts.push(process.env.RELEASE_ENVIRONMENTID) : false;
+    privKeyFilename = sprintf("%s.pem", filenameParts.join("-"));
+
+    // set the full path to the private key
+    this.PrivateKey = pathJoin(this.TmpDir, privKeyFilename);
+
+    // set the path to the berks configuration file
+    let berksConfigFilename = sprintf("berks.%s.json", filenameParts.join("-"));
+    this.BerksConfig = pathJoin(this.TmpDir, berksConfigFilename);
   }
 
   /**
@@ -260,19 +278,18 @@ export class TaskConfiguration {
     if (connectedServiceNames.length > 0) {
 
       // iterate around the connected service names that have been supplied
-      for (let connectedServiceName in connectedServiceNames) {
+      for (let connectedServiceName of connectedServiceNames) {
 
         // get the properties based on the name of the endpoint
         switch (connectedServiceName) {
 
           // Set the properties for an chef endpoint type
           case "chefendpoint": {
-            let chefAuth = tl.getEndpointAuthorization(connectedServiceName, true);
 
             this.Inputs.TargetURL = tl.getEndpointUrl(connectedServiceName, true);
             this.Inputs.SSLVerify = !!+tl.getEndpointDataParameter(connectedServiceName, "sslVerify", true);
-            this.Inputs.Username = chefAuth.parameters.username;
-            this.Inputs.Password = chefAuth.parameters.password;
+            this.Inputs.Username = tl.getEndpointAuthorizationParameter(connectedServiceName, "username", true);
+            this.Inputs.Password = tl.getEndpointAuthorizationParameter(connectedServiceName, "password", true);
 
             tl.debug(
               sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
@@ -315,7 +332,7 @@ export class TaskConfiguration {
   public setEnvVars() {
 
     // return if the envvars is empty
-    if (this.Inputs.EnvVars === "") {
+    if (this.Inputs.EnvVars === undefined || this.Inputs.EnvVars === null) {
       return;
     }
 
