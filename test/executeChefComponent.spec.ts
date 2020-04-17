@@ -181,6 +181,9 @@ describe("Execute Components", () => {
       ex = new ExecuteComponent(tc);
       await tc.getTaskParameters(["chefendpoint"]);
 
+      // call the method to create the private key
+      let dummy = ex.generateBerksConfig();
+
       expect(existsSync(tc.Paths.PrivateKey)).to.be.true;
     });
 
