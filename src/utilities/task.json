@@ -53,8 +53,7 @@
       "label": "Version Regex",
       "defaultValue": "version\\s+['\"]?.*['\"]?",
       "helpMarkDown": "Regular Expression to be used in the `metadata.rb` file to set the version number",
-      "visibleRule": "utility == setCookbookVersion",
-      "groupName": "advanced"
+      "visibleRule": "utility == setCookbookVersion"
     }
   ],
   "execution": {
