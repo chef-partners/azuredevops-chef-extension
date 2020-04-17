@@ -64,6 +64,7 @@ export class Utilities {
       return;
     }
 
+    console.log("Cookbook metadata file: %s", this.taskConfiguration.Inputs.CookbookMetadataPath);
     console.log("Attempting to set cookbook version: %s", this.taskConfiguration.Inputs.CookbookVersionNumber);
 
     // replace the version number in the metadata file
