@@ -1,0 +1,65 @@
+{
+  "id": "e96c7e8c-aca1-4eaa-ac86-78e0d639e81f",
+  "name": "chef.utlities",
+  "friendlyName": "Chef Utilities",
+  "description": "This task contains helper tasks, such as updating your cookbook version, which are not accommodated by the other tasks",
+  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/utilities.html",
+  "category": "Azure Pipelines",
+  "author": "Chef",
+  "version": {
+    "Major": 2,
+    "Minor": 0,
+    "Patch": 15
+  },
+  "instanceNameFormat": "Utility: $(utility)",
+  "groups": [
+    {
+      "name": "advanced",
+      "displayName": "Advanced",
+      "isExpanded": false
+    }
+  ],
+  "inputs": [
+    {
+      "name": "utility",
+      "type": "picklist",
+      "label": "Utility",
+      "defaultValue": "",
+      "helpMarkDown": "Select the Utility to use for this task",
+      "options": {
+        "setCookbookVersion": "Set Cookbook Version Number"
+      },
+      "required": true
+    },
+    {
+      "name": "cookbookVersionNumber",
+      "type": "string",
+      "label": "Version Number",
+      "defaultValue": "$(Build.BuildNumber)",
+      "helpMarkDown": "Version number to apply to the metadata of the cookbook. By default this is set to the build number of the run.",
+      "visibleRule": "utility == setCookbookVersion"
+    },
+    {
+      "name": "cookbookMetadataPath",
+      "type": "string",
+      "label": "Cookbook Metadata File",
+      "defaultValue": "$(Build.SourcesDirectory)/metadata.rb",
+      "helpMarkDown": "Path to the `metadata.rb` file for the cookbook",
+      "visibleRule": "utility == setCookbookVersion"
+    },
+    {
+      "name": "cookbookVersionRegex",
+      "type": "string",
+      "label": "Version Regex",
+      "defaultValue": "version\\s+['\"]?.*['\"]?",
+      "helpMarkDown": "Regular Expression to be used in the `metadata.rb` file to set the version number",
+      "visibleRule": "utility == setCookbookVersion",
+      "groupName": "advanced"
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "utilities.js"
+    }
+  }
+}

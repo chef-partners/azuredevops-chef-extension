@@ -31,6 +31,12 @@ class Inputs {
   public Arguments: string = null; // Arguments that need to be passed to the component being executed
   public EnvVars: string = null; // EnvVars that have been requested on the task
 
+  // Declare properties to be used for determining the utility to run
+  public Utility: string = null; // the utility that needs to be run
+  public CookbookVersionNumber: string = null; // the version number to assign to the cookbook
+  public CookbookMetadataPath: string = null; // path to the metadata file to update
+  public CookbookVersionRegex: string = null; // regex pattern to use to update the version number in a cookbook
+
   // Declare properties to be used for accessing Chef based servers
   public TargetURL: string = null; // Server URL as defined in the service endpoint
   public SSLVerify: boolean = true; // State if SSL verification should be performed when using the TargetURL
@@ -250,7 +256,11 @@ export class TaskConfiguration {
       "channel": "Inputs.Channel",
       "targetPath": "Inputs.TargetPath",
       "arguments": "Inputs.Arguments",
-      "envvars": "Inputs.EnvVars"
+      "envvars": "Inputs.EnvVars",
+      "utility": "Inputs.Utility",
+      "cookbookVersionNumber": "Inputs.CookbookVersionNumber",
+      "cookbookMetadataPath": "Inputs.CookbookMetadataPath",
+      "cookbookVersionRegex": "Inputs.CookbookVersionRegex"
     };
 
     try {

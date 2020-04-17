@@ -50,8 +50,6 @@ function tempDir(remove: boolean = false): string {
   return path;
 }
 
-
-
 describe("Task Configuration", () => {
 
   before(() => {

@@ -1,0 +1,16 @@
+{
+  "bail": true,
+  "full-trace": true,
+  "reporter": "mocha-multi-reporters",
+  "reporter-options": [
+    "configFile=test/config.json"
+  ],
+  "require": [
+    "ts-node/register",
+    "source-map-support/register"
+  ],
+  "file": [
+    "test/setup.ts"
+  ],
+  "spec": "test/*.spec.ts"
+}

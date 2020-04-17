@@ -7,7 +7,7 @@
     "clean": "rimraf build && rimraf bin",
     "compile:helpers": "tsc --project scripts/tsconfig.json",
     "lint": "tslint --config tslint.json tasks/**/*.ts",
-    "test": "cross-env TS_NODE_PROJECT=\"src/tsconfig.json\" nyc mocha --opts mocha.opts",
+    "test": "cross-env TS_NODE_PROJECT=\"src/tsconfig.json\" nyc mocha --config mocha.json",
     "build": "npm run build:preview && npm run build:release && npm run build:patch",
     "build:preview": "webpack-cli --mode development",
     "build:release": "webpack-cli --mode production",
@@ -76,6 +76,7 @@
     "dot-object": "^1.9.0",
     "is-admin": "^2.1.1",
     "is-root": "^1.0.0",
+    "replace": "^1.1.5",
     "spawn-sync": "^2.0.0"
   }
 }
