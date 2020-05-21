@@ -222,18 +222,20 @@ export class InstallComponents {
           }
         }
 
-        // Add the channel to the command
-        cmdParts.push(
-          "-Channel",
-          this.taskConfiguration.Inputs.Channel
-        );
-
-        // add the version if it has been specified
-        if (this.taskConfiguration.Inputs.Version) {
+        if (!this.taskConfiguration.Inputs.TargetPath) {
+          // Add the channel to the command
           cmdParts.push(
-            "-Version",
-            this.taskConfiguration.Inputs.Version
+            "-Channel",
+            this.taskConfiguration.Inputs.Channel
           );
+
+          // add the version if it has been specified
+          if (this.taskConfiguration.Inputs.Version) {
+            cmdParts.push(
+              "-Version",
+              this.taskConfiguration.Inputs.Version
+            );
+          }
         }
 
       } else {
@@ -247,35 +249,37 @@ export class InstallComponents {
 
         if (this.taskConfiguration.Inputs.ComponentName !== "habitat") {
 
+          // determine if a targetpath has been set
+          if (this.taskConfiguration.Inputs.TargetPath) {
+            cmdParts.push(
+              "-f",
+              this.taskConfiguration.Inputs.TargetPath
+            );
+          } else {
+
+            // installation will be performed using the download method from the script
+            cmdParts.push(
+              "-P",
+              this.taskConfiguration.Inputs.ComponentName
+            );
+
+          }
+
         }
 
-        // determine if a targetpath has been set 
-        if (this.taskConfiguration.Inputs.TargetPath) {
+        if (!this.taskConfiguration.Inputs.TargetPath) {
           cmdParts.push(
-            "-f",
-            this.taskConfiguration.Inputs.TargetPath
-          );
-        } else {
-
-          // installation will be performed using the download method from the script
-          cmdParts.push(
-            "-P",
-            this.taskConfiguration.Inputs.ComponentName
+            "-c",
+            this.taskConfiguration.Inputs.Channel
           );
 
-        }
-
-        cmdParts.push(
-          "-c",
-          this.taskConfiguration.Inputs.Channel
-        );
-
-        // add the version if it has been specified
-        if (this.taskConfiguration.Inputs.Version) {
-          cmdParts.push(
-            "-v",
-            this.taskConfiguration.Inputs.Version
-          );
+          // add the version if it has been specified
+          if (this.taskConfiguration.Inputs.Version) {
+            cmdParts.push(
+              "-v",
+              this.taskConfiguration.Inputs.Version
+            );
+          }
         }
       }
     }
