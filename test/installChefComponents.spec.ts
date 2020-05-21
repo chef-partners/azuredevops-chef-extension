@@ -122,135 +122,208 @@ describe("Install Components", () => {
       };
     });
 
-    describe("Chef Workstation", () => {
+      describe("Chef Workstation", () => {
 
-      // configure the inputs to be used
-      before(() => {
-        inputs["component"] = "chef-workstation";
-        inputs["channel"] = "stable";
-      });
-
-      describe("Use default install script to download and install component", () => {
-
-        // create the expected parts
-        let expected = [
-          "powershell.exe",
-          "-Command",
-          pathJoin(tempDir(false), "install.ps1"),
-          ";",
-          "Install-Project",
-          "-Project",
-          "chef-workstation",
-          "-Channel",
-          "stable"
-        ];
-
-        it("should return an array", () => {
-          // create the objects that are required
-          tc = new TaskConfiguration();
-          ic = new InstallComponents(tc);
-
-          tc.getTaskParameters();
-          expect(ic.installCmd()).to.be.an("array");
-        });
-
-        it("should return the expected command", () => {
-          // create the objects that are required
-          tc = new TaskConfiguration();
-          ic = new InstallComponents(tc);
-
-          tc.getTaskParameters();
-          expect(ic.installCmd()).to.eql(expected);
-        });
-      });
-
-      describe("Use default install script to download specific component and install", () => {
-
-        // update the inputs
+        // configure the inputs to be used
         before(() => {
-          inputs["version"] = "1.2.3";
+          inputs["component"] = "chef-workstation";
+          inputs["channel"] = "stable";
         });
 
-        after(() => {
-          delete inputs["version"];
+        describe("Use default install script to download and install component", () => {
+
+          // create the expected parts
+          let expected = [
+            "powershell.exe",
+            "-Command",
+            pathJoin(tempDir(false), "install.ps1"),
+            ";",
+            "Install-Project",
+            "-Project",
+            "chef-workstation",
+            "-Channel",
+            "stable"
+          ];
+
+          it("should return an array", () => {
+            // create the objects that are required
+            tc = new TaskConfiguration();
+            ic = new InstallComponents(tc);
+
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.be.an("array");
+          });
+
+          it("should return the expected command", () => {
+            // create the objects that are required
+            tc = new TaskConfiguration();
+            ic = new InstallComponents(tc);
+
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.eql(expected);
+          });
         });
 
-        // build up the expected array to install chef workstation
-        let expected = [
-          "powershell.exe",
-          "-Command",
-          pathJoin(tempDir(false), "install.ps1"),
-          ";",
-          "Install-Project",
-          "-Project",
-          "chef-workstation",
-          "-Channel",
-          "stable",
-          "-Version",
-          "1.2.3"
-        ];
+        describe("Use default install script to download specific component and install", () => {
 
-        it("should return the correct command", () => {
-          tc.getTaskParameters();
-          expect(ic.installCmd()).to.eql(expected);
+          // update the inputs
+          before(() => {
+            inputs["version"] = "1.2.3";
+          });
+
+          after(() => {
+            delete inputs["version"];
+          });
+
+          // build up the expected array to install chef workstation
+          let expected = [
+            "powershell.exe",
+            "-Command",
+            pathJoin(tempDir(false), "install.ps1"),
+            ";",
+            "Install-Project",
+            "-Project",
+            "chef-workstation",
+            "-Channel",
+            "stable",
+            "-Version",
+            "1.2.3"
+          ];
+
+          it("should return the correct command", () => {
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.eql(expected);
+          });
+    
+          it("result should be a array", () => {
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.be.an("array");
+          });
         });
-  
-        it("result should be a array", () => {
-          tc.getTaskParameters();
-          expect(ic.installCmd()).to.be.an("array");
+
+        describe("Use default install script but install from existing installer file", () => {
+          before(() => {
+            inputs["targetPath"] = windowsInstallerFile_ChefWorkstation;
+          });
+
+          after(() => {
+            delete inputs["targetPath"];
+          });
+    
+          // build up the expected array to install chef workstation
+          let expected = [
+            "powershell.exe",
+            "-Command",
+            pathJoin(tempDir(false), "install.ps1"),
+            ";",
+            "Install-Project",
+            "-Filename",
+            windowsInstallerFile_ChefWorkstation
+          ];
+    
+          it("should return the correct command", () => {
+            // simulate inputs to the task
+            tc.getTaskParameters();
+    
+            expect(ic.installCmd()).to.eql(expected);
+          });
+        });
+
+        describe("Attempt to use the script to install from a specified file that does not exist", () => {
+          // define the inputs required
+          before(() => {
+            inputs["targetPath"] = "dummy_file";
+          });
+
+          after(() => {
+            delete inputs["targetPath"];
+          })
+    
+
+          it("should report that the installer file does not exist", () => {
+            // simulate inputs to the task
+            tc.getTaskParameters();
+            let cmd = ic.installCmd();
+
+            // expect(() => { ic.installCmd() }).to.throw("Unable to find installation file:");
+            sinon.assert.called(tlsetResult);
+          });
         });
       });
 
-      describe("Use default install script but install from existing installer file", () => {
+      describe("Habitat", () => {
+
+        // configure the inputs to be used
         before(() => {
-          inputs["targetPath"] = windowsInstallerFile_ChefWorkstation;
+          inputs["component"] = "habitat";
+          inputs["channel"] = "stable";
         });
 
-        after(() => {
-          delete inputs["targetPath"];
-        });
-  
-        // build up the expected array to install chef workstation
-        let expected = [
-          "powershell.exe",
-          "-Command",
-          pathJoin(tempDir(false), "install.ps1"),
-          ";",
-          "Install-Project",
-          "-Filename",
-          windowsInstallerFile_ChefWorkstation
-        ];
-  
-        it("should return the correct command", () => {
-          // simulate inputs to the task
-          tc.getTaskParameters();
-  
-          expect(ic.installCmd()).to.eql(expected);
-        });
-      });
+        describe("Use default install script to download and install component", () => {
 
-      describe("Attempt to use the script to install from a specified file that does not exist", () => {
-        // define the inputs required
-        before(() => {
-          inputs["targetPath"] = "dummy_file";
+          // create the expected parts
+          let expected = [
+            "powershell.exe",
+            "-Command",
+            pathJoin(tempDir(false), "install.ps1"),
+            "-Channel",
+            "stable"
+          ];
+
+          it("should return an array", () => {
+            // create the objects that are required
+            tc = new TaskConfiguration();
+            ic = new InstallComponents(tc);
+
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.be.an("array");
+          });
+
+          it("should return the expected command", () => {
+            // create the objects that are required
+            tc = new TaskConfiguration();
+            ic = new InstallComponents(tc);
+
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.eql(expected);
+          });
         });
 
-        after(() => {
-          delete inputs["targetPath"];
-        })
-  
+        describe("Use default install script to download specific component and install", () => {
 
-        it("should report that the installer file does not exist", () => {
-          // simulate inputs to the task
-          tc.getTaskParameters();
-          let cmd = ic.installCmd();
+          // update the inputs
+          before(() => {
+            inputs["version"] = "1.2.3";
+          });
 
-          // expect(() => { ic.installCmd() }).to.throw("Unable to find installation file:");
-          sinon.assert.called(tlsetResult);
+          after(() => {
+            delete inputs["version"];
+          });
+
+          // build up the expected array to install chef workstation
+          let expected = [
+            "powershell.exe",
+            "-Command",
+            pathJoin(tempDir(false), "install.ps1"),
+            "-Channel",
+            "stable",
+            "-Version",
+            "1.2.3"
+          ];
+
+          it("should return the correct command", () => {
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.eql(expected);
+          });
+    
+          it("result should be a array", () => {
+            tc.getTaskParameters();
+            expect(ic.installCmd()).to.be.an("array");
+          });
         });
+
       });
     });
-  });
 
   describe("Linux", () => {
 
@@ -381,6 +454,77 @@ describe("Install Components", () => {
       });
       
     });
+
+    describe("Habitat", () => {
+
+      // configure the inputs to be used
+      before(() => {
+        inputs["component"] = "habitat";
+        inputs["channel"] = "stable";
+      });
+
+      describe("Use default install script to download and install component", () => {
+
+        // create the expected parts
+        let expected = [
+          "bash",
+          pathJoin(tempDir(false), "install.sh"),
+          "-c",
+          "stable"
+        ];
+
+        it("should return an array", () => {
+          // create the objects that are required
+          tc = new TaskConfiguration();
+          ic = new InstallComponents(tc);
+
+          tc.getTaskParameters();
+          expect(ic.installCmd()).to.be.an("array");
+        });
+
+        it("should return the expected command", () => {
+          // create the objects that are required
+          tc = new TaskConfiguration();
+          ic = new InstallComponents(tc);
+
+          tc.getTaskParameters();
+          expect(ic.installCmd()).to.eql(expected);
+        });
+      });
+
+      describe("Use default install script to download specific component and install", () => {
+
+        // update the inputs
+        before(() => {
+          inputs["version"] = "1.2.3";
+        });
+
+        after(() => {
+          delete inputs["version"];
+        });
+
+        // build up the expected array to install chef workstation
+        let expected = [
+          "bash",
+          pathJoin(tempDir(false), "install.sh"),
+          "-c",
+          "stable",
+          "-v",
+          "1.2.3"
+        ];
+
+        it("should return the correct command", () => {
+          tc.getTaskParameters();
+          expect(ic.installCmd()).to.eql(expected);
+        });
+  
+        it("result should be a array", () => {
+          tc.getTaskParameters();
+          expect(ic.installCmd()).to.be.an("array");
+        });
+      });
+      
+    });    
   });
 
 });
