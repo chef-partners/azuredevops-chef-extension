@@ -9,7 +9,7 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
-import replaceInFile from "replace-in-file";
+import {sync as replaceSync} from "replace-in-file";
 
  /**
   * Class to handle the execution of the utlities that can be selected
@@ -82,7 +82,7 @@ export class Utilities {
     // replace the version number in the cookbook file
     try {
 
-      let results = replaceInFile.sync(options);
+      let results = replaceSync(options);
       /*
       replace({
         regex: this.taskConfiguration.Inputs.CookbookVersionRegex,
