@@ -76,7 +76,7 @@
     "dot-object": "^1.9.0",
     "is-admin": "^2.1.1",
     "is-root": "^1.0.0",
-    "replace": "^1.1.5",
+    "replace-in-file": "^5.0.2",
     "spawn-sync": "^2.0.0"
   }
 }
