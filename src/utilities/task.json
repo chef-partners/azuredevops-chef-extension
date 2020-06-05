@@ -61,7 +61,6 @@
       "type": "connectedService:habitatoriginendpointv1",
       "label": "Habitat Origin",
       "defaultValue": "",
-      "required": "utility == setupHabitat",
       "visibleRule": "utility == setupHabitat",
       "helpMarkDown": "The Habitat Origin endpoint that contains the necessary origin name, revision and keys"
     }

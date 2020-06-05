@@ -45,7 +45,15 @@ stages:
       inputs:
         codeCoverageTool: 'Cobertura'
         summaryFileLocation: '$(build.sourcesdirectory)/build/tests/coverage/cobertura-coverage.xml'
-        reportDirectory: '$(build.sourcesdirectory)/build/tests/coverage'    
+        reportDirectory: '$(build.sourcesdirectory)/build/tests/coverage'
+        
+    # Validate the vsix file
+    - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
+      displayName: 'Install tfx-cli'  
+      
+    - bash: |
+        tfx extension isvalid --vsix $(build.sourcesdirectory)/build/chef-software.chef-preview-$(Build.BuildNumber).vsix
+      displayName: Validate Extension    
 
     # Copy the build artifacts to the staging directory
     - task: CopyFiles@2
@@ -81,7 +89,7 @@ stages:
           steps:
 
             - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
-              displayName: 'Use Node CLI for Azure DevOps (tfx-cli): v0.6.x'
+              displayName: 'Install tfx-cli'
 
             - task: PublishAzureDevopsExtension@2
               displayName: Publish
