@@ -48,9 +48,6 @@ stages:
         reportDirectory: '$(build.sourcesdirectory)/build/tests/coverage'
         
     # Validate the vsix file
-    - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
-      displayName: 'Install tfx-cli'  
-      
     - bash: |
         tfx extension isvalid --vsix $(build.sourcesdirectory)/build/chef-software.chef-preview-$(Build.BuildNumber).vsix
       displayName: Validate Extension    
@@ -88,17 +85,18 @@ stages:
         deploy:
           steps:
 
-            - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@2
+            - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@3
               displayName: 'Install tfx-cli'
 
-            - task: PublishAzureDevopsExtension@2
+
+            - task: PublishAzureDevopsExtension@3
               displayName: Publish
               inputs:
                 connectedServiceName: $(connectedServiceName)
                 fileType: vsix
                 vsixFile: $(Pipeline.Workspace)/build/preview/*.vsix
 
-            - task: ShareAzureDevopsExtension@2
+            - task: ShareAzureDevopsExtension@3
               displayName: Share
               inputs:
                 connectedServiceName: $(connectedServiceName)
