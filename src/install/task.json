@@ -93,7 +93,6 @@
       "label": "Habitat Install Script URL",
       "defaultValue": "https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.ps1",
       "helpMarkDown": "URL to the script to use to install Habitat. The '.ps1' or '.sh' will be modified based on the os that Habitat is being installed on",
-      "groupName": "advanced",
       "visibleRule": "component == habitat"
     }
   ],
