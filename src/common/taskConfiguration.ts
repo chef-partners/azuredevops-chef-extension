@@ -19,6 +19,7 @@ import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {join as pathJoin} from "path";
 import {str as toDotted} from "dot-object";
+import {homedir} from "os";
 
 class Inputs {
   public ComponentName: string = null; // Name of the software component being installed or executed
@@ -42,6 +43,14 @@ class Inputs {
   public SSLVerify: boolean = true; // State if SSL verification should be performed when using the TargetURL
   public Username: string = null; // Username, nodename or clientname to be used when interacting wit the specified server
   public Password: string = null; // Password, client key or user key when a username is specified
+
+  // Declare properties for the Habitat configuration
+  public HabitatDepotURL: string = null; // URL to the Habitat Depot to which the package will be published
+  public HabitatOriginName: string = null; // Name of the origin to use when building the package
+  public HabitatOriginRevision: string = null; // Revision of the origin keys
+  public HabitatOriginPublicKey: string = null; // Public key of the specified origin
+  public HabitatOriginSigningKey: string = null; // Private key or signing key of the origin
+  public HabitatAuthToken: string = null; // Habitat authentication token
 
   // Declare properties for Azure credentials when using Test Kitchen
   public SubscriptionId: string = null;
@@ -86,7 +95,7 @@ class Paths {
    * Depending on the OS the correct defaults will be set on the paths
    * @param osName Name of the operating system that the task is running o
    */
-  constructor(osName: string) {
+  constructor(osName: string, runningAsRoot: boolean) {
 
     let extension: string = "";
 
@@ -171,6 +180,9 @@ class Paths {
       case "chef-client":
         path = this.ChefClient;
         break;
+      case "habitat": 
+        path = this.Habitat;
+        break;
       case "knife": 
         path = this.Knife;
         break;
@@ -228,7 +240,7 @@ export class TaskConfiguration {
     }
 
     // Initialise sub classes based on the platform
-    this.Paths = new Paths(this.platformName);
+    this.Paths = new Paths(this.platformName, this.runningAsRoot);
     this.Inputs = new Inputs();
 
   }
@@ -299,10 +311,14 @@ export class TaskConfiguration {
           // Set the properties for an chef endpoint type
           case "chefendpoint": {
 
-            this.Inputs.TargetURL = tl.getEndpointUrl(connectedServiceName, true);
-            this.Inputs.SSLVerify = !!+tl.getEndpointDataParameter(connectedServiceName, "sslVerify", true);
-            this.Inputs.Username = tl.getEndpointAuthorizationParameter(connectedServiceName, "username", true);
-            this.Inputs.Password = tl.getEndpointAuthorizationParameter(connectedServiceName, "password", true);
+            // this.Inputs.TargetURL = tl.getEndpointUrl(connectedServiceName, true);
+            this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedServiceName);
+            // this.Inputs.SSLVerify = !!+tl.getEndpointDataParameter(connectedServiceName, "sslVerify", true);
+            this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedServiceName);
+            // this.Inputs.Username = tl.getEndpointAuthorizationParameter(connectedServiceName, "username", true);
+            this.Inputs.Username = this.getParamValue("username", true, "auth", connectedServiceName);
+            // this.Inputs.Password = tl.getEndpointAuthorizationParameter(connectedServiceName, "password", true);
+            this.Inputs.Password = this.getParamValue("password", true, "auth", connectedServiceName);
 
             tl.debug(
               sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
@@ -310,6 +326,18 @@ export class TaskConfiguration {
 
             break;
           }
+
+          // set the necessary properties for a Habitat Endpoint
+          case "habitatendpoint":
+
+            this.Inputs.HabitatDepotURL = this.getParamValue("url", true, "url", connectedServiceName); // tl.getEndpointUrl(connectedServiceName, true);
+            this.Inputs.HabitatOriginName = this.getParamValue("originName", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "originName", true);
+            this.Inputs.HabitatOriginRevision = this.getParamValue("revision", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "revision", true);
+            this.Inputs.HabitatOriginPublicKey = this.getParamValue("publicKey", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "publicKey", true);
+            this.Inputs.HabitatOriginSigningKey = this.getParamValue("signingKey", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "signingKey", true);
+            this.Inputs.HabitatAuthToken = this.getParamValue("authToken", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "authToken", true);
+
+            break;
 
           // set the properties for an Azure endpoint type, which could be used by TK
           case "azureendpoint": {
@@ -383,9 +411,27 @@ export class TaskConfiguration {
 
       // based on the type, get the parameter value using the correct method in the task library
       switch (type) {
+        case "auth":
+          // get sensitive data from the endpoint, e.g. auth token or password
+          tl.debug(sprintf("Attempting to retrieve authorization parameter: %s", name));
+          value = tl.getEndpointAuthorizationParameter(connectedService, name, required);
+          break;
+        case "data":
+          // get non-sensitive data from the endpoint
+          tl.debug(sprintf("Attempting to retrieve data from endpoint: %s", name));
+          value = tl.getEndpointDataParameter(connectedService, name, required);
+          break;
         case "input":
           // get the value from the task parameters
           value = tl.getInput(name, required);
+          break;
+        case "url":
+          // get the endpoint URL from the connected service
+          tl.debug("Attempting to retrieve endpoint URL");
+          value = tl.getEndpointUrl(connectedService, required);
+          break;
+        default:
+          throw new Error(sprintf("Input type has not been specified: %s\nIf you are seeing this it is a bug", name));
       }
     }
 

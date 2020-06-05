@@ -8,7 +8,7 @@ async function run() {
   // initialise required classes
   let taskConfiguration = new task.TaskConfiguration();
 
-  await taskConfiguration.getTaskParameters();
+  await taskConfiguration.getTaskParameters(["habitatendpoint"]);
 
   let utilities = new u.Utilities(taskConfiguration);
 

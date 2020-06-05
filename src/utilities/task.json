@@ -27,7 +27,8 @@
       "defaultValue": "",
       "helpMarkDown": "Select the Utility to use for this task",
       "options": {
-        "setCookbookVersion": "Set Cookbook Version Number"
+        "setCookbookVersion": "Set Cookbook Version Number",
+        "setupHabitat": "Setup Habitat Environment"
       },
       "required": true
     },
@@ -54,6 +55,15 @@
       "defaultValue": "version\\s+['\"]?.*['\"]?",
       "helpMarkDown": "Regular Expression to be used in the `metadata.rb` file to set the version number",
       "visibleRule": "utility == setCookbookVersion"
+    },
+    {
+      "name": "habitatendpoint",
+      "type": "connectedService:habitatoriginendpointv1",
+      "label": "Habitat Origin",
+      "defaultValue": "",
+      "required": "component == setupHabitat",
+      "visibleRule": "component == setupHabitat",
+      "helpMarkDown": "The Habitat Origin endpoint that contains the necessary origin name, revision and keys"
     }
   ],
   "execution": {

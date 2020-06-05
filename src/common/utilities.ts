@@ -10,6 +10,7 @@ import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import {sync as replaceSync} from "replace-in-file";
+import {join as pathJoin, dirname} from "path";
 
  /**
   * Class to handle the execution of the utlities that can be selected
@@ -47,6 +48,10 @@ export class Utilities {
     switch (this.taskConfiguration.Inputs.Utility) {
       case "setCookbookVersion": {
         this.setCookbookVersion();
+        break;
+      }
+      case "setupHabitat": {
+        this.setupHabitatEnvironment();
         break;
       }
     }
@@ -95,5 +100,44 @@ export class Utilities {
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }
+  }
+
+  /**
+   * Takes the settings from the specified Habitat Origin endpoint and creates the files
+   * and environment variables needed for the Habitat to operate
+   */
+  public setupHabitatEnvironment() {
+
+    // configure paths for the configuration file and keys
+    let originBaseText: string = sprintf("%s-%s", this.taskConfiguration.Inputs.HabitatOriginName, this.taskConfiguration.Inputs.HabitatOriginRevision);
+
+    // create anonymous object to hold the path to the public and signing keys
+    let keyPaths: any = {
+      public: pathJoin(this.taskConfiguration.Paths.TmpDir, sprintf("%s.pub", originBaseText)),
+      signing: pathJoin(this.taskConfiguration.Paths.TmpDir, sprintf("%s.sig.key", originBaseText))
+    };
+
+    console.log("Creating keys files an configuration");
+
+    // Ensure that the directories exist
+    if (!tl.exist(dirname(keyPaths.public))) {
+      tl.mkdirP(dirname(keyPaths.public));
+
+      console.log("Creating Habitat keys directory: %", dirname(keyPaths.public));
+    }
+
+    // Write out the keys files
+    tl.debug(sprintf("Writing public key file: %s", keyPaths.public));
+    tl.writeFile(keyPaths.public, this.taskConfiguration.Inputs.HabitatOriginPublicKey);
+
+    tl.debug(sprintf("Writing out signing key file: %s", keyPaths.signing));
+    tl.writeFile(keyPaths.signing, this.taskConfiguration.Inputs.HabitatOriginSigningKey);
+
+    // Configure Habitat environment variables so Hab knows where to look for keys and set the origin name
+    tl.debug(sprintf("Setting environment variable for HAB_ORIGIN: %s", this.taskConfiguration.Inputs.HabitatOriginName));
+    tl.setVariable("HAB_ORIGIN", this.taskConfiguration.Inputs.HabitatOriginName);
+    tl.debug(sprintf("Setting environment variable for HAB_CACHE_KEY_PATH: %s", dirname(keyPaths.public)));
+    tl.setVariable("HAB_CACHE_KEY_PATH", dirname(keyPaths.public));
+
   }
 }

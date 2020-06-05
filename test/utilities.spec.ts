@@ -139,4 +139,24 @@ describe("Utilities", () => {
 
     });
   });
+
+  /*
+  describe("Configure Habitat Environment", () => {
+
+    // set the task that needs to be run
+    before(() => {
+      inputs = {
+        "platform": LINUX,
+        "utility": "setupHabitat"
+      };
+    });
+
+    describe("HAB_ORIGIN environment variable is set correctly", () => {
+
+      // set the inputs
+      // inputs[""]
+    });
+
+  });
+  */
 });
