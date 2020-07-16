@@ -79,7 +79,7 @@ export class InstallComponents {
     tl.debug(sprintf("Writing out component installation script: %s", this.taskConfiguration.Paths.Script));
     writeFileSync(this.taskConfiguration.Paths.Script, script, "utf-8");
 
-    // check that the file has been written out properyl, it not raise an error
+    // check that the file has been written out properly, it not raise an error
     if (!scripts.VerifyScript(this.taskConfiguration.IsWindows, this.taskConfiguration.Paths.Script, this.taskConfiguration.Inputs.ComponentName)) {
       tl.setResult(tl.TaskResult.Failed, "Component installation script was not written out successfully", true);
     }

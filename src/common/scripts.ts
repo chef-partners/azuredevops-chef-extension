@@ -7,6 +7,8 @@
 
 import * as SHA256 from "crypto-js/sha256";
 import { readFileSync } from "fs";
+import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
+import { sprintf } from "sprintf-js";
 
 export class Scripts {
 
@@ -1042,6 +1044,8 @@ IyMjIyMjIwojIGVuZCBvZiBpbnN0YWxsX3BhY2thZ2Uuc2gKIyMjIyMjIyMjIyMjCg==`;
     // if the contents of the file match the checksum of the data then the verification is good
     if (checksum === sha256) {
       result = true;
+    } else {
+      tl.debug(sprintf("Expected '%s', got '%s'", checksum, sha256));
     }
 
     return result;
