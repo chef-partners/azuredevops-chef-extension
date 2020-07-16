@@ -1046,6 +1046,7 @@ IyMjIyMjIwojIGVuZCBvZiBpbnN0YWxsX3BhY2thZ2Uuc2gKIyMjIyMjIyMjIyMjCg==`;
       result = true;
     } else {
       tl.debug(sprintf("Expected '%s', got '%s'", checksum, sha256));
+      tl.debug(contents);
     }
 
     return result;
