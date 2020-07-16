@@ -1022,9 +1022,16 @@ IyMjIyMjIwojIGVuZCBvZiBpbnN0YWxsX3BhY2thZ2Uuc2gKIyMjIyMjIyMjIyMjCg==`;
     return result;
   }
 
-  public VerifyScript(isWindows: boolean, path: string): boolean {
+  public VerifyScript(isWindows: boolean, path: string, component: string): boolean {
     let result = false;
-    let checksum = isWindows ? this.WindowsInstallSHA256 : this.LinuxInstallSHA256;
+    let checksum = "";
+
+    // select the correct checksum based on the component
+    if (component === "habitat") {
+      checksum = isWindows ? this.WindowsHabitatInstallSHA265 : this.LinuxHabitatInstallSHA256;
+    } else {
+      checksum = isWindows ? this.WindowsInstallSHA256 : this.LinuxInstallSHA256;
+    }
 
     // read in the file contents
     let contents = readFileSync(path, "utf-8");

@@ -80,7 +80,7 @@ export class InstallComponents {
     writeFileSync(this.taskConfiguration.Paths.Script, script, "utf-8");
 
     // check that the file has been written out properyl, it not raise an error
-    if (!scripts.VerifyScript(this.taskConfiguration.IsWindows, this.taskConfiguration.Paths.Script)) {
+    if (!scripts.VerifyScript(this.taskConfiguration.IsWindows, this.taskConfiguration.Paths.Script, this.taskConfiguration.Inputs.ComponentName)) {
       tl.setResult(tl.TaskResult.Failed, "Component installation script was not written out successfully", true);
     }
 
