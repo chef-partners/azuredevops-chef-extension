@@ -33,6 +33,15 @@ stages:
         customCommand: 'run all'
         verbose: $(System.Debug)
 
+    # Validate the vsix file of the extension
+    # This is done here before attempting to publish as it is too late then
+    - task: Npm@1
+      displayName: 'Validate Extension'
+      inputs:
+        command: custom
+        customCommand: run validate -- $(build.sourcesdirectory)/build/chef-software.chef-preview-$(Build.BuildNumber).vsix
+        verbose: $(System.Debug)
+
     # Upload tests
     - task: PublishTestResults@2
       inputs:
@@ -46,11 +55,6 @@ stages:
         codeCoverageTool: 'Cobertura'
         summaryFileLocation: '$(build.sourcesdirectory)/build/tests/coverage/cobertura-coverage.xml'
         reportDirectory: '$(build.sourcesdirectory)/build/tests/coverage'
-        
-    # Validate the vsix file
-    - bash: |
-        tfx extension isvalid --vsix $(build.sourcesdirectory)/build/chef-software.chef-preview-$(Build.BuildNumber).vsix
-      displayName: Validate Extension    
 
     # Copy the build artifacts to the staging directory
     - task: CopyFiles@2

@@ -14,7 +14,8 @@
     "build:patch": "node bin/patch",
     "package": "npm run package:preview && npm run package:release",
     "package:preview": "tfx extension create --manifests vss-extension.json --overrides-file build/conf/preview.json --output-path build/",
-    "package:release": "tfx extension create --manifests vss-extension.json --overrides-file build/conf/release.json --output-path build/"
+    "package:release": "tfx extension create --manifests vss-extension.json --overrides-file build/conf/release.json --output-path build/",
+    "validate": "tfx extension isvalid --vsix"
   },
   "nyc": {
     "reportDir": "build/tests/coverage",
