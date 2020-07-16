@@ -56,6 +56,9 @@ export class InstallComponents {
     if (shouldInstall) {
       let cmd = this.installCmd();
 
+      // Output the command being executed when in debug mode
+      tl.debug(sprintf("Install command: %s", cmd));
+
       // Attempt to execute the command
       try {
         let result = this.utils.ExecCmd(cmd);
