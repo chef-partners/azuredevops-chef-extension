@@ -102,7 +102,7 @@ describe("Write Script", () => {
       expect(existsSync(tc.Paths.Script)).to.be.true;
 
       // the script should verify
-      expect(scripts.VerifyScript(true, tc.Paths.Script)).to.be.true;
+      expect(scripts.VerifyScript(true, tc.Paths.Script, "chef-workstation")).to.be.true;
     });
 
   });
@@ -128,7 +128,7 @@ describe("Write Script", () => {
       expect(existsSync(tc.Paths.Script)).to.be.true;
 
       // the script should verify
-      expect(scripts.VerifyScript(false, tc.Paths.Script)).to.be.true;
+      expect(scripts.VerifyScript(false, tc.Paths.Script, "chef-workstation")).to.be.true;
     });
 
   });  
