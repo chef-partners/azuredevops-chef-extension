@@ -43,7 +43,7 @@
       "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
-      "visibleRule": "component == chef-client",
+      "visibleRule": "component = chef-client",
       "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
       "required": false
     },
@@ -53,7 +53,7 @@
       "label": "Azure Endpoint",
       "defaultValue": "",
       "required": false,
-      "visibleRule": "component == kitchen",
+      "visibleRule": "component = kitchen",
       "helpMarkDown": "Azure Endpoint containing the credentials to use to perform a Test Kitchen run"
     },
     {
@@ -62,7 +62,7 @@
       "label": "Habitat Origin",
       "defaultValue": "",
       "required": false,
-      "visibleRule": "component == habitat",
+      "visibleRule": "component = habitat",
       "helpMarkDown": "Origin to use when running Habitat."
     },
     {
