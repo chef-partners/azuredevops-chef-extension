@@ -29,7 +29,7 @@
       "options": {
         "berks": "Berkshelf",
         "chef": "Chef",
-        "chef-client": "Chef Infra Client",
+        "chefclient": "Chef Infra Client",
         "habitat": "Habitat",
         "inspec": "InSpec",
         "knife": "Knife",
@@ -43,7 +43,7 @@
       "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
-      "visibleRule": "component = 'chef-client'",
+      "visibleRule": "component = chefclient",
       "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
       "required": false
     },
