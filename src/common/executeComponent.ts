@@ -74,15 +74,27 @@ export class ExecuteComponent {
     // initalise the method vars
     let cmdParts: string[] = [];
     let cmd: string = "";
+    let componentName: string = "";
+    let components = {
+      "chefclient": "chef-client"
+    }
 
     // it might be necessary to run with Sudo on linux, so determine the platform being
     // run on to see if this should be added to the cmdParts
     cmdParts = this.utils.CheckSudo();
 
+    // it is not possible to use the name of the component as a key in the selection with a '-' in it,
+    // chef-client for example and use a visibleRule on the same input
+    // work out the componentName which is the name of the binary to use
+    componentName = this.taskConfiguration.Inputs.ComponentName;
+    if (componentName in components) {
+      componentName = components[componentName];
+    }
+
     // Based on the selected component get the path to it
     cmdParts.push(
       this.taskConfiguration.Paths.GetPath(
-        this.taskConfiguration.Inputs.ComponentName
+        componentName
       )
     );
 
