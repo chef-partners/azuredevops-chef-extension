@@ -14,5 +14,4 @@ coverage/
 .taskkey
 test/temp
 docs/_site
-docs/.sass_cache
-docs/
+docs/.sass-cache
