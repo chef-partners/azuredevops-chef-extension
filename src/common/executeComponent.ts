@@ -77,7 +77,7 @@ export class ExecuteComponent {
     let componentName: string = "";
     let components = {
       "chefclient": "chef-client"
-    }
+    };
 
     // it might be necessary to run with Sudo on linux, so determine the platform being
     // run on to see if this should be added to the cmdParts
