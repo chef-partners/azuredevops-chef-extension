@@ -43,7 +43,7 @@
       "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
-      "visibleRule": "component = chef-client",
+      "visibleRule": "component = 'chef-client'",
       "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
       "required": false
     },
