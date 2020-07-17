@@ -40,7 +40,7 @@
     },
     {
       "name": "chefendpoint",
-      "type": "connectedService:chef-endpoint",
+      "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
       "visibleRule": "component == chef-client",
@@ -58,7 +58,7 @@
     },
     {
       "name": "habitatendpoint",
-      "type": "connectedService:habitat-origin",
+      "type": "connectedService:habitatoriginendpointv1",
       "label": "Habitat Origin",
       "defaultValue": "",
       "required": false,
