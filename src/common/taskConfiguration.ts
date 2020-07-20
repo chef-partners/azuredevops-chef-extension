@@ -12,8 +12,10 @@
  */
 
 // import necessary libraries
-import * as isRoot from "is-root";
-import * as isAdmin from "is-admin";
+//import * as isRoot from "is-root";
+//import * as isAdmin from "is-admin";
+import isAdmin = require("is-admin");
+import isRoot = require("is-root");
 import {platform} from "os"; // provides information about the operating system being run on
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps

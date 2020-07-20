@@ -33,8 +33,8 @@ var config = {
     filename: "[name]/[name].js"
   },  
   plugins: [
-    new copyWebpackPlugin(
-      [
+    new copyWebpackPlugin({
+      patterns: [
         {
           from: "**/task.json",
           context: "src"
@@ -53,7 +53,7 @@ var config = {
           context: "src"
         }
       ]
-    )
+    })
   ],
   resolve: {
     extensions: [
