@@ -1,5 +1,5 @@
 /**
- * Utilities is responsible for performing tasks such as updating a cookbook version
+ * Helpers is responsible for performing tasks such as updating a cookbook version
  * and other tasks that do not fit into the Install or Execute tasks
  *
  * @author Russell Seymour

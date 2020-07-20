@@ -1,5 +1,5 @@
 /**
- * Peform tests to ensure that the utilities methods work as expected
+ * Peform tests to ensure that the helpers methods work as expected
  */
 
 // Import libraries --------------------------------------------------
