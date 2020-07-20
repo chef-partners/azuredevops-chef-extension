@@ -63,6 +63,8 @@ export class Utilities {
    */
   public setCookbookVersion() {
 
+    tl.debug("Attempting to set cookbook version on environment");
+
     // check that the metadata file exists, if it does not fail the tasl
     if (!tl.exist(this.taskConfiguration.Inputs.CookbookMetadataPath)) {
       tl.setResult(tl.TaskResult.Failed, sprintf("Cookbook metadata file cannot be found: %s", this.taskConfiguration.Inputs.CookbookMetadataPath));
@@ -107,6 +109,8 @@ export class Utilities {
    * and environment variables needed for the Habitat to operate
    */
   public setupHabitatEnvironment() {
+
+    tl.debug("Attempting to configure Habitat environment");
 
     // configure paths for the configuration file and keys
     let originBaseText: string = sprintf("%s-%s", this.taskConfiguration.Inputs.HabitatOriginName, this.taskConfiguration.Inputs.HabitatOriginRevision);
