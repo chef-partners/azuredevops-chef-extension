@@ -38,7 +38,7 @@
       "label": "Version Number",
       "defaultValue": "$(Build.BuildNumber)",
       "helpMarkDown": "Version number to apply to the metadata of the cookbook. By default this is set to the build number of the run.",
-      "visibleRule": "utility == setCookbookVersion"
+      "visibleRule": "helper == setCookbookVersion"
     },
     {
       "name": "cookbookMetadataPath",
@@ -46,7 +46,7 @@
       "label": "Cookbook Metadata File",
       "defaultValue": "$(Build.SourcesDirectory)/metadata.rb",
       "helpMarkDown": "Path to the `metadata.rb` file for the cookbook",
-      "visibleRule": "utility == setCookbookVersion"
+      "visibleRule": "helper == setCookbookVersion"
     },
     {
       "name": "cookbookVersionRegex",
@@ -54,14 +54,14 @@
       "label": "Version Regex",
       "defaultValue": "version\\s+['\"]?.*['\"]?",
       "helpMarkDown": "Regular Expression to be used in the `metadata.rb` file to set the version number",
-      "visibleRule": "utility == setCookbookVersion"
+      "visibleRule": "helper == setCookbookVersion"
     },
     {
       "name": "habitatendpoint",
       "type": "connectedService:habitatoriginendpointv1",
       "label": "Habitat Origin",
       "defaultValue": "",
-      "visibleRule": "utility == setupHabitat",
+      "visibleRule": "helper == setupHabitat",
       "helpMarkDown": "The Habitat Origin endpoint that contains the necessary origin name, revision and keys"
     }
   ],
