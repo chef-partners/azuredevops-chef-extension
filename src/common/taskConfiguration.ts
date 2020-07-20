@@ -406,6 +406,8 @@ export class TaskConfiguration {
     // initialise variable to hold the return value
     let value = null;
 
+    tl.debug(sprintf("Attempting to get '%s' for connectedService: %s", type, connectedService));
+
     // if running in development mode get all the value from the environment
     if (this.isDev) {
       value = process.env[name.toUpperCase()];

@@ -45,7 +45,7 @@ export class Helpers {
   public async Run() {
 
     // determine the method to run based on the utility that has been chosen
-    switch (this.taskConfiguration.Inputs.Utility) {
+    switch (this.taskConfiguration.Inputs.Helper) {
       case "setCookbookVersion": {
         this.setCookbookVersion();
         break;
