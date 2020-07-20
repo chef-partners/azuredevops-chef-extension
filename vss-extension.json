@@ -225,13 +225,13 @@
             }
         },
         {
-            "id": "utilities",
+            "id": "helpers",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "tasks/utilities"
+                "name": "tasks/helpers"
             }
         }
     ]

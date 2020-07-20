@@ -3,7 +3,7 @@
   "name": "chef.helpers",
   "friendlyName": "Chef Helpers",
   "description": "This task contains helper tasks, such as updating your cookbook version, which are not accommodated by the other tasks",
-  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/utilities.html",
+  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/helpers.html",
   "category": "Azure Pipelines",
   "author": "Chef",
   "version": {
@@ -11,7 +11,7 @@
     "Minor": 0,
     "Patch": 15
   },
-  "instanceNameFormat": "Utility: $(utility)",
+  "instanceNameFormat": "Helper: $(helper)",
   "groups": [
     {
       "name": "advanced",
