@@ -1,7 +1,7 @@
 /**
  * Utilities is responsible for performing tasks such as updating a cookbook version
  * and other tasks that do not fit into the Install or Execute tasks
- * 
+ *
  * @author Russell Seymour
  */
 
@@ -9,13 +9,13 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
-import {sync as replaceSync} from "replace-in-file";
+// import {sync as replaceSync} from "replace-in-file";
 import {join as pathJoin, dirname} from "path";
 
  /**
   * Class to handle the execution of the utlities that can be selected
   */
-export class Utilities {
+export class Helpers {
 
   /**
    * TaskConfiguration object containing all the supplied parameters
@@ -80,16 +80,25 @@ export class Utilities {
     let pattern = new RegExp(this.taskConfiguration.Inputs.CookbookVersionRegex, "gm");
 
     // configure the options for the replacement
+    /*
     let options = {
       files: this.taskConfiguration.Inputs.CookbookMetadataPath,
       from: pattern,
       to: sprintf("version '%s'", this.taskConfiguration.Inputs.CookbookVersionNumber)
     };
+    */
 
     // replace the version number in the cookbook file
     try {
 
-      let results = replaceSync(options);
+      // let results = replaceSync(options);
+
+      this.utils.ReplaceInFile(
+        this.taskConfiguration.Inputs.CookbookMetadataPath,
+        pattern,
+        sprintf("version '%s'", this.taskConfiguration.Inputs.CookbookVersionNumber)
+      );
+
       /*
       replace({
         regex: this.taskConfiguration.Inputs.CookbookVersionRegex,

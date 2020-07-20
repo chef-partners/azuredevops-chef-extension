@@ -1,7 +1,7 @@
 {
   "id": "e96c7e8c-aca1-4eaa-ac86-78e0d639e81f",
-  "name": "chef.utlities",
-  "friendlyName": "Chef Utilities",
+  "name": "chef.helpers",
+  "friendlyName": "Chef Helpers",
   "description": "This task contains helper tasks, such as updating your cookbook version, which are not accommodated by the other tasks",
   "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/utilities.html",
   "category": "Azure Pipelines",
@@ -21,11 +21,11 @@
   ],
   "inputs": [
     {
-      "name": "utility",
+      "name": "helper",
       "type": "picklist",
-      "label": "Utility",
+      "label": "Helpers",
       "defaultValue": "",
-      "helpMarkDown": "Select the Utility to use for this task",
+      "helpMarkDown": "Select the Helper to use for this task",
       "options": {
         "setCookbookVersion": "Set Cookbook Version Number",
         "setupHabitat": "Setup Habitat Environment"

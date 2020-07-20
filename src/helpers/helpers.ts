@@ -1,6 +1,6 @@
 // import the necessary items
 import * as task from "../common/taskConfiguration";
-import * as u from "../common/utilities";
+import * as h from "../common/helpers";
 
 // Execute the utitlies task
 async function run() {
@@ -10,11 +10,11 @@ async function run() {
 
   await taskConfiguration.getTaskParameters(["habitatendpoint"]);
 
-  let utilities = new u.Utilities(taskConfiguration);
+  let helpers = new h.Helpers(taskConfiguration);
 
   // call the run method which decides which util has been selected and then
   // performs that task
-  utilities.Run();
+  helpers.Run();
 }
 
 run();

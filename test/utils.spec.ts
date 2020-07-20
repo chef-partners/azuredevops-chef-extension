@@ -21,7 +21,6 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 import * as os from "os";
 
-
 // -------------------------------------------------------------------
 
 // Configure constants
@@ -80,7 +79,7 @@ describe("Utils", () => {
 
     tlgetEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((id, name, optional) => {
       return inputs[name];
-    });    
+    });
 
     process.env.AGENT_TEMPDIRECTORY = tempDir();
 
@@ -122,6 +121,22 @@ describe("Utils", () => {
 
       // get the actual
       let actual = utils.ReplaceTokens();
+
+      expect(actual).to.eql(expected);
+    });
+  });
+
+  describe("ReplaceInStr", () => {
+
+    it ("replaces specified items in the string", async () => {
+
+      // set properties
+      let contents = "version 0.0.1";
+
+      let expected = "version 1.0.0";
+
+      // get the actual value
+      let actual = utils.ReplaceInStr(contents, "version\\s+['\"]?.*['\"]?", "version 1.0.0");
 
       expect(actual).to.eql(expected);
     });

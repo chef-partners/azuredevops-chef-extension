@@ -5,7 +5,7 @@
 // Import libraries --------------------------------------------------
 // - local libs
 import { TaskConfiguration } from "../src/common/taskConfiguration";
-import { Utilities } from "../src/common/utilities";
+import { Helpers } from "../src/common/helpers";
 
 // - External task libs
 import * as tl from "azure-pipelines-task-lib";
@@ -19,7 +19,6 @@ import { mkdirSync, existsSync, writeFileSync, readFileSync } from "fs";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import * as os from "os";
-
 
 // -------------------------------------------------------------------
 
@@ -35,7 +34,7 @@ let tlsetResult;
 let getInput;
 let metadataFile;
 let tc: TaskConfiguration;
-let u: Utilities;
+let u: Helpers;
 
 // define a tempdir that the scripts can be written out to
 function tempDir(remove: boolean = false): string {
@@ -53,7 +52,7 @@ function tempDir(remove: boolean = false): string {
   return path;
 }
 
-describe("Utilities", () => {
+describe("Helpers", () => {
 
   before(() => {
 
@@ -61,12 +60,12 @@ describe("Utilities", () => {
     getInput = sinon.stub(tl, "getInput").callsFake((name) => {
       return inputs[name];
     });
-  
+
     // stub out the platform function from the os object
     platform = sinon.stub(os, "platform").callsFake(() => {
       return inputs["platform"];
     });
-  
+
     // stub the azdo tasklib setResult function
     tlsetResult = sinon.stub(tl, "setResult");
 
@@ -79,7 +78,7 @@ describe("Utilities", () => {
     tlsetResult.restore();
 
     process.env.AGENT_TEMPDIRECTORY = "";
-  });  
+  });
 
   describe("Update cookbook version", () => {
 
@@ -87,14 +86,14 @@ describe("Utilities", () => {
       inputs = {
         "platform": LINUX,
         "utility": "setCookbookVersion"
-      }
+      };
     });
 
     describe("metadata file does not exist", () => {
 
       before(() => {
         tc = new TaskConfiguration();
-        u = new Utilities(tc);
+        u = new Helpers(tc);
 
         u.setCookbookVersion();
       });
@@ -119,7 +118,7 @@ describe("Utilities", () => {
         writeFileSync(metadataFile, "version   100.99.98");
 
         tc = new TaskConfiguration();
-        u = new Utilities(tc);
+        u = new Helpers(tc);
 
         tc.getTaskParameters();
 

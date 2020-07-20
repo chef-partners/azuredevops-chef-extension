@@ -1,19 +1,19 @@
 /**
  * TaskConfiguration is responsible for reading in all of the task parameters
  * and making them available to the task as an object.
- * 
- * There are a number of helper tasks that exist, such as working out what platform the 
+ *
+ * There are a number of helper tasks that exist, such as working out what platform the
  * task is being run on.
- * 
- * The class will also set up values from the environment when running in DEV mode on a 
+ *
+ * The class will also set up values from the environment when running in DEV mode on a
  * local workstation
- * 
+ *
  * @author Russell Seymour
  */
 
 // import necessary libraries
-//import * as isRoot from "is-root";
-//import * as isAdmin from "is-admin";
+// import * as isRoot from "is-root";
+// import * as isAdmin from "is-admin";
 import isAdmin = require("is-admin");
 import isRoot = require("is-root");
 import {platform} from "os"; // provides information about the operating system being run on
@@ -166,7 +166,7 @@ class Paths {
 
     return result;
   }
-  
+
   /**
    * Get the path for the component
    */
@@ -182,10 +182,10 @@ class Paths {
       case "chef-client":
         path = this.ChefClient;
         break;
-      case "habitat": 
+      case "habitat":
         path = this.Habitat;
         break;
-      case "knife": 
+      case "knife":
         path = this.Knife;
         break;
       case "inspec":
@@ -257,9 +257,9 @@ export class TaskConfiguration {
 
   /**
    * Gets the task parameters for the task
-   * 
-   * @param required 
-   * @param connectedServiceName 
+   *
+   * @param required
+   * @param connectedServiceName
    */
   public async getTaskParameters(connectedServiceNames: string[] = []): Promise<TaskConfiguration> {
 

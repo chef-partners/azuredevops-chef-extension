@@ -1,7 +1,7 @@
 /**
  * Utils contains a number of methods that are reused throughout the extension
  * For example, checkSudo when running on Linux
- * 
+ *
  * @author Russell Seymour
  */
 
@@ -9,6 +9,7 @@ import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 import { TaskConfiguration } from "./taskConfiguration";
 import { sprintf } from "sprintf-js";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 
 export class Utils {
 
@@ -20,7 +21,7 @@ export class Utils {
 
   /**
    * Creates a new instance of the class
-   * 
+   *
    * @param taskConfiguration The current task configuration
    */
   constructor (taskConfiguration: TaskConfiguration) {
@@ -89,14 +90,24 @@ export class Utils {
   public ReplaceTokens(): string {
 
     let args: string = "";
+    let modified: boolean = false;
 
     // get the argument from the task configuration
     args = this.taskConfiguration.Inputs.Arguments;
 
-    // replace the tokens
-    args = args.replace(/{URL}/, this.taskConfiguration.Inputs.TargetURL);
-    args = args.replace(/{USERNAME}/, this.taskConfiguration.Inputs.Username);
-    args = args.replace(/{PASSWORD}/, this.taskConfiguration.Inputs.Password);
+    [modified, args] = this.makeReplacements(
+      args,
+      [
+        "{URL}",
+        "{USERNAME}",
+        "{PASSWORD}"
+      ],
+      [
+        this.taskConfiguration.Inputs.TargetURL,
+        this.taskConfiguration.Inputs.Username,
+        this.taskConfiguration.Inputs.Password
+      ]
+    );
 
     return args;
   }
@@ -107,5 +118,103 @@ export class Utils {
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }
+  }
+
+  /**
+   * ReplaceInFile replaces text in the specified file
+   *
+   * @param file File to replace text within
+   * @param from The text or regex to use to find the text to replace
+   * @param to The text to set the found string to
+   */
+  public ReplaceInFile(file: string, from, to) {
+
+    // initialise method variables
+    let contents;
+    let newContents;
+    let modified: boolean;
+
+    // check that the file exists and if so read in the contents
+    if (existsSync(file)) {
+      tl.debug(sprintf("Reading in file: %s", file));
+      contents = readFileSync(file, "utf-8");
+
+      // call the method to make the replacements
+      [modified, newContents] = this.makeReplacements(contents, from, to);
+    } else {
+      tl.error(sprintf("Specified file does not exist: %s", file));
+    }
+
+    // Write the data back out to the file that was read from
+    // if the contents have changed
+    if (modified) {
+      console.log("Updating contents in file: %s", file);
+      writeFileSync(file, newContents, "utf-8");
+    }
+
+  }
+
+  public ReplaceInStr(contents: string, from, to): string {
+    let newContents = "";
+    let modified: boolean;
+
+    // call the method to make the replacements
+    [modified, newContents] = this.makeReplacements(contents, from, to);
+
+    return newContents;
+
+  }
+
+  private makeReplacements(contents: string, from, to): [boolean, string] {
+
+    // Initialise method properties
+    let updatedContents = "";
+    let modified = false;
+    let isArray: boolean;
+
+    // turn the from into an array so that each element can be operated on
+    if (!Array.isArray(from)) {
+      from = [from];
+    }
+
+    isArray = Array.isArray(to);
+
+    // make the replacements
+    updatedContents = from.reduce((contents, item, i) => {
+
+      // get the replacement value
+      let replacement = this.getReplacement(to, isArray, i);
+
+      // if there are no replacements to be made, return the original contents
+      if (replacement === null) {
+        return contents;
+      }
+
+      // perform the replacement
+      if (typeof item === "string") {
+        item = new RegExp(item, "gm");
+      }
+      return contents.replace(item, replacement);
+
+    }, contents);
+
+    if (updatedContents !== contents) {
+      modified = true;
+    }
+
+    return[modified, updatedContents];
+  }
+
+  /**
+   * Get replacement helper
+   */
+  private getReplacement(replace, isArray, i) {
+    if (isArray && typeof replace[i] === "undefined") {
+      return null;
+    }
+    if (isArray) {
+      return replace[i];
+    }
+    return replace;
   }
 }
