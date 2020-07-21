@@ -307,6 +307,9 @@ export class TaskConfiguration {
       // iterate around the connected service names that have been supplied
       for (let connectedServiceName of connectedServiceNames) {
 
+        // get the connected service from the inputs
+        let connectedService = this.getParamValue(connectedServiceName, true, "input");
+
         // get the properties based on the name of the endpoint
         switch (connectedServiceName) {
 
@@ -332,12 +335,12 @@ export class TaskConfiguration {
           // set the necessary properties for a Habitat Endpoint
           case "habitatOrigin":
 
-            this.Inputs.HabitatDepotURL = this.getParamValue("url", true, "url", connectedServiceName); // tl.getEndpointUrl(connectedServiceName, true);
-            this.Inputs.HabitatOriginName = this.getParamValue("originName", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "originName", true);
-            this.Inputs.HabitatOriginRevision = this.getParamValue("revision", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "revision", true);
-            this.Inputs.HabitatOriginPublicKey = this.getParamValue("publicKey", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "publicKey", true);
-            this.Inputs.HabitatOriginSigningKey = this.getParamValue("signingKey", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "signingKey", true);
-            this.Inputs.HabitatAuthToken = this.getParamValue("authToken", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "authToken", true);
+            this.Inputs.HabitatDepotURL = this.getParamValue("url", true, "url", connectedService); // tl.getEndpointUrl(connectedServiceName, true);
+            this.Inputs.HabitatOriginName = this.getParamValue("originName", true, "data", connectedService); // tl.getEndpointDataParameter(connectedServiceName, "originName", true);
+            this.Inputs.HabitatOriginRevision = this.getParamValue("revision", true, "data", connectedService); // tl.getEndpointDataParameter(connectedServiceName, "revision", true);
+            this.Inputs.HabitatOriginPublicKey = this.getParamValue("publicKey", true, "data", connectedService); // tl.getEndpointDataParameter(connectedServiceName, "publicKey", true);
+            this.Inputs.HabitatOriginSigningKey = this.getParamValue("signingKey", true, "auth", connectedService); // tl.getEndpointAuthorizationParameter(connectedServiceName, "signingKey", true);
+            this.Inputs.HabitatAuthToken = this.getParamValue("authToken", true, "auth", connectedService); // tl.getEndpointAuthorizationParameter(connectedServiceName, "authToken", true);
 
             tl.debug(sprintf("this.Inputs.HabitatDepotURL: '%s'", this.Inputs.HabitatDepotURL));
 
@@ -403,23 +406,15 @@ export class TaskConfiguration {
     }
   }
 
-  private getParamValue(name: string, required: boolean, type: string = null, connectedServiceName: string = null): string {
+  private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {
 
     // initialise variable to hold the return value
     let value = null;
-    let connectedService: string;
 
     // if running in development mode get all the value from the environment
     if (this.isDev) {
       value = process.env[name.toUpperCase()];
     } else {
-
-      // get the connectedService as an input
-      if (["auth", "data", "url"].includes(type) && connectedServiceName !== null) {
-        tl.debug(sprintf("Connected service name: %s", connectedServiceName));
-        connectedService = tl.getInput(connectedServiceName, true);
-        tl.debug(sprintf("Endpoint: %s", JSON.stringify(connectedService)));
-      }
 
       // based on the type, get the parameter value using the correct method in the task library
       switch (type) {
