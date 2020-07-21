@@ -415,7 +415,7 @@ export class TaskConfiguration {
     } else {
 
       // get the connectedService as an input
-      if (["auth", "data", "url"].includes(type)) {
+      if (["auth", "data", "url"].includes(type) && connectedServiceName !== null) {
         connectedService = tl.getInput(connectedServiceName, true);
       }
 
