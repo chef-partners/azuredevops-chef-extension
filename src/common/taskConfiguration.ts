@@ -415,7 +415,9 @@ export class TaskConfiguration {
     } else {
 
       // get the connectedService as an input
-      connectedService = tl.getInput(connectedServiceName, true);
+      if (["auth", "data", "url"].includes(type)) {
+        connectedService = tl.getInput(connectedServiceName, true);
+      }
 
       // based on the type, get the parameter value using the correct method in the task library
       switch (type) {
