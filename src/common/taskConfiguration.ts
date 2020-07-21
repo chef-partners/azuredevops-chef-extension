@@ -446,6 +446,7 @@ export class TaskConfiguration {
     }
 
     // return the value to the calling function
+    tl.debug(sprintf("Value: %s", value));
     return value;
   }
 }
