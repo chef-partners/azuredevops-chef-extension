@@ -57,7 +57,7 @@
       "visibleRule": "helper == setCookbookVersion"
     },
     {
-      "name": "habitatendpoint",
+      "name": "habitatOrigin",
       "type": "connectedService:habitatoriginendpointv1",
       "label": "Habitat Origin",
       "defaultValue": "",

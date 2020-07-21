@@ -330,7 +330,7 @@ export class TaskConfiguration {
           }
 
           // set the necessary properties for a Habitat Endpoint
-          case "habitatendpoint":
+          case "habitatOrigin":
 
             this.Inputs.HabitatDepotURL = this.getParamValue("url", true, "url", connectedServiceName); // tl.getEndpointUrl(connectedServiceName, true);
             this.Inputs.HabitatOriginName = this.getParamValue("originName", true, "data", connectedServiceName); // tl.getEndpointDataParameter(connectedServiceName, "originName", true);
@@ -406,8 +406,6 @@ export class TaskConfiguration {
     // initialise variable to hold the return value
     let value = null;
 
-    tl.debug(sprintf("Attempting to get '%s' for connectedService: %s", type, connectedService));
-
     // if running in development mode get all the value from the environment
     if (this.isDev) {
       value = process.env[name.toUpperCase()];
@@ -417,12 +415,12 @@ export class TaskConfiguration {
       switch (type) {
         case "auth":
           // get sensitive data from the endpoint, e.g. auth token or password
-          tl.debug(sprintf("Attempting to retrieve authorization parameter: %s", name));
+          tl.debug(sprintf("[%s] Attempting to retrieve authorization parameter: %s", connectedService, name));
           value = tl.getEndpointAuthorizationParameter(connectedService, name, required);
           break;
         case "data":
           // get non-sensitive data from the endpoint
-          tl.debug(sprintf("Attempting to retrieve data from endpoint: %s", name));
+          tl.debug(sprintf("[%s] Attempting to retrieve data from endpoint: %s", connectedService, name));
           value = tl.getEndpointDataParameter(connectedService, name, required);
           break;
         case "input":
@@ -431,7 +429,7 @@ export class TaskConfiguration {
           break;
         case "url":
           // get the endpoint URL from the connected service
-          tl.debug("Attempting to retrieve endpoint URL");
+          tl.debug(sprintf("[%s] Attempting to retrieve endpoint URL", connectedService));
           value = tl.getEndpointUrl(connectedService, required);
           break;
         default:

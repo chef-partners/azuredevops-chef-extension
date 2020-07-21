@@ -8,7 +8,7 @@ async function run() {
   // initialise required classes
   let taskConfiguration = new task.TaskConfiguration();
 
-  await taskConfiguration.getTaskParameters(["habitatendpoint"]);
+  await taskConfiguration.getTaskParameters(["habitatOrigin"]);
 
   let helpers = new h.Helpers(taskConfiguration);
 
