@@ -113,6 +113,7 @@ describe("Helpers", () => {
         inputs["cookbookVersionNumber"] = "1.2.3";
         inputs["cookbookMetadataPath"] = metadataFile;
         inputs["cookbookVersionRegex"] = "version\\s+['\"]?.*['\"]?";
+        inputs["helper"] = "setCookbookVersion";
 
         // set a version number in the metadataFile so that it can be patched
         writeFileSync(metadataFile, "version   100.99.98");
@@ -120,9 +121,10 @@ describe("Helpers", () => {
         tc = new TaskConfiguration();
         u = new Helpers(tc);
 
-        tc.getTaskParameters();
+        u.Run();
+        // tc.getTaskParameters();
 
-        u.setCookbookVersion();
+        // u.setCookbookVersion();
       });
 
       it("sets the version number in the file", () => {

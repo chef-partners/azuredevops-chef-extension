@@ -2,16 +2,16 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import { sprintf } from "sprintf-js";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
+// import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 import { Scripts } from "./scripts";
 import { writeFileSync } from "fs";
 
 /**
  * InstallComponents is responsible for taking in the TaskConfiguration
  * and working out what is to be installed depending on the platform.
- * 
+ *
  * This means that on Windows PowerShell will be used and on Linux it will be bash.
- * 
+ *
  * @author Russell Seymour
  */
 
@@ -33,7 +33,7 @@ export class InstallComponents {
 
   /**
    * Creates a new instance of the class
-   * 
+   *
    * @param taskConfiguration The current task configuration
    */
   constructor (taskConfiguration: TaskConfiguration) {
@@ -91,7 +91,7 @@ export class InstallComponents {
 
   /**
    * Determine if the component should be installed or not
-   * 
+   *
    * This is a public method so that the logic can be tested
    */
   public shouldInstall(): boolean {
@@ -174,7 +174,7 @@ export class InstallComponents {
           this.taskConfiguration.Inputs.Version
         );
       }
-      
+
     } else {
 
       // write out the script
@@ -192,7 +192,7 @@ export class InstallComponents {
       // use the flag to determine if running on Windows to build up the install command
       // this checks whether installing Habitat or not
       if (this.taskConfiguration.IsWindows) {
-        
+
         // Build up the cmdParts to be used
         // this sets up the common parts
         cmdParts = [
@@ -290,11 +290,9 @@ export class InstallComponents {
     return cmdParts;
   }
 
-
-
   /**
    * Method to determine if the selected component is installed or not
-   * 
+   *
    * If running in DEV mode then environment variables are used to test
    * the installation valued
    */

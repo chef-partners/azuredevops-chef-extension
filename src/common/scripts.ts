@@ -1,7 +1,7 @@
 /**
  * Script library holds the Base64 encoded string of the PowerShell and Shell based scripts
  * for installing Chef components using Omnbibus
- * 
+ *
  * It also includes the scripts required to download and install Habitat
  */
 
@@ -987,12 +987,12 @@ IyMjIyMjIwojIGVuZCBvZiBpbnN0YWxsX3BhY2thZ2Uuc2gKIyMjIyMjIyMjIyMjCg==`;
   /**
    * GetScript is responsible for writing out the Base64 encoded scripts (above)
    * to disk on the agent so that the component can be installed
-   * 
+   *
    * The component name is passed so that the correct script can be decoded, e.g.
    * Chef or Habitat
-   * 
-   * @param isWindows 
-   * @param componentName 
+   *
+   * @param isWindows
+   * @param componentName
    */
 
   public GetScript(isWindows: boolean, componentName: string): string {
@@ -1012,7 +1012,7 @@ IyMjIyMjIwojIGVuZCBvZiBpbnN0YWxsX3BhY2thZ2Uuc2gKIyMjIyMjIyMjIyMjCg==`;
         encodedString = this.LinuxInstall;
       }
     }
-    
+
     result = Buffer.from(encodedString, "base64").toString();
 
     return result;

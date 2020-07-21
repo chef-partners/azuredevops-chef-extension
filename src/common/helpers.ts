@@ -35,14 +35,25 @@ export class Helpers {
    */
   constructor (taskConfiguration: TaskConfiguration) {
     this.taskConfiguration = taskConfiguration;
-    this.utils = new Utils(this.taskConfiguration);
+    // this.utils = new Utils(this.taskConfiguration);
   }
 
   /**
-   * Run determines what utility has been selected and then performs the necessasry
-   * operations to complte that utility
+   * Run determines what utility has been selected and then performs the necessary
+   * operations to complete that utility
    */
   public async Run() {
+
+    // initialise method properties
+    let method: string;
+    let serviceNames = {
+      "setCookbookVersion": [],
+      "setupHabitat": ["habitatOrigin"]
+    };
+
+    // configure the task parameters and setup the utils
+    await this.taskConfiguration.getTaskParameters(serviceNames[this.taskConfiguration.Inputs.Helper]);
+    this.utils = new Utils(this.taskConfiguration);
 
     // determine the method to run based on the utility that has been chosen
     switch (this.taskConfiguration.Inputs.Helper) {
