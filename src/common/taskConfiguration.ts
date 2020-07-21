@@ -432,6 +432,7 @@ export class TaskConfiguration {
           break;
         case "input":
           // get the value from the task parameters
+          tl.debug(sprintf("Attempting to retrieve input: %s", name));
           value = tl.getInput(name, required);
           break;
         case "url":
