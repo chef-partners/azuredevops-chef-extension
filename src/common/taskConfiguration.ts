@@ -416,7 +416,9 @@ export class TaskConfiguration {
 
       // get the connectedService as an input
       if (["auth", "data", "url"].includes(type) && connectedServiceName !== null) {
+        tl.debug(sprintf("Connected service name: %s", connectedServiceName));
         connectedService = tl.getInput(connectedServiceName, true);
+        tl.debug(sprintf("Endpoint: %s", JSON.stringify(connectedService)));
       }
 
       // based on the type, get the parameter value using the correct method in the task library
