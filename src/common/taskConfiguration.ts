@@ -403,15 +403,19 @@ export class TaskConfiguration {
     }
   }
 
-  private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {
+  private getParamValue(name: string, required: boolean, type: string = null, connectedServiceName: string = null): string {
 
     // initialise variable to hold the return value
     let value = null;
+    let connectedService: string;
 
     // if running in development mode get all the value from the environment
     if (this.isDev) {
       value = process.env[name.toUpperCase()];
     } else {
+
+      // get the connectedService as an input
+      connectedService = tl.getInput(connectedServiceName, true);
 
       // based on the type, get the parameter value using the correct method in the task library
       switch (type) {
