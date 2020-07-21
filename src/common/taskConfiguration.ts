@@ -288,7 +288,9 @@ export class TaskConfiguration {
         let value = this.getParamValue(paramName, false, "input");
 
         // Set the property on the object with the value
-        toDotted(mapping[paramName], value, this);
+        if (value !== "undefined") {
+          toDotted(mapping[paramName], value, this);
+        }
       }
 
       // output information to the log

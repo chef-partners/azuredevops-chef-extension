@@ -63,6 +63,14 @@
       "defaultValue": "",
       "visibleRule": "helper == setupHabitat",
       "helpMarkDown": "The Habitat Origin endpoint that contains the necessary origin name, revision and keys"
+    },
+    {
+      "name": "sudo",
+      "type": "boolean",
+      "label": "Use Sudo",
+      "defaultValue": false,
+      "helpMarkdown": "Use Sudo to perform the installation. (Only valid on Linux build agents).",
+      "groupName": "advanced"
     }
   ],
   "execution": {
