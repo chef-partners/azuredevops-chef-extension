@@ -339,6 +339,8 @@ export class TaskConfiguration {
             this.Inputs.HabitatOriginSigningKey = this.getParamValue("signingKey", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "signingKey", true);
             this.Inputs.HabitatAuthToken = this.getParamValue("authToken", true, "auth", connectedServiceName); // tl.getEndpointAuthorizationParameter(connectedServiceName, "authToken", true);
 
+            console.log("this.Inputs.HabitatDepotURL: '%s'", this.Inputs.HabitatDepotURL);
+
             break;
 
           // set the properties for an Azure endpoint type, which could be used by TK
