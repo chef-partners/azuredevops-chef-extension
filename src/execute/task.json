@@ -1,6 +1,6 @@
 {
   "id": "b3f0ceef-e22a-43c5-ab37-96287e35d494",
-  "name": "chef.component.execute",
+  "name": "component",
   "friendlyName": "Execute Chef Component",
   "description": "This task allows the execution of any Chef component",
   "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef/execute-task.html",

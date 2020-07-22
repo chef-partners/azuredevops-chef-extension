@@ -1,6 +1,6 @@
 {
   "id": "e96c7e8c-aca1-4eaa-ac86-78e0d639e81f",
-  "name": "chef.helpers",
+  "name": "helper",
   "friendlyName": "Chef Helpers",
   "description": "This task contains helper tasks, such as updating your cookbook version, which are not accommodated by the other tasks",
   "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/docs/tasks/helpers.html",

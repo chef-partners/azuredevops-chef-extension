@@ -1,6 +1,6 @@
 {
   "id": "20a315a3-ad1f-4864-87c9-60eda3ac5e7c",
-  "name": "chef.component.install",
+  "name": "component",
   "friendlyName": "Install Chef Components",
   "description": "This task will install either Chef Workstation, InSpec or Ruby Gems into the Chef context",
   "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef/install-task.html",
