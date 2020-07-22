@@ -10,6 +10,7 @@ import { ExecuteComponent } from "../src/common/executeComponent";
 // - External libs
 import * as tl from "azure-pipelines-task-lib";
 import * as rimraf from "rimraf";
+import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 
 // - Standard libs
 import { join as pathJoin, basename } from "path";
@@ -109,20 +110,19 @@ describe("Execute Components", () => {
           tc.getTaskParameters();
 
           let actual = ex.generateCmd();
- 
+
           expect(actual).to.eql(expected);
         });
 
       });
 
-
     });
   });
 
-  // ensure that the berkshelf configuration is set correctly
-  describe("Berkshelf Configuration", () => {
+  // ensure that berkshelf operates correctly
+  describe("Berkshelf", () => {
 
-    before(() => {
+    before(async () => {
 
       // set the necessary inputs
       inputs = {
@@ -131,7 +131,8 @@ describe("Execute Components", () => {
         "password": "foobar",
         "targetUrl": "https://foobar.com/organization/fred",
         "username": "unittest",
-        "sslVerify": false
+        "sslVerify": false,
+        "arguments": "install"
       };
 
       // stub the azdo tasklib setResult function
@@ -163,6 +164,10 @@ describe("Execute Components", () => {
         return inputs[name];
       });
 
+      tc = new TaskConfiguration();
+      ex = new ExecuteComponent(tc);
+      await tc.getTaskParameters(["chefendpoint"]);
+
     });
 
     after(() => {
@@ -177,21 +182,14 @@ describe("Execute Components", () => {
     });
 
     it("writes out the private key", async () => {
-      tc = new TaskConfiguration();
-      ex = new ExecuteComponent(tc);
-      await tc.getTaskParameters(["chefendpoint"]);
 
-      // call the method to create the private key
+      // call the method to create the private key file
       let dummy = ex.generateBerksConfig();
 
       expect(existsSync(tc.Paths.PrivateKey)).to.be.true;
     });
 
     it("returns the correct configuration", async () => {
-      tc = new TaskConfiguration();
-      ex = new ExecuteComponent(tc);
-
-      await tc.getTaskParameters(["chefendpoint"]);
 
       // create the expected object
       let expected = {
@@ -209,6 +207,15 @@ describe("Execute Components", () => {
       let actual = ex.generateBerksConfig();
 
       // perform the test to make sure they are the ame
+      expect(actual).to.eql(expected);
+    });
+
+    it("installs cookbooks", async () => {
+
+      let expected = sprintf("%s install", pathJoin("/", "opt", "chef-workstation", "bin", "berks"));
+
+      let actual = ex.generateCmd().join(" ");
+
       expect(actual).to.eql(expected);
     });
   });

@@ -19,186 +19,9 @@ import isRoot = require("is-root");
 import {platform} from "os"; // provides information about the operating system being run on
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import {join as pathJoin} from "path";
 import {str as toDotted} from "dot-object";
-import {homedir} from "os";
-
-class Inputs {
-  public ComponentName: string = null; // Name of the software component being installed or executed
-  public GemName: string = null; // If the component is a gem, state the gem to be installed
-  public ForceInstall: boolean = false; // Force the installation of the software
-  public UseSudo: boolean = false; // Should Sudo be used for the operations
-  public Version: string = null; // The version of the software component to install
-  public Channel: string = null; // WHat channel should the software component be installed from
-  public TargetPath: string = null; // The path to download software to
-  public Arguments: string = null; // Arguments that need to be passed to the component being executed
-  public EnvVars: string = null; // EnvVars that have been requested on the task
-
-  // Declare properties to be used for determining the helper to run
-  public Helper: string = null; // the helper that needs to be run
-  public CookbookVersionNumber: string = null; // the version number to assign to the cookbook
-  public CookbookMetadataPath: string = null; // path to the metadata file to update
-  public CookbookVersionRegex: string = null; // regex pattern to use to update the version number in a cookbook
-
-  // Declare properties to be used for accessing Chef based servers
-  public TargetURL: string = null; // Server URL as defined in the service endpoint
-  public SSLVerify: boolean = true; // State if SSL verification should be performed when using the TargetURL
-  public Username: string = null; // Username, nodename or clientname to be used when interacting wit the specified server
-  public Password: string = null; // Password, client key or user key when a username is specified
-
-  // Declare properties for the Habitat configuration
-  public HabitatDepotURL: string = null; // URL to the Habitat Depot to which the package will be published
-  public HabitatOriginName: string = null; // Name of the origin to use when building the package
-  public HabitatOriginRevision: string = null; // Revision of the origin keys
-  public HabitatOriginPublicKey: string = null; // Public key of the specified origin
-  public HabitatOriginSigningKey: string = null; // Private key or signing key of the origin
-  public HabitatAuthToken: string = null; // Habitat authentication token
-
-  // Declare properties for Azure credentials when using Test Kitchen
-  public SubscriptionId: string = null;
-  public TenantId: string = null;
-  public ClientId: string = null;
-  public ClientSecret: string = null;
-
-  public SudoIsSet(): boolean {
-    let result: any = this.UseSudo;
-    if (typeof result === "string") {
-      result = (result === "true");
-    }
-    return result;
-  }
-
-  public ForceIsSet(): boolean {
-    let result: any = this.ForceInstall;
-    if (typeof result === "string") {
-      result = (result === "true");
-    }
-    return result;
-  }
-}
-
-class Paths {
-  public Berks: string = null;
-  public BerksConfig: string = null;
-  public Chef: string = null;
-  public ChefClient: string = null;
-  public ChefWorkstationDir: string = null;
-  public Habitat: string = null;
-  public InspecEmbedded: string = null;
-  public Inspec: string = null;
-  public Kitchen: string = null;
-  public Knife: string = null;
-  public PrivateKey: string = null;
-  public Script: string = null;
-  public Sudo: string = "/usr/bin/sudo";
-  public TmpDir: string;
-
-  /**
-   * Depending on the OS the correct defaults will be set on the paths
-   * @param osName Name of the operating system that the task is running o
-   */
-  constructor(osName: string, runningAsRoot: boolean) {
-
-    let extension: string = "";
-
-    // Set the TmpDir to the path of the agent environment variable
-    this.TmpDir = process.env.AGENT_TEMPDIRECTORY;
-
-    if (osName === "win32") {
-      extension = ".bat";
-      this.ChefWorkstationDir = pathJoin("C:", "opscode", "chef-workstation");
-      this.Inspec = pathJoin("C:", "opscode", "inspec", "bin", "inspec.bat");
-      this.Habitat = pathJoin("C:", "ProgramData", "Habitat", "hab.exe");
-
-      // set the path to the installation script
-      this.Script = pathJoin(this.TmpDir, "install.ps1");
-    } else {
-      this.ChefWorkstationDir = pathJoin("/", "opt", "chef-workstation");
-      this.Inspec = pathJoin("/", "usr", "bin", "inspec");
-      this.Habitat = pathJoin("/", "bin", "habitat");
-
-      // set the path to the installation script
-      this.Script = pathJoin(this.TmpDir, "install.sh");
-    }
-
-    // set the path to the individual commands based on the workstation dir
-    this.Chef = pathJoin(this.ChefWorkstationDir, "bin", sprintf("chef%s", extension));
-    this.ChefClient = pathJoin(this.ChefWorkstationDir, "bin", sprintf("chef-client%s", extension));
-    this.Berks = pathJoin(this.ChefWorkstationDir, "bin", sprintf("berks%s", extension));
-    this.InspecEmbedded = pathJoin(this.ChefWorkstationDir, "bin", sprintf("inspec%s", extension));
-    this.Kitchen = pathJoin(this.ChefWorkstationDir, "bin", sprintf("kitchen%s", extension));
-    this.Knife = pathJoin(this.ChefWorkstationDir, "bin", sprintf("knife%s", extension));
-
-    // determine the full path to the privatekey
-    // this starts by working it out the name of the file
-    // this is done so that multiple keys can be written out by several tasks if so required
-    let filenameParts = [];
-    let privKeyFilename = "";
-    filenameParts.push("azdo");
-    process.env.AGENT_ID ? filenameParts.push(process.env.AGENT_ID) : false;
-    process.env.RELEASE_ENVIRONMENTID ? filenameParts.push(process.env.RELEASE_ENVIRONMENTID) : false;
-    privKeyFilename = sprintf("%s.pem", filenameParts.join("-"));
-
-    // set the full path to the private key
-    this.PrivateKey = pathJoin(this.TmpDir, privKeyFilename);
-
-    // set the path to the berks configuration file
-    let berksConfigFilename = sprintf("berks.%s.json", filenameParts.join("-"));
-    this.BerksConfig = pathJoin(this.TmpDir, berksConfigFilename);
-  }
-
-  /**
-   * As InSpec can be installed as a separate smaller package, there can be two locations
-   * for it. This method attempts to return the path to inspec, starting with the path to the
-   * standalone version.
-   * If neither path exists then false is returned
-   */
-  public GetInspecPath(): string {
-
-    let result: string = null;
-
-    // check to see if the inspec paths exist
-    if (tl.exist(this.Inspec)) {
-      result = this.Inspec;
-    } else if (tl.exist(this.InspecEmbedded)) {
-      result = this.InspecEmbedded;
-    }
-
-    return result;
-  }
-
-  /**
-   * Get the path for the component
-   */
-  public GetPath(name: string): string {
-
-    let path: string = null;
-
-    // perform a switch on the name of the component and return the path to it
-    switch (name) {
-      case "chef":
-        path = this.Chef;
-        break;
-      case "chef-client":
-        path = this.ChefClient;
-        break;
-      case "habitat":
-        path = this.Habitat;
-        break;
-      case "knife":
-        path = this.Knife;
-        break;
-      case "inspec":
-        path = this.GetInspecPath();
-        break;
-      case "kitchen":
-        path = this.Kitchen;
-        break;
-    }
-
-    return path;
-  }
-}
+import { Inputs } from "./inputs";
+import { Paths } from "./paths";
 
 export class TaskConfiguration {
 
@@ -275,6 +98,10 @@ export class TaskConfiguration {
       "arguments": "Inputs.Arguments",
       "envvars": "Inputs.EnvVars",
       "helper": "Inputs.Helper",
+      "habitatOrigin": "Inputs.HabitatOriginName",
+      "habitatOriginRevision": "Inputs.HabitatOriginRevision",
+      "habitatOriginPublicKey": "Inputs.HabitatOriginPublicKey",
+      "habitatOriginSigningKey": "Inputs.HabitatOriginSigningKey",
       "cookbookVersionNumber": "Inputs.CookbookVersionNumber",
       "cookbookMetadataPath": "Inputs.CookbookMetadataPath",
       "cookbookVersionRegex": "Inputs.CookbookVersionRegex"

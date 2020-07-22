@@ -194,7 +194,7 @@ describe("Install Components", () => {
             tc.getTaskParameters();
             expect(ic.installCmd()).to.eql(expected);
           });
-    
+
           it("result should be a array", () => {
             tc.getTaskParameters();
             expect(ic.installCmd()).to.be.an("array");
@@ -209,7 +209,7 @@ describe("Install Components", () => {
           after(() => {
             delete inputs["targetPath"];
           });
-    
+
           // build up the expected array to install chef workstation
           let expected = [
             "powershell.exe",
@@ -220,11 +220,11 @@ describe("Install Components", () => {
             "-Filename",
             windowsInstallerFile_ChefWorkstation
           ];
-    
+
           it("should return the correct command", () => {
             // simulate inputs to the task
             tc.getTaskParameters();
-    
+
             expect(ic.installCmd()).to.eql(expected);
           });
         });
@@ -237,8 +237,7 @@ describe("Install Components", () => {
 
           after(() => {
             delete inputs["targetPath"];
-          })
-    
+          });
 
           it("should report that the installer file does not exist", () => {
             // simulate inputs to the task
@@ -315,7 +314,7 @@ describe("Install Components", () => {
             tc.getTaskParameters();
             expect(ic.installCmd()).to.eql(expected);
           });
-    
+
           it("result should be a array", () => {
             tc.getTaskParameters();
             expect(ic.installCmd()).to.be.an("array");
@@ -400,7 +399,7 @@ describe("Install Components", () => {
           tc.getTaskParameters();
           expect(ic.installCmd()).to.eql(expected);
         });
-  
+
         it("result should be a array", () => {
           tc.getTaskParameters();
           expect(ic.installCmd()).to.be.an("array");
@@ -415,7 +414,7 @@ describe("Install Components", () => {
         after(() => {
           delete inputs["targetPath"];
         });
-  
+
         // build up the expected array to install chef workstation
         let expected = [
           "bash",
@@ -423,11 +422,11 @@ describe("Install Components", () => {
           "-f",
           linuxInstallerFile_ChefWorkstation
         ];
-  
+
         it("should return the correct command", () => {
           // simulate inputs to the task
           tc.getTaskParameters();
-  
+
           expect(ic.installCmd()).to.eql(expected);
         });
       });
@@ -440,8 +439,7 @@ describe("Install Components", () => {
 
         after(() => {
           delete inputs["targetPath"];
-        })
-  
+        });
 
         it("should report that the installer file does not exist", () => {
           // simulate inputs to the task
@@ -452,7 +450,6 @@ describe("Install Components", () => {
           sinon.assert.called(tlsetResult);
         });
       });
-      
     });
 
     describe("Habitat", () => {
@@ -517,15 +514,13 @@ describe("Install Components", () => {
           tc.getTaskParameters();
           expect(ic.installCmd()).to.eql(expected);
         });
-  
+
         it("result should be a array", () => {
           tc.getTaskParameters();
           expect(ic.installCmd()).to.be.an("array");
         });
       });
-      
-    });    
+
+    });
   });
-
 });
-

@@ -58,12 +58,12 @@ describe("Task Configuration", () => {
     getInput = sinon.stub(tl, "getInput").callsFake((name) => {
       return inputs[name];
     });
-  
+
     // stub out the platform function from the os object
     platform = sinon.stub(os, "platform").callsFake(() => {
       return inputs["platform"];
     });
-  
+
     // stub the azdo tasklib setResult function
     tlsetResult = sinon.stub(tl, "setResult");
 
@@ -77,7 +77,6 @@ describe("Task Configuration", () => {
 
     process.env.AGENT_TEMPDIRECTORY = "";
   });
-  
 
   // Check that the platform is correctly detected as windows and that
   // the paths are setup correctly
@@ -102,7 +101,7 @@ describe("Task Configuration", () => {
 
       // define the paths to test
       let chefWorkstationDir = pathJoin("C:", "opscode", "chef-workstation");
-      
+
       let binChef = pathJoin(chefWorkstationDir, "bin", "chef.bat");
       let binBerks = pathJoin(chefWorkstationDir, "bin", "berks.bat");
       let binInspec = pathJoin(chefWorkstationDir, "bin", "inspec.bat");
@@ -157,7 +156,7 @@ describe("Task Configuration", () => {
 
       // define the paths to test
       let chefWorkstationDir = pathJoin("/", "opt", "chef-workstation");
-      
+
       let binChef = pathJoin(chefWorkstationDir, "bin", "chef");
       let binBerks = pathJoin(chefWorkstationDir, "bin", "berks");
       let binInspec = pathJoin(chefWorkstationDir, "bin", "inspec");
@@ -203,10 +202,18 @@ describe("Task Configuration", () => {
       };
 
       tc = new TaskConfiguration();
-    });    
+    });
 
     it("should report that the platform the task is running on is not supported", () => {
       sinon.assert.called(tlsetResult);
+    });
+  });
+
+  // check SudoIsSet
+  describe("Using sudo", () => {
+
+    it("should be false", () => {
+      expect(tc.Inputs.SudoIsSet()).to.eql(false);
     });
   });
 

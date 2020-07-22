@@ -10,13 +10,15 @@ import { Helpers } from "../src/common/helpers";
 // - External task libs
 import * as tl from "azure-pipelines-task-lib";
 import * as rimraf from "rimraf";
+import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 
 // - Standard libs
-import { join as pathJoin } from "path";
-import { mkdirSync, existsSync, writeFileSync, readFileSync } from "fs";
+import { join as pathJoin, dirname } from "path";
+import { mkdirSync, existsSync, writeFileSync, readFileSync, unlinkSync } from "fs";
 
 // - Test libraries
 import { expect } from "chai";
+import { file as chaiFile } from "chai-files";
 import * as sinon from "sinon";
 import * as os from "os";
 
@@ -29,6 +31,8 @@ const MACOS = "darwin";
 
 // Declare properties
 let inputs = {};
+let pubKey;
+let signKey;
 let platform;
 let tlsetResult;
 let getInput;
@@ -85,7 +89,7 @@ describe("Helpers", () => {
     before(() => {
       inputs = {
         "platform": LINUX,
-        "utility": "setCookbookVersion"
+        "helper": "setCookbookVersion"
       };
     });
 
@@ -122,9 +126,6 @@ describe("Helpers", () => {
         u = new Helpers(tc);
 
         u.Run();
-        // tc.getTaskParameters();
-
-        // u.setCookbookVersion();
       });
 
       it("sets the version number in the file", () => {
@@ -141,23 +142,86 @@ describe("Helpers", () => {
     });
   });
 
-  /*
   describe("Configure Habitat Environment", () => {
 
     // set the task that needs to be run
     before(() => {
+
       inputs = {
         "platform": LINUX,
-        "utility": "setupHabitat"
+        "helper": "setupHabitat"
       };
-    });
-
-    describe("HAB_ORIGIN environment variable is set correctly", () => {
 
       // set the inputs
-      // inputs[""]
+      inputs["habitatOrigin"] = "myorigin";
+      inputs["habitatOriginRevision"] = "202007221100";
+      inputs["habitatOriginPublicKey"] = "Hab public key";
+      inputs["habitatOriginSigningKey"] = "Hab signing key";
+
+      // set the files to be tested
+      pubKey = pathJoin(tempDir(), sprintf("%s-%s.pub", inputs["habitatOrigin"], inputs["habitatOriginRevision"]));
+      signKey = pathJoin(tempDir(), sprintf("%s-%s.sig.key", inputs["habitatOrigin"], inputs["habitatOriginRevision"]));
+
+      tc = new TaskConfiguration();
+      u = new Helpers(tc);
+
+      u.Run();
     });
 
+    describe("public key file", () => {
+
+      it("exists", () => {
+        expect(chaiFile(pubKey)).to.exist;
+      });
+
+      it("contains the correct data", () => {
+        expect(chaiFile(pubKey).content).to.equal(inputs["habitatOriginPublicKey"]);
+      });
+    });
+
+    describe("signing key file", () => {
+
+      it("exists", () => {
+        expect(chaiFile(signKey)).to.exist;
+      });
+
+      it("contains the correct data", () => {
+        expect(chaiFile(signKey).content).to.equal(inputs["habitatOriginSigningKey"]);
+      });
+    });
+
+    describe("HAB_ORIGIN env var", () => {
+
+      it("is set correctly", () => {
+
+        // get the contents of the environment variable
+        let actual = tl.getVariable("HAB_ORIGIN");
+
+        let expected = "myorigin";
+
+        expect(expected).to.eql(actual);
+      });
+
+    });
+
+    describe("HAB_CACHE_PATH env var", () => {
+
+      it("is set correctly", () => {
+
+        // get the contents of the environment variable
+        let actual = tl.getVariable("HAB_CACHE_KEY_PATH");
+
+        let expected = dirname(pubKey);
+
+        expect(expected).to.eql(actual);
+      });
+
+    });
+
+    // remove files that have been created
+    after(() => {
+      unlinkSync(pubKey);
+      unlinkSync(signKey);
+    });
   });
-  */
 });

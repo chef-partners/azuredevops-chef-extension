@@ -9,7 +9,6 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
-// import {sync as replaceSync} from "replace-in-file";
 import {join as pathJoin, dirname} from "path";
 
  /**
@@ -35,7 +34,6 @@ export class Helpers {
    */
   constructor (taskConfiguration: TaskConfiguration) {
     this.taskConfiguration = taskConfiguration;
-    // this.utils = new Utils(this.taskConfiguration);
   }
 
   /**
@@ -90,15 +88,6 @@ export class Helpers {
     // create the regular expression from the string
     let pattern = new RegExp(this.taskConfiguration.Inputs.CookbookVersionRegex, "gm");
 
-    // configure the options for the replacement
-    /*
-    let options = {
-      files: this.taskConfiguration.Inputs.CookbookMetadataPath,
-      from: pattern,
-      to: sprintf("version '%s'", this.taskConfiguration.Inputs.CookbookVersionNumber)
-    };
-    */
-
     // replace the version number in the cookbook file
     try {
 
@@ -110,15 +99,6 @@ export class Helpers {
         sprintf("version '%s'", this.taskConfiguration.Inputs.CookbookVersionNumber)
       );
 
-      /*
-      replace({
-        regex: this.taskConfiguration.Inputs.CookbookVersionRegex,
-        replacement: sprintf("version '%s'", this.taskConfiguration.Inputs.CookbookVersionNumber),
-        paths: [
-          this.taskConfiguration.Inputs.CookbookMetadataPath
-        ]
-      });
-      */
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }
