@@ -30,7 +30,8 @@
         ],
         "env": {
           "NODE_ENV": "test",
-          "TS_NODE_PROJECT": "./src/tsconfig.json"
+          "TS_NODE_PROJECT": "./src/tsconfig.json",
+          "TESTS_RUNNING": "true"
         },
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen"

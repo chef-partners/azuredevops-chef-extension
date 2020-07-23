@@ -20,6 +20,12 @@ export class Utils {
   private taskConfiguration: TaskConfiguration;
 
   /**
+   * commandStack holds all of the commands that have been run during the
+   * task. This can be used for testing and diagnostics
+   */
+  private commandStack: string[] = [];
+
+  /**
    * Creates a new instance of the class
    *
    * @param taskConfiguration The current task configuration
@@ -42,6 +48,9 @@ export class Utils {
     let cmd = parts.shift();
     let args = parts.join(" ");
     let result: IExecSyncResult;
+
+    // add the command to the command stack
+    let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
     if (process.env.TESTS_RUNNING === "undefined") {
@@ -219,5 +228,12 @@ export class Utils {
       return replace[i];
     }
     return replace;
+  }
+
+  /**
+   * getCommandStack returns the array of commands that have been run
+   */
+  public getCommandStack(): string[] {
+    return this.commandStack;
   }
 }

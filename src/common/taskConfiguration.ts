@@ -63,7 +63,7 @@ export class TaskConfiguration {
     }
 
     // Initialise sub classes based on the platform
-    this.Paths = new Paths(this.platformName, this.runningAsRoot);
+    this.Paths = new Paths(this.platformName);
     this.Inputs = new Inputs();
 
   }

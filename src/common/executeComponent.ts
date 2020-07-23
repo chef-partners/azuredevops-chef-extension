@@ -27,9 +27,14 @@ export class ExecuteComponent {
    *
    * @param taskConfiguration The current tas configuration
    */
-  constructor (taskConfiguration: TaskConfiguration) {
+  constructor (taskConfiguration: TaskConfiguration, utils: Utils = null) {
     this.taskConfiguration = taskConfiguration;
-    this.utils = new Utils(this.taskConfiguration);
+
+    if (utils === null) {
+      this.utils = new Utils(this.taskConfiguration);
+    } else {
+      this.utils = utils;
+    }
   }
 
   /**
@@ -148,4 +153,5 @@ export class ExecuteComponent {
   public updateConfiguration(taskConfiguration: TaskConfiguration) {
     this.taskConfiguration = taskConfiguration;
   }
+
 }

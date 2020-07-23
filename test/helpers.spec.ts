@@ -30,6 +30,7 @@ const LINUX = "linux";
 const MACOS = "darwin";
 
 // Declare properties
+let contents = {};
 let inputs = {};
 let pubKey;
 let signKey;
@@ -37,8 +38,9 @@ let platform;
 let tlsetResult;
 let getInput;
 let metadataFile;
+let commandStack: string[];
 let tc: TaskConfiguration;
-let u: Helpers;
+let h: Helpers;
 
 // define a tempdir that the scripts can be written out to
 function tempDir(remove: boolean = false): string {
@@ -97,9 +99,9 @@ describe("Helpers", () => {
 
       before(() => {
         tc = new TaskConfiguration();
-        u = new Helpers(tc);
+        h = new Helpers(tc);
 
-        u.setCookbookVersion();
+        h.setCookbookVersion();
       });
 
       it("fails the task", () => {
@@ -123,9 +125,9 @@ describe("Helpers", () => {
         writeFileSync(metadataFile, "version   100.99.98");
 
         tc = new TaskConfiguration();
-        u = new Helpers(tc);
+        h = new Helpers(tc);
 
-        u.Run();
+        h.Run();
       });
 
       it("sets the version number in the file", () => {
@@ -163,9 +165,9 @@ describe("Helpers", () => {
       signKey = pathJoin(tempDir(), sprintf("%s-%s.sig.key", inputs["habitatOrigin"], inputs["habitatOriginRevision"]));
 
       tc = new TaskConfiguration();
-      u = new Helpers(tc);
+      h = new Helpers(tc);
 
-      u.Run();
+      h.Run();
     });
 
     describe("public key file", () => {
@@ -241,9 +243,9 @@ describe("Helpers", () => {
       };
 
       tc = new TaskConfiguration();
-      u = new Helpers(tc);
+      h = new Helpers(tc);
 
-      u.Run();
+      h.Run();
     });
 
     it("creates the config directory", () => {
@@ -267,6 +269,79 @@ describe("Helpers", () => {
     it("the client.key has the correct contents", () => {
       let clientKeyPath = pathJoin(tc.Paths.ConfigDir, "client.pem");
       expect(chaiFile(clientKeyPath).content).to.equal(inputs["password"]);
+    });
+  });
+
+  describe("Set environment cookbook version", () => {
+
+    before(async () => {
+
+      // define the inputs for testing the task
+      inputs = {
+        "platform": LINUX,
+        "helper": "envCookbookVersion",
+        "environmentName": "testing",
+        "cookbookName": "mycookbook",
+        "cookbookVersionNumber": "100.98.99"
+      };
+
+      process.env.AGENT_TEMPDIRECTORY = tempDir();
+
+      tc = new TaskConfiguration();
+      h = new Helpers(tc);
+
+      // create a file for the environment file
+      tl.writeFile(pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName)), "{}");
+
+      await h.Run();
+
+      // get the command stack to check the comands that have been generated
+      commandStack = h.utils.getCommandStack();
+    });
+
+    it("should have run 2 commands", () => {
+      expect(commandStack.length).to.eql(2);
+    });
+
+    it("uses knife to download the environment", () => {
+
+      // build up the expected command
+      let envFile: string = pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName));
+      let expected = sprintf("%s environment show %s -F json > %s",
+        tc.Paths.Knife,
+        tc.Inputs.EnvironmentName,
+        envFile
+      );
+
+      expect(expected).to.eql(commandStack[0]);
+
+    });
+
+    it("uses knife to upload the modified environment", () => {
+
+      // build up the expected command
+      let envFile: string = pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName));
+      let expected = sprintf("%s environment from file %s", tc.Paths.Knife, envFile);
+
+      expect(expected).to.eql(commandStack[1]);
+    });
+
+    describe("environment json file is updated correctly", () => {
+
+      before(() => {
+        let envFile: string = pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName));
+        let jsonStr: string = readFileSync(envFile).toString();
+        contents = JSON.parse(jsonStr);
+      });
+
+      it("has 1 entry in 'cookbook_versions'", () => {
+        expect(Object.keys(contents["cookbook_versions"]).length).to.eql(1);
+      });
+
+      it("the cookbook has the correct version", () => {
+        expect(contents["cookbook_versions"][tc.Inputs.CookbookName]).to.eql(tc.Inputs.CookbookVersionNumber);
+      });
+
     });
   });
 

@@ -45,7 +45,6 @@ export class Helpers {
   public async Run() {
 
     // initialise method properties
-    let method: string;
     let serviceNames = {
       "setCookbookVersion": [],
       "setupHabitat": ["habitatOrigin"],
@@ -182,7 +181,7 @@ export class Helpers {
     this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json > %s", this.taskConfiguration.Inputs.EnvironmentName, envFile);
 
     // create an instance of the executeComponent class so that the execution methods can be used
-    let executeComponent = new ex.ExecuteComponent(this.taskConfiguration);
+    let executeComponent = new ex.ExecuteComponent(this.taskConfiguration, this.utils);
     executeComponent.Execute();
 
     // Check that the environment file has been written out and error if it has not

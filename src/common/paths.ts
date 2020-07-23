@@ -23,7 +23,7 @@ export class Paths {
      * Depending on the OS the correct defaults will be set on the paths
      * @param osName Name of the operating system that the task is running o
      */
-    constructor(osName: string, runningAsRoot: boolean) {
+    constructor(osName: string) {
 
       let extension: string = "";
 
@@ -41,7 +41,7 @@ export class Paths {
       } else {
         this.ChefWorkstationDir = pathJoin("/", "opt", "chef-workstation");
         this.Inspec = pathJoin("/", "usr", "bin", "inspec");
-        this.Habitat = pathJoin("/", "bin", "habitat");
+        this.Habitat = pathJoin("/", "bin", "hab");
 
         // set the path to the installation script
         this.Script = pathJoin(this.TmpDir, "install.sh");
