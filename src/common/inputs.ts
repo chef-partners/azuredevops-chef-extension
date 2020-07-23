@@ -29,6 +29,10 @@ export class Inputs {
     public HabitatOriginSigningKey: string = null; // Private key or signing key of the origin
     public HabitatAuthToken: string = null; // Habitat authentication token
 
+    // Declare properties used when dealing with version contraints on a chef environment
+    public EnvironmentName: string = null; // Name of the Chef envrionment to update
+    public CookbookName: string = null; // Name of the cookbook being updated
+
     // Declare properties for Azure credentials when using Test Kitchen
     public SubscriptionId: string = null;
     public TenantId: string = null;

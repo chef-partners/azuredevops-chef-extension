@@ -2,7 +2,6 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import { sprintf } from "sprintf-js";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-// import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 import { Scripts } from "./scripts";
 import { writeFileSync } from "fs";
 

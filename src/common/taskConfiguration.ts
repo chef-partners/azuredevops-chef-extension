@@ -12,8 +12,6 @@
  */
 
 // import necessary libraries
-// import * as isRoot from "is-root";
-// import * as isAdmin from "is-admin";
 import isAdmin = require("is-admin");
 import isRoot = require("is-root");
 import {platform} from "os"; // provides information about the operating system being run on
@@ -88,23 +86,29 @@ export class TaskConfiguration {
 
     // define a mapping of parameter names to object properties
     let mapping = {
-      "component": "Inputs.ComponentName",
-      "gemName": "Inputs.GemName",
-      "forceInstall": "Inputs.ForceInstall",
-      "sudo": "Inputs.UseSudo",
-      "version": "Inputs.Version",
-      "channel": "Inputs.Channel",
-      "targetPath": "Inputs.TargetPath",
       "arguments": "Inputs.Arguments",
-      "envvars": "Inputs.EnvVars",
-      "helper": "Inputs.Helper",
-      "habitatOrigin": "Inputs.HabitatOriginName",
-      "habitatOriginRevision": "Inputs.HabitatOriginRevision",
-      "habitatOriginPublicKey": "Inputs.HabitatOriginPublicKey",
-      "habitatOriginSigningKey": "Inputs.HabitatOriginSigningKey",
-      "cookbookVersionNumber": "Inputs.CookbookVersionNumber",
+      "channel": "Inputs.Channel",
+      "component": "Inputs.ComponentName",
       "cookbookMetadataPath": "Inputs.CookbookMetadataPath",
-      "cookbookVersionRegex": "Inputs.CookbookVersionRegex"
+      "cookbookName": "Inputs.CookbookName",
+      "cookbookVersionNumber": "Inputs.CookbookVersionNumber",
+      "cookbookVersionRegex": "Inputs.CookbookVersionRegex",
+      "environmentName": "Inputs.EnvironmentName",
+      "envvars": "Inputs.EnvVars",
+      "forceInstall": "Inputs.ForceInstall",
+      "gemName": "Inputs.GemName",
+      "habitatOrigin": "Inputs.HabitatOriginName",
+      "habitatOriginPublicKey": "Inputs.HabitatOriginPublicKey",
+      "habitatOriginRevision": "Inputs.HabitatOriginRevision",
+      "habitatOriginSigningKey": "Inputs.HabitatOriginSigningKey",
+      "helper": "Inputs.Helper",
+      "password": "Inputs.Password",
+      "sslVerify": "Inputs.SSLVerify",
+      "sudo": "Inputs.UseSudo",
+      "targetPath": "Inputs.TargetPath",
+      "targetUrl": "Inputs.TargetURL",
+      "username": "Inputs.Username",
+      "version": "Inputs.Version"
     };
 
     try {

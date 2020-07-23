@@ -28,7 +28,9 @@
       "helpMarkDown": "Select the Helper to use for this task",
       "options": {
         "setCookbookVersion": "Set Cookbook Version Number",
-        "setupHabitat": "Setup Habitat Environment"
+        "setupHabitat": "Setup Habitat Environment",
+        "envCookbookVersion": "Set Cookbook Version on Chef Environment",
+        "setupChef": "Setup Chef"
       },
       "required": true
     },
@@ -71,6 +73,42 @@
       "defaultValue": false,
       "helpMarkdown": "Use Sudo to perform the installation. (Only valid on Linux build agents).",
       "groupName": "advanced"
+    },
+    {
+      "name": "chefendpoint",
+      "type": "connectedService:chefendpointv1",
+      "label": "Endpoint",
+      "defaultValue": "",
+      "visibleRule": "component = envVersionConstraint || component = setupChef",
+      "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
+      "required": false
+    },
+    {
+      "name": "environmentName",
+      "type": "string",
+      "label": "Chef environment",
+      "defaultValue": "",
+      "required": false,
+      "visibleRule": "component = envVersionConstraint",
+      "helpMarkDown": "Name of the Chef environment to modify"
+    },
+    {
+      "name": "cookbookName",
+      "type": "string",
+      "label": "Cookbook name",
+      "defaultValue": "",
+      "required": true,
+      "visibleRule": "component = envVersionConstraint",
+      "helpMarkDown": "Name of the target cookbook"
+    },
+    {
+      "name": "cookbookVersionNumber",
+      "type": "string",
+      "label": "Cookbook version",
+      "defaultValue": "$(Build.BuildNumber)",
+      "required": true,
+      "visibleRule": "component = envVersionConstraint",
+      "helpMarkDown": "Version of the cookbook to pin"
     }
   ],
   "execution": {

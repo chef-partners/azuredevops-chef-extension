@@ -17,6 +17,7 @@ export class Paths {
     public Script: string = null;
     public Sudo: string = "/usr/bin/sudo";
     public TmpDir: string;
+    public ConfigDir: string;
 
     /**
      * Depending on the OS the correct defaults will be set on the paths
@@ -70,6 +71,9 @@ export class Paths {
       // set the path to the berks configuration file
       let berksConfigFilename = sprintf("berks.%s.json", filenameParts.join("-"));
       this.BerksConfig = pathJoin(this.TmpDir, berksConfigFilename);
+
+      // Set a path to the configdir for chef
+      this.ConfigDir = pathJoin(this.TmpDir, "chef");
     }
 
     /**

@@ -41,9 +41,12 @@ export class Utils {
     // on the Task library
     let cmd = parts.shift();
     let args = parts.join(" ");
+    let result: IExecSyncResult;
 
-    // execute the command
-    let result = tl.tool(cmd).line(args).execSync();
+    // execute the command, unless being tested
+    if (process.env.TESTS_RUNNING === "undefined") {
+      result = tl.tool(cmd).line(args).execSync();
+    }
 
     return result;
   }

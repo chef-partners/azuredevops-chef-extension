@@ -10,6 +10,8 @@ import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import {join as pathJoin, dirname} from "path";
+import * as ex from "./executeComponent";
+import { readFileSync } from "fs";
 
  /**
   * Class to handle the execution of the utlities that can be selected
@@ -46,7 +48,9 @@ export class Helpers {
     let method: string;
     let serviceNames = {
       "setCookbookVersion": [],
-      "setupHabitat": ["habitatOrigin"]
+      "setupHabitat": ["habitatOrigin"],
+      "envCookbookVersion": ["chefendpoint"],
+      "setupChef": ["chefendpoint"]
     };
 
     // configure the task parameters and setup the utils
@@ -61,6 +65,14 @@ export class Helpers {
       }
       case "setupHabitat": {
         this.setupHabitatEnvironment();
+        break;
+      }
+      case "setupChef": {
+        this.setupChef();
+        break;
+      }
+      case "envCookbookVersion": {
+        this.setEnvCookbookVersion();
         break;
       }
     }
@@ -143,5 +155,103 @@ export class Helpers {
     tl.debug(sprintf("Setting environment variable for HAB_CACHE_KEY_PATH: %s", dirname(keyPaths.public)));
     tl.setVariable("HAB_CACHE_KEY_PATH", dirname(keyPaths.public));
 
+  }
+
+  /**
+   * setEnvCookbookVersion sets a version constraint of a specific cookbook on the specified environment
+   *
+   * This is accomplished using three stages:
+   *   1. Use knife to download the environment as a JSON file
+   *   2. Update the environment file with the version contraint for the cookbook
+   *   3. Use knife to upload the updated environment to the chef server
+   */
+  public setEnvCookbookVersion() {
+
+    // check that the environemnt variable KNIFE_HOME has been set
+    let knifeHome: string = tl.getVariable("KNIFE_HOME");
+    if (knifeHome === "") {
+      tl.error("The KNIFE_HOME env var is not set. Please use the 'Setup Chef' helper task before using this one");
+      return;
+    }
+
+    // determine the path to the environment file
+    let envFile: string = pathJoin(this.taskConfiguration.Paths.TmpDir, sprintf("%s.json", this.taskConfiguration.Inputs.EnvironmentName));
+
+    // Update inputs with the required arguments so that the executeCmd can be called
+    this.taskConfiguration.Inputs.ComponentName = "knife";
+    this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json > %s", this.taskConfiguration.Inputs.EnvironmentName, envFile);
+
+    // create an instance of the executeComponent class so that the execution methods can be used
+    let executeComponent = new ex.ExecuteComponent(this.taskConfiguration);
+    executeComponent.Execute();
+
+    // Check that the environment file has been written out and error if it has not
+    if (!tl.exist(envFile)) {
+      tl.error(sprintf("Unable to find to downloaded environment file: %s", envFile));
+      return;
+    }
+
+    // read in the json file so that the environment can be updated
+    let envStr: string = readFileSync(envFile).toString();
+    let chefEnvironment = JSON.parse(envStr);
+
+    // check to see if the env has a "cookbook_versions" segment, add it if not
+    if (!("cookbook_versions" in chefEnvironment)) {
+      tl.debug("Adding missing section to the Chef environment");
+      chefEnvironment["cookbook_versions"] = {};
+    }
+
+    // add the constraint to the version
+    tl.debug(sprintf("Adding constraint for cookbook '%s' version '%s': %s",
+      this.taskConfiguration.Inputs.CookbookName,
+      this.taskConfiguration.Inputs.CookbookVersionNumber,
+      this.taskConfiguration.Inputs.EnvironmentName));
+
+    chefEnvironment["cookbook_versions"][this.taskConfiguration.Inputs.CookbookName] = this.taskConfiguration.Inputs.CookbookVersionNumber;
+
+    // wrote out the json to the env file
+    tl.writeFile(envFile, JSON.stringify(chefEnvironment));
+
+    // Update the arguments for knife to upload the environment file
+    this.taskConfiguration.Inputs.Arguments = sprintf("environment from file %s", envFile);
+    executeComponent.updateConfiguration(this.taskConfiguration);
+    executeComponent.Execute();
+  }
+
+  /**
+   * setupChef is responsible for configuring the `config.rb` file with the data from the endpoint and then
+   * setting the environment variable for the `knife` or `chef-client` commands to use to find the file
+   *
+   * This is so that the command does not have to have all of the options set on the command line
+   */
+  public setupChef() {
+
+    // Define the path to the client key
+    let clientKeyPath: string = pathJoin(this.taskConfiguration.Paths.ConfigDir, "client.pem");
+    let configPath: string = pathJoin(this.taskConfiguration.Paths.ConfigDir, "config.rb");
+
+    // Build up the string to be used as the config.rb
+    let config: string = `
+      node            ${this.taskConfiguration.Inputs.Username}
+      client_key      ${clientKeyPath}
+      chef_server_url ${this.taskConfiguration.Inputs.TargetURL}
+    `;
+
+    // ensure that the configdir exists
+    if (!tl.exist(this.taskConfiguration.Paths.ConfigDir)) {
+      tl.debug(sprintf("Creating Chef config directory: %s", this.taskConfiguration.Paths.ConfigDir));
+      tl.mkdirP(this.taskConfiguration.Paths.ConfigDir);
+    }
+
+    // write out the files
+    console.log("Writing out configuration files");
+    console.log(clientKeyPath);
+    tl.writeFile(clientKeyPath, this.taskConfiguration.Inputs.Password);
+    console.log(configPath);
+    tl.writeFile(configPath, config);
+
+    // set environment variables for knife
+    tl.setVariable("KNIFE_HOME", configPath);
+    tl.setVariable("CHEF_CONFIG", configPath);
   }
 }

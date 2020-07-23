@@ -18,7 +18,7 @@ import { mkdirSync, existsSync, writeFileSync, readFileSync, unlinkSync } from "
 
 // - Test libraries
 import { expect } from "chai";
-import { file as chaiFile } from "chai-files";
+import { file as chaiFile, dir as chaiDir } from "chai-files";
 import * as sinon from "sinon";
 import * as os from "os";
 
@@ -224,4 +224,50 @@ describe("Helpers", () => {
       unlinkSync(signKey);
     });
   });
+
+  describe("Configuring Chef environment", () => {
+
+    // set the task that needs to be run
+    before(() => {
+
+      // define the inputs for testing the task
+      inputs = {
+        "platform": LINUX,
+        "helper": "setupChef",
+        "targetUrl": "https://automate.example.com/organizations/myorg",
+        "username": "aperson",
+        "password": "long client key",
+        "sslVerify": false
+      };
+
+      tc = new TaskConfiguration();
+      u = new Helpers(tc);
+
+      u.Run();
+    });
+
+    it("creates the config directory", () => {
+
+      // state the expected path to the configuration directory
+      let expected = tc.Paths.ConfigDir;
+
+      expect(chaiDir(expected)).to.exist;
+    });
+
+    it("creates the config file", () => {
+      let expected = pathJoin(tc.Paths.ConfigDir, "config.rb");
+      expect(chaiFile(expected)).to.exist;
+    });
+
+    it("creates the client key", () => {
+      let expected = pathJoin(tc.Paths.ConfigDir, "client.pem");
+      expect(chaiFile(expected)).to.exist;
+    });
+
+    it("the client.key has the correct contents", () => {
+      let clientKeyPath = pathJoin(tc.Paths.ConfigDir, "client.pem");
+      expect(chaiFile(clientKeyPath).content).to.equal(inputs["password"]);
+    });
+  });
+
 });

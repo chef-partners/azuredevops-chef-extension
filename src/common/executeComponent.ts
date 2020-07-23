@@ -5,7 +5,7 @@ import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 /**
  * ExecuteComponent is responsible for executing the command that has been selected
  * using the chosen arguments.
- * 
+ *
  * @author Russell Seymour
  */
 
@@ -24,7 +24,7 @@ export class ExecuteComponent {
 
   /**
    * Create a new instance of the class, the constructor
-   * 
+   *
    * @param taskConfiguration The current tas configuration
    */
   constructor (taskConfiguration: TaskConfiguration) {
@@ -49,7 +49,7 @@ export class ExecuteComponent {
           this.taskConfiguration.Paths.BerksConfig,
           JSON.stringify(this.generateBerksConfig())
         );
-        
+
         break;
       }
     }
@@ -137,5 +137,15 @@ export class ExecuteComponent {
     };
 
     return config;
+  }
+
+  /**
+   * updateConfiguration sets the taskconfiguration on the object
+   * This is used to reset the config when the execute component is used multiple times
+   *
+   * @param taskConfiguration
+   */
+  public updateConfiguration(taskConfiguration: TaskConfiguration) {
+    this.taskConfiguration = taskConfiguration;
   }
 }
