@@ -291,7 +291,7 @@ describe("Helpers", () => {
       h = new Helpers(tc);
 
       // create a file for the environment file
-      tl.writeFile(pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName)), "{}");
+      tl.writeFile(pathJoin(tc.Paths.TmpDir, sprintf("%s.json", inputs["environmentName"])), "{}");
 
       await h.Run();
 
