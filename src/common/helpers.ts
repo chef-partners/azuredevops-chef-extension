@@ -168,6 +168,7 @@ export class Helpers {
 
     // check that the environemnt variable KNIFE_HOME has been set
     let knifeHome: string = tl.getVariable("KNIFE_HOME");
+    tl.debug(sprintf("Knife home: '%s'", knifeHome));
     if (knifeHome === "" || knifeHome === "undefined") {
       tl.error("The KNIFE_HOME env var is not set. Please use the 'Setup Chef' helper task before using this one");
       return;
