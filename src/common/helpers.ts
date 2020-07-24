@@ -168,10 +168,7 @@ export class Helpers {
 
     // check that the environemnt variable KNIFE_HOME has been set
     let knifeHome: string = tl.getVariable("KNIFE_HOME");
-    tl.debug(sprintf("Knife home: '%s'", knifeHome));
-    // if (knifeHome === "" || knifeHome === "undefined") {
     if (!knifeHome) {
-      console.log("SHOULD BE HERE");
       tl.error("The KNIFE_HOME env var is not set. Please use the 'Setup Chef' helper task before using this one");
       return;
     }
@@ -186,6 +183,9 @@ export class Helpers {
     // create an instance of the executeComponent class so that the execution methods can be used
     let executeComponent = new ex.ExecuteComponent(this.taskConfiguration, this.utils);
     executeComponent.Execute();
+
+    // should the command that has been run
+    tl.debug(this.utils.getCommandStack()[0]);
 
     // Check that the environment file has been written out and error if it has not
     if (!tl.exist(envFile)) {
@@ -218,6 +218,9 @@ export class Helpers {
     this.taskConfiguration.Inputs.Arguments = sprintf("environment from file %s", envFile);
     executeComponent.updateConfiguration(this.taskConfiguration);
     executeComponent.Execute();
+
+    // should the command that has been run
+    tl.debug(this.utils.getCommandStack()[1]);
   }
 
   /**
