@@ -270,6 +270,31 @@ describe("Helpers", () => {
       let clientKeyPath = pathJoin(tc.Paths.ConfigDir, "client.pem");
       expect(chaiFile(clientKeyPath).content).to.equal(inputs["password"]);
     });
+
+    describe("the config.rb file has the correct contents", () => {
+
+      before(() => {
+        contents = readFileSync(pathJoin(tc.Paths.ConfigDir, "config.rb")).toString();
+      });
+
+      // check that the node name is correct
+      it("sets the node name correctly", () => {
+        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", inputs["username"]), "m");
+        expect(contents).to.match(regex);
+      });
+
+      it("sets the path to the client key correctly", () => {
+        let clientKeyPath: string = pathJoin(tc.Paths.ConfigDir, "client.pem");
+        let regex = new RegExp(sprintf("^client_key\\s+\"%s\"$", clientKeyPath.replace(/\\/g, "/")), "m");
+        expect(contents).to.match(regex);
+      });
+
+      it("sets the URL for the chef server correctly", () => {
+        let regex = new RegExp(sprintf("^chef_server_url\\s+\"%s\"$", tc.Inputs.TargetURL), "m");
+        expect(contents).to.match(regex);
+      });
+
+    });
   });
 
   describe("Set environment cookbook version", () => {

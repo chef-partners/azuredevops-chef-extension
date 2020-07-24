@@ -149,13 +149,9 @@ export class TaskConfiguration {
           // Set the properties for an chef endpoint type
           case "chefendpoint": {
 
-            // this.Inputs.TargetURL = tl.getEndpointUrl(connectedServiceName, true);
             this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedServiceName);
-            // this.Inputs.SSLVerify = !!+tl.getEndpointDataParameter(connectedServiceName, "sslVerify", true);
             this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedServiceName);
-            // this.Inputs.Username = tl.getEndpointAuthorizationParameter(connectedServiceName, "username", true);
             this.Inputs.Username = this.getParamValue("username", true, "auth", connectedServiceName);
-            // this.Inputs.Password = tl.getEndpointAuthorizationParameter(connectedServiceName, "password", true);
             this.Inputs.Password = this.getParamValue("password", true, "auth", connectedServiceName);
 
             tl.debug(

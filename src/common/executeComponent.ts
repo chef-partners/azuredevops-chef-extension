@@ -66,9 +66,6 @@ export class ExecuteComponent {
     // Attempt to execute the command
     try {
       let result = this.utils.ExecCmd(cmdParts);
-
-      // write out the result of the command
-      console.log(result);
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }

@@ -237,11 +237,14 @@ export class Helpers {
     let clientKeyPath: string = pathJoin(this.taskConfiguration.Paths.ConfigDir, "client.pem");
     let configPath: string = pathJoin(this.taskConfiguration.Paths.ConfigDir, "config.rb");
 
+    // correct the slashes for the path so that Ruby accepts it
+    let _clientKeyPath = clientKeyPath.replace(/\\/g, "/");
+
     // Build up the string to be used as the config.rb
     let config: string = `
-      node            ${this.taskConfiguration.Inputs.Username}
-      client_key      ${clientKeyPath}
-      chef_server_url ${this.taskConfiguration.Inputs.TargetURL}
+node            "${this.taskConfiguration.Inputs.Username}"
+client_key      "${_clientKeyPath}"
+chef_server_url "${this.taskConfiguration.Inputs.TargetURL}"
     `;
 
     // ensure that the configdir exists
