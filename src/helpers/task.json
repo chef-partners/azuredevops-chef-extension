@@ -79,7 +79,7 @@
       "type": "connectedService:chefendpointv1",
       "label": "Endpoint",
       "defaultValue": "",
-      "visibleRule": "component = envVersionConstraint || component = setupChef",
+      "visibleRule": "helper = envVersionConstraint || helper = setupChef",
       "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
       "required": false
     },
@@ -89,7 +89,7 @@
       "label": "Chef environment",
       "defaultValue": "",
       "required": false,
-      "visibleRule": "component = envVersionConstraint",
+      "visibleRule": "helper = envVersionConstraint",
       "helpMarkDown": "Name of the Chef environment to modify"
     },
     {
@@ -98,7 +98,7 @@
       "label": "Cookbook name",
       "defaultValue": "",
       "required": true,
-      "visibleRule": "component = envVersionConstraint",
+      "visibleRule": "helper = envVersionConstraint",
       "helpMarkDown": "Name of the target cookbook"
     },
     {
@@ -107,7 +107,7 @@
       "label": "Cookbook version",
       "defaultValue": "$(Build.BuildNumber)",
       "required": true,
-      "visibleRule": "component = envVersionConstraint",
+      "visibleRule": "helper = envVersionConstraint",
       "helpMarkDown": "Version of the cookbook to pin"
     }
   ],
