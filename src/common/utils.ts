@@ -55,6 +55,16 @@ export class Utils {
     // execute the command, unless being tested
     if (!process.env.TESTS_RUNNING) {
       result = tl.tool(cmd).line(args).execSync();
+
+      // check the result of the command
+      if (result.error) {
+        // fail the task
+        tl.setResult(tl.TaskResult.Failed, result.stderr);
+
+      } else {
+        // log stdout
+        console.log(result.stdout);
+      }
     }
 
     return result;
