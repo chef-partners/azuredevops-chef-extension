@@ -1,6 +1,7 @@
 import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
+import { connect } from "http2";
 
 /**
  * ExecuteComponent is responsible for executing the command that has been selected
@@ -65,6 +66,9 @@ export class ExecuteComponent {
     // Attempt to execute the command
     try {
       let result = this.utils.ExecCmd(cmdParts);
+
+      // write out the result of the command
+      console.log(result);
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }

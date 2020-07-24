@@ -53,7 +53,7 @@ export class Utils {
     let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
-    if (process.env.TESTS_RUNNING === "undefined") {
+    if (!process.env.TESTS_RUNNING) {
       result = tl.tool(cmd).line(args).execSync();
     }
 
