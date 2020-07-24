@@ -178,7 +178,9 @@ export class Helpers {
 
     // Update inputs with the required arguments so that the executeCmd can be called
     this.taskConfiguration.Inputs.ComponentName = "knife";
-    this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json > %s", this.taskConfiguration.Inputs.EnvironmentName, envFile);
+    this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json > %s",
+        this.taskConfiguration.Inputs.EnvironmentName,
+        envFile);
 
     // create an instance of the executeComponent class so that the execution methods can be used
     let executeComponent = new ex.ExecuteComponent(this.taskConfiguration, this.utils);
@@ -256,7 +258,7 @@ export class Helpers {
     tl.writeFile(configPath, config);
 
     // set environment variables for knife
-    tl.setVariable("KNIFE_HOME", configPath);
+    tl.setVariable("KNIFE_HOME", dirname(configPath));
     tl.setVariable("CHEF_CONFIG", configPath);
   }
 }
