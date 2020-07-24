@@ -40,7 +40,7 @@
       "label": "Version Number",
       "defaultValue": "$(Build.BuildNumber)",
       "helpMarkDown": "Version number to apply to the metadata of the cookbook. By default this is set to the build number of the run.",
-      "visibleRule": "helper == setCookbookVersion"
+      "visibleRule": "helper == setCookbookVersion || helper = envVersionConstraint"
     },
     {
       "name": "cookbookMetadataPath",
@@ -100,15 +100,6 @@
       "required": true,
       "visibleRule": "helper = envVersionConstraint",
       "helpMarkDown": "Name of the target cookbook"
-    },
-    {
-      "name": "cookbookVersionNumber",
-      "type": "string",
-      "label": "Cookbook version",
-      "defaultValue": "$(Build.BuildNumber)",
-      "required": true,
-      "visibleRule": "helper = envVersionConstraint",
-      "helpMarkDown": "Version of the cookbook to pin"
     }
   ],
   "execution": {
