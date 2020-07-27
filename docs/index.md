@@ -20,6 +20,7 @@ The Azure DevOps Extension provides a number of tasks that can be added to a pip
 The tasks included in the extension are:
 
  - [Install Chef Component](/tasks/install.html) - Chef Workstation, Habitat, InSpec or a Gem can be installed using this task
+ - [Helpers](/tasks/helpers.html) - Helper tasks used to update a cookbook version or setup the Habitat environment
 
 ## Licensing
 

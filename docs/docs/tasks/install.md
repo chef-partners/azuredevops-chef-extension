@@ -10,14 +10,14 @@ permalink: tasks/install.html
 {: .no_toc :}
 
 ## Table of contents
-{: .no_toc .text-delta }
+{: .no_toc .text-delta :}
 
 1. TOC
 {:toc}
 
 ## Description
 
-Pipeline file name: `chef.component.install`
+Pipeline task name: `chef.component.install`
 
 The Install task is responsible for installing the following components on the Azure DevOps agent:
 
@@ -49,7 +49,7 @@ The Install task can be used in an Azure DevOps Pipelines file.
 The following shows how to install Chef Workstation on the agent using Sudo.
 
 ```yaml
-- task: chef.component.install@2
+- task: chef-software.chef.install.component@2
   displayName: Install Chef Component
   inputs:
     component: chef-workstation
