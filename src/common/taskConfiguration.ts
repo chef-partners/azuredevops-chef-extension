@@ -134,6 +134,8 @@ export class TaskConfiguration {
       throw new Error(sprintf("Task failed during initialisation. Error: %s", error.message));
     }
 
+    tl.debug(sprintf("Number of connected service requested: %d", connectedServiceNames.length));
+
     // if a connected service has been specified, then attempt to get the necessary information
     if (connectedServiceNames.length > 0) {
 
@@ -142,6 +144,8 @@ export class TaskConfiguration {
 
         // get the connected service from the inputs
         let connectedService = this.getParamValue(connectedServiceName, true, "input");
+
+        tl.debug(sprintf("Getting connected service: %s", connectedService));
 
         // get the properties based on the name of the endpoint
         switch (connectedServiceName) {
