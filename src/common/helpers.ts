@@ -48,7 +48,7 @@ export class Helpers {
     let serviceNames = {
       "setCookbookVersion": [],
       "setupHabitat": ["habitatOrigin"],
-      "envCookbookVersion": ["chefendpoint"],
+      "envCookbookVersion": [],
       "setupChef": ["chefendpoint"]
     };
 
