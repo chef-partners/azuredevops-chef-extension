@@ -80,9 +80,11 @@ export class TaskConfiguration {
    * Gets the task parameters for the task
    *
    * @param required
-   * @param connectedServiceName
+   * @param serviceNames
    */
-  public async getTaskParameters(connectedServiceNames: string[] = []): Promise<TaskConfiguration> {
+  public async getTaskParameters(serviceNames: {} = {}): Promise<TaskConfiguration> {
+
+    let connectedServiceNames: string[] = [];
 
     // define a mapping of parameter names to object properties
     let mapping = {
@@ -132,6 +134,11 @@ export class TaskConfiguration {
 
     } catch (error) {
       throw new Error(sprintf("Task failed during initialisation. Error: %s", error.message));
+    }
+
+    // determine if a service name is required based on the helper name
+    if (this.Inputs.Helper in Object.keys(serviceNames)) {
+      connectedServiceNames = serviceNames[this.Inputs.Helper];
     }
 
     tl.debug(sprintf("Number of connected service requested: %d", connectedServiceNames.length));

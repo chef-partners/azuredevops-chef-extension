@@ -53,7 +53,7 @@ export class Helpers {
     };
 
     // configure the task parameters and setup the utils
-    await this.taskConfiguration.getTaskParameters(serviceNames[this.taskConfiguration.Inputs.Helper]);
+    await this.taskConfiguration.getTaskParameters(serviceNames);
     this.utils = new Utils(this.taskConfiguration);
 
     // determine the method to run based on the utility that has been chosen
