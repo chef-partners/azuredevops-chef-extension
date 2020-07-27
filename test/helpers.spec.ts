@@ -32,11 +32,15 @@ const MACOS = "darwin";
 // Declare properties
 let contents = {};
 let inputs = {};
+let connectedService = {};
 let pubKey;
 let signKey;
 let platform;
 let tlsetResult;
 let getInput;
+let getEndpointAuthorizationParameter;
+let getEndpointDataParameter;
+let getEndpointUrl;
 let metadataFile;
 let commandStack: string[];
 let tc: TaskConfiguration;
@@ -67,6 +71,18 @@ describe("Helpers", () => {
       return inputs[name];
     });
 
+    getEndpointAuthorizationParameter = sinon.stub(tl, "getEndpointAuthorizationParameter").callsFake((connectedServiceName, name) => {
+      return connectedService[name];
+    });
+
+    getEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((connectedServiceName, name) => {
+      return connectedService[name];
+    });
+
+    getEndpointUrl = sinon.stub(tl, "getEndpointUrl").callsFake((connectedServiceName) => {
+      return connectedService["url"];
+    });
+
     // stub out the platform function from the os object
     platform = sinon.stub(os, "platform").callsFake(() => {
       return inputs["platform"];
@@ -80,6 +96,9 @@ describe("Helpers", () => {
 
   after(() => {
     getInput.restore();
+    getEndpointAuthorizationParameter.restore();
+    getEndpointDataParameter.restore();
+    getEndpointUrl.restore();
     platform.restore();
     tlsetResult.restore();
 
@@ -155,14 +174,25 @@ describe("Helpers", () => {
       };
 
       // set the inputs
+      /*
       inputs["habitatOrigin"] = "myorigin";
       inputs["habitatOriginRevision"] = "202007221100";
       inputs["habitatOriginPublicKey"] = "Hab public key";
       inputs["habitatOriginSigningKey"] = "Hab signing key";
+      */
+
+      // configure the connected service
+      connectedService = {
+        "url": "",
+        "originName": "myorigin",
+        "revision": "202007221100",
+        "publicKey": "Hab public key",
+        "signingKey": "Hab signing key"
+      };
 
       // set the files to be tested
-      pubKey = pathJoin(tempDir(), sprintf("%s-%s.pub", inputs["habitatOrigin"], inputs["habitatOriginRevision"]));
-      signKey = pathJoin(tempDir(), sprintf("%s-%s.sig.key", inputs["habitatOrigin"], inputs["habitatOriginRevision"]));
+      pubKey = pathJoin(tempDir(), sprintf("%s-%s.pub", connectedService["originName"], connectedService["revision"]));
+      signKey = pathJoin(tempDir(), sprintf("%s-%s.sig.key", connectedService["originName"], connectedService["revision"]));
 
       tc = new TaskConfiguration();
       h = new Helpers(tc);
@@ -177,7 +207,7 @@ describe("Helpers", () => {
       });
 
       it("contains the correct data", () => {
-        expect(chaiFile(pubKey).content).to.equal(inputs["habitatOriginPublicKey"]);
+        expect(chaiFile(pubKey).content).to.equal(connectedService["publicKey"]);
       });
     });
 
@@ -188,7 +218,7 @@ describe("Helpers", () => {
       });
 
       it("contains the correct data", () => {
-        expect(chaiFile(signKey).content).to.equal(inputs["habitatOriginSigningKey"]);
+        expect(chaiFile(signKey).content).to.equal(connectedService["signingKey"]);
       });
     });
 
@@ -236,10 +266,17 @@ describe("Helpers", () => {
       inputs = {
         "platform": LINUX,
         "helper": "setupChef",
-        "targetUrl": "https://automate.example.com/organizations/myorg",
+       // "targetUrl": "https://automate.example.com/organizations/myorg",
+       // "username": "aperson",
+       // "password": "long client key",
+       //  "sslVerify": false
+      };
+
+      connectedService = {
+        "url": "https://automate.example.com/organizations/myorg",
+        "sslVerify": true,
         "username": "aperson",
-        "password": "long client key",
-        "sslVerify": false
+        "password": "long client key"
       };
 
       tc = new TaskConfiguration();
@@ -268,7 +305,7 @@ describe("Helpers", () => {
 
     it("the client.key has the correct contents", () => {
       let clientKeyPath = pathJoin(tc.Paths.ConfigDir, "client.pem");
-      expect(chaiFile(clientKeyPath).content).to.equal(inputs["password"]);
+      expect(chaiFile(clientKeyPath).content).to.equal(connectedService["password"]);
     });
 
     describe("the config.rb file has the correct contents", () => {
@@ -279,7 +316,7 @@ describe("Helpers", () => {
 
       // check that the node name is correct
       it("sets the node name correctly", () => {
-        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", inputs["username"]), "m");
+        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", connectedService["username"]), "m");
         expect(contents).to.match(regex);
       });
 
