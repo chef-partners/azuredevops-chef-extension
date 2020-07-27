@@ -260,6 +260,9 @@ chef_server_url "${this.taskConfiguration.Inputs.TargetURL}"
     console.log(configPath);
     tl.writeFile(configPath, config);
 
+    // write out the contents of the config if in debug
+    tl.debug(config);
+
     // set environment variables for knife
     tl.setVariable("KNIFE_HOME", dirname(configPath));
     tl.setVariable("CHEF_CONFIG", configPath);
