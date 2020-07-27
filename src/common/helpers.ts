@@ -178,9 +178,9 @@ export class Helpers {
 
     // Update inputs with the required arguments so that the executeCmd can be called
     this.taskConfiguration.Inputs.ComponentName = "knife";
-    this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json > %s",
-        this.taskConfiguration.Inputs.EnvironmentName,
-        envFile);
+    this.taskConfiguration.Inputs.Arguments = sprintf("environment show %s -F json",
+        this.taskConfiguration.Inputs.EnvironmentName);
+        // envFile);
 
     // create an instance of the executeComponent class so that the execution methods can be used
     let executeComponent = new ex.ExecuteComponent(this.taskConfiguration, this.utils);
@@ -190,14 +190,17 @@ export class Helpers {
     tl.debug(this.utils.getCommandStack()[0]);
 
     // Check that the environment file has been written out and error if it has not
+    /*
     if (!tl.exist(envFile)) {
       tl.error(sprintf("Unable to find to downloaded environment file: %s", envFile));
       return;
     }
+    */
 
     // read in the json file so that the environment can be updated
-    let envStr: string = readFileSync(envFile).toString();
-    let chefEnvironment = JSON.parse(envStr);
+    // let envStr: string = readFileSync(envFile).toString();
+    let result = executeComponent.result ? executeComponent.result : "{}";
+    let chefEnvironment = JSON.parse(result);
 
     // check to see if the env has a "cookbook_versions" segment, add it if not
     if (!("cookbook_versions" in chefEnvironment)) {
@@ -214,7 +217,9 @@ export class Helpers {
     chefEnvironment["cookbook_versions"][this.taskConfiguration.Inputs.CookbookName] = this.taskConfiguration.Inputs.CookbookVersionNumber;
 
     // wrote out the json to the env file
-    tl.writeFile(envFile, JSON.stringify(chefEnvironment));
+    let envStr = JSON.stringify(chefEnvironment);
+    tl.writeFile(envFile, envStr);
+    tl.debug(envStr);
 
     // Update the arguments for knife to upload the environment file
     this.taskConfiguration.Inputs.Arguments = sprintf("environment from file %s", envFile);

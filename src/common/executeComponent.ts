@@ -2,6 +2,7 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import { connect } from "http2";
+import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 
 /**
  * ExecuteComponent is responsible for executing the command that has been selected
@@ -22,6 +23,8 @@ export class ExecuteComponent {
   private taskConfiguration: TaskConfiguration;
 
   private utils: Utils;
+
+  public result: string;
 
   /**
    * Create a new instance of the class, the constructor
@@ -46,6 +49,7 @@ export class ExecuteComponent {
   public async Execute() {
 
     let cmdParts: string[] = [];
+    let execResult: IExecSyncResult;
 
     // perform any setup that is required for the command
     // for example, in order for berkshelf to run a configuration file must be created
@@ -65,11 +69,14 @@ export class ExecuteComponent {
 
     // Attempt to execute the command
     try {
-      let result = this.utils.ExecCmd(cmdParts);
+      execResult = this.utils.ExecCmd(cmdParts);
+
+      if (!process.env.TESTS_RUNNING) {
+        this.result = execResult.stdout;
+      }
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }
-
   }
 
   /**

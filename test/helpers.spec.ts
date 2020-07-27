@@ -353,7 +353,7 @@ describe("Helpers", () => {
       h = new Helpers(tc);
 
       // create a file for the environment file
-      tl.writeFile(pathJoin(tc.Paths.TmpDir, sprintf("%s.json", inputs["environmentName"])), "{}");
+      // tl.writeFile(pathJoin(tc.Paths.TmpDir, sprintf("%s.json", inputs["environmentName"])), "{}");
 
       await h.Run();
 
@@ -369,10 +369,9 @@ describe("Helpers", () => {
 
       // build up the expected command
       let envFile: string = pathJoin(tc.Paths.TmpDir, sprintf("%s.json", tc.Inputs.EnvironmentName));
-      let expected = sprintf("%s environment show %s -F json > %s",
+      let expected = sprintf("%s environment show %s -F json",
         tc.Paths.Knife,
-        tc.Inputs.EnvironmentName,
-        envFile
+        tc.Inputs.EnvironmentName
       );
 
       expect(expected).to.eql(commandStack[0]);
