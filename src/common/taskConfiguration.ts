@@ -82,9 +82,9 @@ export class TaskConfiguration {
    * @param required
    * @param serviceNames
    */
-  public async getTaskParameters(serviceNames: {} = {}): Promise<TaskConfiguration> {
+  public async getTaskParameters(serviceNames: {} = {}, connectedServiceNames: string[] = []): Promise<TaskConfiguration> {
 
-    let connectedServiceNames: string[] = [];
+    // let connectedServiceNames: string[] = [];
 
     // define a mapping of parameter names to object properties
     let mapping = {

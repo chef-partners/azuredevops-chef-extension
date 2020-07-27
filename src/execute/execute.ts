@@ -9,10 +9,10 @@ async function run() {
   let taskConfiguration = new task.TaskConfiguration();
 
   // get the parameters for the task, e.g. the settings that have been provided
-  await taskConfiguration.getTaskParameters(["chefendpoint", "azureendpoint"]);
+  await taskConfiguration.getTaskParameters({}, ["chefendpoint", "azureendpoint"]);
 
   // create an instance of the executeComponent class
-  let executeComponent = new  ex.ExecuteComponent(taskConfiguration);
+  let executeComponent = new ex.ExecuteComponent(taskConfiguration);
 
   // perform the execution of the selected command
   executeComponent.Execute();
