@@ -161,10 +161,10 @@ export class TaskConfiguration {
           // Set the properties for an chef endpoint type
           case "chefendpoint": {
 
-            this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedServiceName);
-            this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedServiceName);
-            this.Inputs.Username = this.getParamValue("username", true, "auth", connectedServiceName);
-            this.Inputs.Password = this.getParamValue("password", true, "auth", connectedServiceName);
+            this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedService);
+            this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedService);
+            this.Inputs.Username = this.getParamValue("username", true, "auth", connectedService);
+            this.Inputs.Password = this.getParamValue("password", true, "auth", connectedService);
 
             tl.debug(
               sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
@@ -190,9 +190,9 @@ export class TaskConfiguration {
           // set the properties for an Azure endpoint type, which could be used by TK
           case "azureendpoint": {
 
-            let azureAuth = tl.getEndpointAuthorization(connectedServiceName, true);
+            let azureAuth = tl.getEndpointAuthorization(connectedService, true);
 
-            this.Inputs.SubscriptionId = tl.getEndpointDataParameter(connectedServiceName, "SubscriptionID", true);
+            this.Inputs.SubscriptionId = tl.getEndpointDataParameter(connectedService, "SubscriptionID", true);
             this.Inputs.TenantId = azureAuth.parameters.tenantid;
             this.Inputs.ClientId = azureAuth.parameters.serviceprincipalid;
             this.Inputs.ClientSecret = azureAuth.parameters.serviceprincipalkey;
