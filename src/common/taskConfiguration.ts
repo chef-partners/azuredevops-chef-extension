@@ -137,7 +137,8 @@ export class TaskConfiguration {
     }
 
     // determine if a service name is required based on the helper name
-    if (this.Inputs.Helper in Object.keys(serviceNames)) {
+    tl.debug(sprintf("Helper '%s': %s", this.Inputs.Helper, Object.keys(serviceNames).join(", ")));
+    if (Object.keys(serviceNames).includes(this.Inputs.Helper)) {
       connectedServiceNames = serviceNames[this.Inputs.Helper];
     }
 
