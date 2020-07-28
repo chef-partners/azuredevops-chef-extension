@@ -154,7 +154,7 @@ export class TaskConfiguration {
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
 
         // if the connectedService is empty continue onto the next service
-        if (connectedService === "") {
+        if (connectedService === "" || connectedService === "undefined") {
           continue;
         }
 
