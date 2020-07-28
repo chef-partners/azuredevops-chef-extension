@@ -142,6 +142,21 @@ export class TaskConfiguration {
       connectedServiceNames = serviceNames[this.Inputs.Helper];
     }
 
+    // determine if a service name is required based on the componentName
+    switch (this.Inputs.ComponentName) {
+      case "chefclient":
+        connectedServiceNames = ["chefendpoint"];
+        break;
+      case "kitchen":
+        connectedServiceNames = ["azureendpoint"];
+        break;
+      case "habitat":
+        connectedServiceNames = ["habitatendpoint"];
+        break;
+      default:
+        connectedServiceNames = [];
+    }
+
     tl.debug(sprintf("Number of connected service requested: %d", connectedServiceNames.length));
 
     // if a connected service has been specified, then attempt to get the necessary information
@@ -152,11 +167,6 @@ export class TaskConfiguration {
 
         // get the connected service from the inputs
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
-
-        // if the connectedService is empty continue onto the next service
-        if (connectedService === "" || connectedService === "undefined") {
-          continue;
-        }
 
         tl.debug(sprintf("Getting connected service: %s", connectedService));
 
