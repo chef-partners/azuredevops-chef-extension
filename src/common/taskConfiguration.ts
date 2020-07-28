@@ -153,8 +153,6 @@ export class TaskConfiguration {
       case "habitat":
         connectedServiceNames = ["habitatendpoint"];
         break;
-      default:
-        connectedServiceNames = [];
     }
 
     tl.debug(sprintf("Number of connected service requested: %d", connectedServiceNames.length));
