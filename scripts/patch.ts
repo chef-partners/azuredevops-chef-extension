@@ -62,7 +62,7 @@ function patchFiles(options) {
   // Create UUID namespace
   // This is so that new namespaces can be generated for the preview
   // so that they are "unique" but are always generated the same
-  let namespace = uuid("null", "adf05293-f347-46a2-b0a2-dca7863604b0", true);
+  let namespace = uuid("null", "b5e4ed8a-a6c9-40b8-acf8-a308df1acdb3", true);
 
   for (let file of configFiles) {
     

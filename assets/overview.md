@@ -4,67 +4,43 @@ This [Chef](http://chef.io) integration for Azure Pipelines provides a set of ta
 
 [Chef Automate](https://www.chef.io/automate/) provides a full suite of enterprise capabilities for workflow, visibility and compliance. Chef Automate integrates with the open-source products Chef, InSpec and Habitat.  You can create your own **Chef Automate** server by launching one from the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/chef-software.chef-automate?tab=Overview).
 
+The tasks give access to any of the Chef commands at the command line level so any operation using Habitat, Chef, Chef-Client and Knife etc can be added to your build pipeline. There are some Helper tasks that wrap several commands to achieve an operation, such as updating a cookbook version constraint on a Chef environment.
+
 These tasks are compatible with Chef Server 12.1 and higher.
 
-## Build Tasks
+## Tasks
 
-These tasks are typically used in your Build process:
+The extension contains 3 tasks.
 
-* **Update cookbook version number**: Update a cookbook version to the current build number
-* **Upload cookbook to Chef Server**: Upload a cookbook to Chef Server including dependencies
-* **Install ChefDK**: Install ChefDK on the build agent
-* **Linting**: Perform linting tasks on the cookbook
-* **Test Kitchen**: Perform TK tests on the cookbook. This is designed for the [Test Kitchen AzureRM](https://github.com/test-kitchen/kitchen-azurerm) driver which needs to be installed using the 'Install Gem' task.
+* **Install Chef Components**: Allows the installation of CHef components
+* **Execute Chef Component**: Allows the execution of a specified Chef component
+* **Chef Helpers**: A number of helper tasks
+   * **Set Cookbook Version Number**: Sets the cookbook version number in the `metadata.rb` file
+   * **Setup Habitat Environment**: Configure the Habitat environment by downloading origin and keys
+   * **Set Cookbook Version on Chef Environment**: Set a cookbook version constraint on named Chef environment
+   * **Setup Chef**: Write out a `config.rb` file to be used by `chef-client` or `knife`
 
-## Utility Tasks
+## Agent Compatibility
 
-* **Install Cookbook Gems**: Install Gems for a cookbook as specified in the `Gemfile`.
-* **Install Gem**: Install a Gem into the ChefDK context. Usually used to install `knife` plugins.
-* **Execute Knife**: Execute Knife command with specified arguments.
-
-## Release Tasks
-
-These tasks are typically used as part of your Release process:
-
-* **Add variables to Chef Environment**: Add the Azure Pipelines/TFS variables for this environment to the Chef environment
-* **Release cookbook version to environment**: Releases a cookbook by releasing the cookbook constraint on the specified Chef environment
-* **Install InSpec**: Install InSpec on machines in a Deployment Group
-* **Execute InSpec**: Execute InSpec on machines in a Deployment Group
-* **Execute Chef Client**: Execute Chef Client on machines in a Deployment Group
-* **Publish Cookbook to Supermarket**: Publish the specified cookbook to the Public or a private Chef Supermarket.
-
-## Agent Compatiblity
-
-The following table shows the tasks and what type of agents they are compatibile with. Most of the tasks now work on Windows based agents.
+The following table shows the tasks and what type of agents they are compatible with. Most of the tasks now work on Windows based agents.
 
 | Task | Private Windows Agent | Private Linux Agent | Hosted Windows Agent | Hosted Linux Agent |
 |------|-----------------------|---------------------|----------------------|--------------------|
-| Update Cookbook Version Number | Yes | Yes | Yes | Yes |
-| Upload Cookbook to Chef Server | Yes | Yes | Yes | Yes |
-| Install ChefDK | Yes | Yes | No | Yes |
-| Install Gem | Yes | Yes | Yes | Yes |
-| Execute Knife | Yes | Yes | Yes | Yes |
-| Add Variables to Chef Environment | Yes | Yes | Yes | Yes |
-| Release cookbook version to environment | Yes | Yes | Yes | Yes |
-| Install InSpec | Yes | Yes | No | Yes |
-| Excute InSpec | Yes | Yes | Yes | Yes |
-| Execute Chef Client | Yes | Yes | Yes | Yes |
-| Publish Cookbook to Supermarket | Yes | Yes | Yes | Yes |
-| Linting | Yes | Yes | Yes | Yes |
+| Install Chef Components | Yes | Yes | Yes | Yes |
+| Execute Chef Component | Yes | Yes | Yes | Yes |
+| Chef Helpers | Yes | Yes | Yes | Yes |
 
-**Note:** To install ChefDK or InSpec on a Private Linux Agent then task process must be running as root or under an account that has passwordless sudo access. For a Private Windows Agent the process must be running with elevated privileges.
+**Note:** To install components on a private Linux Agent then task process must be running as root or under an account that has passwordless sudo access. For a Private Windows Agent the process must be running with elevated privileges.
 
 ## Getting Started
 
-See our guide to [Getting Started](https://github.com/chef-partners/vsts-chef/wiki/Getting-Started)
+See our guide to [Getting Started](https://chef-partners.github.io/azuredevops-chef-extension/getting-started.html)
 
 ## Project Configuration/Endpoint
 
-Before you add any Build or Release tasks to your process, you will need to configure your Chef Server "endpoint". There are 2 endpoints, one for uploading to a Chef server and the other for publishing to a Chef Supermarket.
+The extension contains two endpoint configurations. One for setting credentials for a Chef Server and one for setting up the Habitat environment.
 
-Both of them have the same options, but allow different credentials to be used for each action.
-
-Endpoints are a per-project configuration and can be accessed via **Project Settings** (cog) > **Services**
+Endpoints are a per-project configuration and can be accessed via **Project Settings** (cog) > **Service Connections**
 
 The Chef Server endpoint let's you securely store the following information:
 
@@ -73,13 +49,20 @@ The Chef Server endpoint let's you securely store the following information:
 * Client key - The private key (in pem format) for the specified user
 * SSL Verification - Enables/disables the SSL certificate verification for the Chef Server.  Set to `false` if you are using self-signed certificates.  Default: `true` (Chef Server certificate must be signed by a valid Certificate Authority)
 
+The Habitat endpoint allows the storage of the following information:
+
+* Habitat Depot URL - URL to the Habitat depot to use when publishing packages, e.g. `https://bldr.habitat.sh`
+* Origin Name - Name of the origin to use when building a package
+* Revision - Revision of the origin keys to use
+* Public Key - Public key to use during package builds
+* Signing Key - the signing key of the specified origin
+* Habitat Auth Token - authentication token for Habitat Depot
+
 ## Documentation and help
 
-For details on installation, please read the [installation guide](https://github.com/chef-partners/vsts-chef/wiki).
+For detailed documentation, please read the [Chef extension documentation](https://chef-partners.github.io/azuredevops-chef-extension).
 
-For detailed task documentation, please read the [task documentation](https://github.com/chef-partners/vsts-chef/wiki).
-
-To report an issue, please check our [issues list](https://github.com/chef-partners/vsts-chef/issues).
+To report an issue, please check our [issues list](https://github.com/chef-partners/azuredevops-chef-extension/issues).
 
 ## Contributors
 
