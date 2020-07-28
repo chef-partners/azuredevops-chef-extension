@@ -44,6 +44,10 @@ function getConfigFiles(pattern: string, debug: boolean) {
  */
 function patchFiles(options) {
 
+  let friendlyName: string;
+  let id: string;
+  let name: string;
+
   // get all the task files
   console.log("Finding task configuration files in dir: %s", options.builddir);
   let configFiles = getConfigFiles(
@@ -84,13 +88,19 @@ function patchFiles(options) {
       console.log("\tPatching preview task");
 
       // set the name
-      taskConfig.name = sprintf("%s-preview", taskConfig.name);
+      name = sprintf("%s-preview", taskConfig.name);
+      console.log("\tSetting task name: %s", name);
+      taskConfig.name = name;
 
       // set the friendlyName
-      taskConfig.friendlyName = sprintf("%s - PREVIEW", taskConfig.friendlyName);
+      friendlyName = sprintf("%s - PREVIEW", taskConfig.friendlyName);
+      console.log("\tSetting friendly name: %s", friendlyName);
+      taskConfig.friendlyName = friendlyName;
 
-      // set the id
-      taskConfig.id = uuid(namespace, taskConfig.name);
+      // set the id for the task based the friendlyName
+      id = uuid(namespace, friendlyName);
+      console.log("\tSetting task id: %s", id);
+      taskConfig.id = id;
     }
 
     // save the file with the modifications
