@@ -38,6 +38,7 @@ let signKey;
 let platform;
 let tlsetResult;
 let getInput;
+let getEndpointAuthorization;
 let getEndpointAuthorizationParameter;
 let getEndpointDataParameter;
 let getEndpointUrl;
@@ -73,6 +74,15 @@ describe("Helpers", () => {
 
     getEndpointAuthorizationParameter = sinon.stub(tl, "getEndpointAuthorizationParameter").callsFake((connectedServiceName, name) => {
       return connectedService[name];
+    });
+
+    getEndpointAuthorization = sinon.stub(tl, "getEndpointAuthorization").callsFake((connectedServiceId, required) => {
+      return {
+        parameters: {
+          username: connectedService["username"],
+          password: connectedService["password"]
+        }
+      };
     });
 
     getEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((connectedServiceName, name) => {
@@ -266,6 +276,7 @@ describe("Helpers", () => {
       inputs = {
         "platform": LINUX,
         "helper": "setupChef",
+        "chefendpoint": "automateEndpoint"
        // "targetUrl": "https://automate.example.com/organizations/myorg",
        // "username": "aperson",
        // "password": "long client key",
