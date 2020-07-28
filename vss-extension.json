@@ -215,7 +215,7 @@
             }
         },
         {
-            "id": "run",
+            "id": "execute",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
