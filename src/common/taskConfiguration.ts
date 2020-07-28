@@ -183,6 +183,10 @@ export class TaskConfiguration {
               sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
             );
 
+            tl.debug(
+              sprintf("Username: %s", this.Inputs.Username)
+            );
+
             break;
           }
 
