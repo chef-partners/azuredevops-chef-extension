@@ -3,7 +3,7 @@
   "name": "component",
   "friendlyName": "Execute Chef Component",
   "description": "This task allows the execution of any Chef component",
-  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef/execute-task.html",
+  "helpMarkDown": "[More Information](https://chef-partners.github.io/azuredevops-chef-extension/execute-task.html",
   "category": "Azure Pipelines",
   "author": "Chef",
   "version": {
