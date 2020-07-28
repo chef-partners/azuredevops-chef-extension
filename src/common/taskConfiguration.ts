@@ -151,7 +151,12 @@ export class TaskConfiguration {
       for (let connectedServiceName of connectedServiceNames) {
 
         // get the connected service from the inputs
-        let connectedService = this.getParamValue(connectedServiceName, true, "input");
+        let connectedService = this.getParamValue(connectedServiceName, false, "input");
+
+        // if the connectedService is empty continue onto the next service
+        if (connectedService === "") {
+          continue;
+        }
 
         tl.debug(sprintf("Getting connected service: %s", connectedService));
 
