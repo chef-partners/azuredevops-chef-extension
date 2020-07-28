@@ -76,6 +76,7 @@ describe("Helpers", () => {
       return connectedService[name];
     });
 
+    /*
     getEndpointAuthorization = sinon.stub(tl, "getEndpointAuthorization").callsFake((connectedServiceId, required) => {
       return {
         parameters: {
@@ -84,6 +85,7 @@ describe("Helpers", () => {
         }
       };
     });
+    */
 
     getEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((connectedServiceName, name) => {
       return connectedService[name];
