@@ -100,7 +100,7 @@
                                 "name": "Username",
                                 "description": "Username (node or client) on the targeted server",
                                 "inputMode": "textbox",
-                                "isConfidential": false,
+                                "isConfidential": true,
                                 "validation": {
                                     "isRequired": true,
                                     "dataType": "string"
