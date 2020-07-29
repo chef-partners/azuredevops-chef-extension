@@ -247,7 +247,7 @@ export class Helpers {
 
     // Build up the string to be used as the config.rb
     let config = sprintf(`
-node            "%s"
+node_name       "%s"
 client_key      "%s"
 chef_server_url "%s"
     `, this.taskConfiguration.Inputs.Username, _clientKeyPath, this.taskConfiguration.Inputs.TargetURL);
