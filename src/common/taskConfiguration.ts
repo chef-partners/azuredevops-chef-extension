@@ -176,7 +176,7 @@ export class TaskConfiguration {
 
             this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedService);
             this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedService);
-            this.Inputs.Username = this.getParamValue("username", true, "data", connectedService);
+            this.Inputs.Username = this.getParamValue("username", true, "auth", connectedService);
             this.Inputs.Password = this.getParamValue("password", true, "auth", connectedService);
 
             // get the username and the key using the authorization

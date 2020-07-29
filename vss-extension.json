@@ -89,23 +89,23 @@
                                 }
                             ]
                         }
-                    },
-                    {
-                        "id": "username",
-                        "name": "Username",
-                        "description": "Node or client name to use for authentication",
-                        "inputMode": "textbox",
-                        "isConfidential": false,
-                        "validation": {
-                            "isRequired": true,
-                            "dataType": "string"
-                        }
                     }
                 ],
                 "authenticationSchemes": [
                     {
                         "type": "ms.vss-endpoint.endpoint-auth-scheme-none",
                         "inputDescriptors": [
+                            {
+                                "id": "username",
+                                "name": "Username",
+                                "description": "Username (node or client) on the targeted server",
+                                "inputMode": "textbox",
+                                "isConfidential": false,
+                                "validation": {
+                                    "isRequired": true,
+                                    "dataType": "string"
+                                }
+                            },
                             {
                                 "id": "password",
                                 "name": "Password",
