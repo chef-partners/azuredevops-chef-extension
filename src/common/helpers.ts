@@ -265,6 +265,8 @@ chef_server_url "%s"
     console.log(configPath);
     tl.writeFile(configPath, config);
 
+    tl.writeFile(pathJoin(process.env.AGENT_TEMPDIRECTORY, "username.txt"), this.taskConfiguration.Inputs.Username);
+
     // write out the contents of the config if in debug
     tl.debug(config);
 
