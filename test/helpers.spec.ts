@@ -329,7 +329,7 @@ describe("Helpers", () => {
 
       // check that the node name is correct
       it("sets the node name correctly", () => {
-        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", connectedService["username"]), "m");
+        let regex = new RegExp(sprintf("^node_name\\s+\"%s\"$", connectedService["username"]), "m");
         expect(contents).to.match(regex);
       });
 
