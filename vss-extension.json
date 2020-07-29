@@ -99,8 +99,8 @@
                                 "id": "clientname",
                                 "name": "Username",
                                 "description": "Username (node or client) on the targeted server",
-                                "inputMode": "textbox",
-                                "isConfidential": true,
+                                "inputMode": "textarea",
+                                "isConfidential": false,
                                 "validation": {
                                     "isRequired": true,
                                     "dataType": "string"

@@ -246,11 +246,11 @@ export class Helpers {
     let _clientKeyPath = clientKeyPath.replace(/\\/g, "/");
 
     // Build up the string to be used as the config.rb
-    let config: string = `
-node            "${this.taskConfiguration.Inputs.Username}"
-client_key      "${_clientKeyPath}"
-chef_server_url "${this.taskConfiguration.Inputs.TargetURL}"
-    `;
+    let config = sprintf(`
+node            "%s"
+client_key      "%s"
+chef_server_url "%s"
+    `, this.taskConfiguration.Inputs.Username, _clientKeyPath, this.taskConfiguration.Inputs.TargetURL);
 
     // ensure that the configdir exists
     if (!tl.exist(this.taskConfiguration.Paths.ConfigDir)) {
