@@ -104,7 +104,7 @@ export class TaskConfiguration {
       "habitatOriginRevision": "Inputs.HabitatOriginRevision",
       "habitatOriginSigningKey": "Inputs.HabitatOriginSigningKey",
       "helper": "Inputs.Helper",
-      "clientname": "Inputs.Password",
+      "password": "Inputs.Password",
       "sslVerify": "Inputs.SSLVerify",
       "sudo": "Inputs.UseSudo",
       "targetPath": "Inputs.TargetPath",
@@ -176,7 +176,7 @@ export class TaskConfiguration {
 
             this.Inputs.TargetURL = this.getParamValue("url", true, "url", connectedService);
             this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedService);
-            this.Inputs.Username = this.getParamValue("clientname", true, "auth", connectedService);
+            this.Inputs.Username = this.getParamValue("username", true, "auth", connectedService);
             this.Inputs.Password = this.getParamValue("password", true, "auth", connectedService);
 
             // get the username and the key using the authorization

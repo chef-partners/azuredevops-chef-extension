@@ -288,7 +288,7 @@ describe("Helpers", () => {
       connectedService = {
         "url": "https://automate.example.com/organizations/myorg",
         "sslVerify": true,
-        "clientname": "aperson",
+        "username": "aperson",
         "password": "long client key"
       };
 
@@ -329,7 +329,7 @@ describe("Helpers", () => {
 
       // check that the node name is correct
       it("sets the node name correctly", () => {
-        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", connectedService["clientname"]), "m");
+        let regex = new RegExp(sprintf("^node\\s+\"%s\"$", connectedService["username"]), "m");
         expect(contents).to.match(regex);
       });
 

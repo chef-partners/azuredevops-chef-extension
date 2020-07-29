@@ -104,7 +104,7 @@ describe("Utils", () => {
         "platform": LINUX,
         "password": "foobar",
         "targetUrl": "https://foobar.com/organization/fred",
-        "clientname": "unittest",
+        "username": "unittest",
         "arguments": "-u {USERNAME} -p {PASSWORD} --url {URL}"
       };
 
@@ -117,7 +117,7 @@ describe("Utils", () => {
       await tc.getTaskParameters({}, ["chefendpoint"]);
 
       // set the expected value
-      let expected = sprintf("-u %s -p %s --url %s", inputs["clientname"], inputs["password"], inputs["targetUrl"]);
+      let expected = sprintf("-u %s -p %s --url %s", inputs["username"], inputs["password"], inputs["targetUrl"]);
 
       // get the actual
       let actual = utils.ReplaceTokens();

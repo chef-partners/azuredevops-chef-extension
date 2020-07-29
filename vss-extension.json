@@ -93,13 +93,13 @@
                 ],
                 "authenticationSchemes": [
                     {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-none",
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
                         "inputDescriptors": [
                             {
-                                "id": "clientname",
+                                "id": "username",
                                 "name": "Username",
                                 "description": "Username (node or client) on the targeted server",
-                                "inputMode": "textarea",
+                                "inputMode": "textbox",
                                 "isConfidential": false,
                                 "validation": {
                                     "isRequired": true,
