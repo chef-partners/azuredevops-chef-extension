@@ -28,6 +28,7 @@
       "helpMarkDown": "Select the Helper to use for this task",
       "options": {
         "envCookbookVersion": "Set Cookbook Version on Chef Environment",
+        "readEnvFile": "Read Environment File",
         "setCookbookVersion": "Set Cookbook Version Number",
         "setupBerkshelf": "Setup Berkshelf",
         "setupChef": "Setup Chef",
@@ -107,6 +108,15 @@
       "required": true,
       "visibleRule": "helper = envCookbookVersion",
       "helpMarkDown": "Name of the target cookbook"
+    },
+    {
+      "name": "envFilePath",
+      "type": "string",
+      "label": "Environment File Path",
+      "defaultValue": "",
+      "required": true,
+      "visibleRule": "helper = readEnvFile",
+      "helpMarkDown": "Path to the file containing variables that should be set as environment variables"
     }
   ],
   "execution": {

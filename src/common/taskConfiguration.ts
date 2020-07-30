@@ -98,6 +98,7 @@ export class TaskConfiguration {
       "cookbookVersionNumber": "Inputs.CookbookVersionNumber",
       "cookbookVersionRegex": "Inputs.CookbookVersionRegex",
       "environmentName": "Inputs.EnvironmentName",
+      "envFilePath": "Inputs.EnvFilePath",
       "envvars": "Inputs.EnvVars",
       "forceInstall": "Inputs.ForceInstall",
       "gemName": "Inputs.GemName",

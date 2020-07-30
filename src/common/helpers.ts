@@ -10,8 +10,8 @@ import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import {sprintf} from "sprintf-js"; // provides sprintf functionaility
 import {join as pathJoin, dirname} from "path";
+import {config as envFromFile} from "dotenv";
 import * as ex from "./executeComponent";
-import { readFileSync } from "fs";
 
  /**
   * Class to handle the execution of the utlities that can be selected
@@ -63,6 +63,11 @@ export class Helpers {
 
       case "envCookbookVersion": {
         this.setEnvCookbookVersion();
+        break;
+      }
+
+      case "readEnvFile": {
+        this.readEnvironmentFile();
         break;
       }
 
@@ -344,5 +349,28 @@ chef_server_url "%s"
     tl.setVariable("AZURE_CLIENT_ID", this.taskConfiguration.Inputs.ClientId);
     tl.setVariable("AZURE_CLIENT_SECRET", this.taskConfiguration.Inputs.ClientSecret);
     tl.setVariable("AZURE_TENANT_ID", this.taskConfiguration.Inputs.TenantId);
+  }
+
+  /**
+   * readEnvironmentFile reads the specified file, if it exists, and makes the variables
+   * available as environment variables. This only works with `k=v` lines
+   */
+  public readEnvironmentFile() {
+
+    // determine if the specified file exists
+    if (!tl.exist(this.taskConfiguration.Inputs.EnvFilePath)) {
+      tl.setResult(
+        tl.TaskResult.Failed,
+        sprintf("Unable to find the specified environment file: %s", this.taskConfiguration.Inputs.EnvFilePath)
+      );
+      return;
+    }
+
+    // read in the file and set as env vars
+    envFromFile(
+      {
+        path: this.taskConfiguration.Inputs.EnvFilePath
+      }
+    );
   }
 }

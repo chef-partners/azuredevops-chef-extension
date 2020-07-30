@@ -33,6 +33,7 @@ const MACOS = "darwin";
 let contents = {};
 let inputs = {};
 let connectedService = {};
+let envFilePath: string = "";
 let pubKey;
 let signKey;
 let platform;
@@ -100,7 +101,7 @@ describe("Helpers", () => {
     });
 
     // stub the azdo tasklib setResult function
-    tlsetResult = sinon.stub(tl, "setResult");
+    tlsetResult = sinon.spy(tl, "setResult");
 
     process.env.AGENT_TEMPDIRECTORY = tempDir();
   });
@@ -515,6 +516,75 @@ describe("Helpers", () => {
       let expected = connectedService["tenantId"];
       let actual = tl.getVariable("AZURE_TENANT_ID");
       expect(expected).to.eql(actual);
+    });
+  });
+
+  describe("Expose vars in environment file", () => {
+
+    describe("file does not exist", () => {
+
+      before(() => {
+
+        // define the inputs
+        inputs = {
+          "platform": LINUX,
+          "helper": "readEnvFile",
+          "envFilePath": pathJoin(tempDir(), "last_build.env")
+        };
+
+        tc = new TaskConfiguration();
+        h = new Helpers(tc);
+
+        h.Run();
+      });
+
+      it("fails the task", () => {
+        tlsetResult.calledWith(tl.TaskResult.Failed);
+      });
+
+    });
+
+    describe("file exists", () => {
+
+      before(() => {
+
+        // create a file to read in
+        envFilePath = pathJoin(tempDir(), "last_build.env");
+        let envVars = `
+  var1=Hello
+  var2=HabitatPkg
+        `;
+        writeFileSync(envFilePath, envVars);
+
+        // define the inputs
+        inputs = {
+          "platform": LINUX,
+          "helper": "readEnvFile",
+          "envFilePath": pathJoin(tempDir(), "last_build.env")
+        };
+
+        tc = new TaskConfiguration();
+        h = new Helpers(tc);
+
+        h.Run();
+
+      });
+
+      it("sets var1 as an environment variable", () => {
+        expect(process.env.VAR1).to.not.be.undefined;
+      });
+
+      it("var1 value is set correctly", () => {
+        expect(process.env.VAR1).to.eql("Hello");
+      });
+
+      it("var2 value is set correctly", () => {
+        expect(process.env.VAR2).to.eql("HabitatPkg");
+      });
+
+      after(() => {
+        unlinkSync(envFilePath);
+      });
     });
   });
 

@@ -40,6 +40,8 @@ export class Inputs {
     public ClientId: string = null;
     public ClientSecret: string = null;
 
+    public EnvFilePath: string = null; // Path to the file containing the variables to expose as environment vars
+
     public SudoIsSet(): boolean {
       let result: any = this.UseSudo;
       if (typeof result === "string") {
