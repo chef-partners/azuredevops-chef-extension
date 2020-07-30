@@ -76,16 +76,15 @@ describe("Helpers", () => {
       return connectedService[name];
     });
 
-    /*
     getEndpointAuthorization = sinon.stub(tl, "getEndpointAuthorization").callsFake((connectedServiceId, required) => {
       return {
         parameters: {
-          username: connectedService["username"],
-          password: connectedService["password"]
+          tenantid: connectedService["tenantId"],
+          serviceprincipalid: connectedService["clientId"],
+          serviceprincipalkey: connectedService["clientSecret"]
         }
       };
     });
-    */
 
     getEndpointDataParameter = sinon.stub(tl, "getEndpointDataParameter").callsFake((connectedServiceName, name) => {
       return connectedService[name];
@@ -279,10 +278,6 @@ describe("Helpers", () => {
         "platform": LINUX,
         "helper": "setupChef",
         "chefendpoint": "automateEndpoint"
-       // "targetUrl": "https://automate.example.com/organizations/myorg",
-       // "username": "aperson",
-       // "password": "long client key",
-       //  "sslVerify": false
       };
 
       connectedService = {
@@ -416,6 +411,110 @@ describe("Helpers", () => {
         expect(contents["cookbook_versions"][tc.Inputs.CookbookName]).to.eql(tc.Inputs.CookbookVersionNumber);
       });
 
+    });
+  });
+
+  describe("Configure Berkshelf", () => {
+
+    // set the task that needs to be run
+    before(() => {
+
+        // define the inputs for testing the task
+        inputs = {
+          "platform": LINUX,
+          "helper": "setupBerkshelf"
+        };
+
+        connectedService = {
+          "url": "https://automate.example.com/organizations/myorg",
+          "sslVerify": true,
+          "username": "aperson",
+          "password": "long client key"
+        };
+
+        tc = new TaskConfiguration();
+        h = new Helpers(tc);
+
+        h.Run();
+    });
+
+    it("creates the config file", () => {
+      let expected = pathJoin(process.env.AGENT_TEMPDIRECTORY, "berks.json");
+      expect(chaiFile(expected)).to.exist;
+    });
+
+    it("the client.key has the correct contents", () => {
+      let clientKeyPath = pathJoin(tc.Paths.ConfigDir, "berks-client.pem");
+      expect(chaiFile(clientKeyPath).content).to.equal(connectedService["password"]);
+    });
+
+    describe("the berks.json has the correct contents", () => {
+
+      before(() => {
+
+        // read in the contents of the configuration as a json object to test the values
+        contents = JSON.parse(readFileSync(pathJoin(process.env.AGENT_TEMPDIRECTORY, "berks.json")).toString());
+      });
+
+      it("sets the node name correctly", () => {
+        expect(contents["chef"]["node_name"]).to.eql(connectedService["username"]);
+      });
+
+      it("sets the path to the client key correctly", () => {
+        let clientKeyPath: string = pathJoin(tc.Paths.ConfigDir, "berks-client.pem");
+        expect(contents["chef"]["client_key"]).to.eql(clientKeyPath);
+      });
+
+      it("sets the URL for the chef server correctly", () => {
+        expect(contents["chef"]["chef_server_url"]).to.eql(connectedService["url"]);
+      });
+
+      it("will verify the SSL certificate", () => {
+        expect(contents["ssl"]["verify"]).to.eql(connectedService["sslVerify"]);
+      });
+
+    });
+
+  });
+
+  describe("Configure Test Kitchen", () => {
+
+    before(() => {
+
+      inputs = {
+        "platform": LINUX,
+        "helper": "setupTestKitchen"
+      };
+
+      connectedService = {
+        "clientId": "1234-5678-9098-7654-3210",
+        "clientSecret": "abcd-efgh-ijkl-mnopq",
+        "tenantId": "rstu-vqxy-zabc-defg"
+      };
+
+      tc = new TaskConfiguration();
+      h = new Helpers(tc);
+
+      h.Run();
+
+    });
+
+    it("sets the AZURE_CLIENT_ID env var", () => {
+      let expected = connectedService["clientId"];
+      let actual = tl.getVariable("AZURE_CLIENT_ID");
+      expect(expected).to.eql(actual);
+    });
+
+    it("sets the AZURE_CLIENT_SECRET env var", () => {
+      let expected = connectedService["clientSecret"];
+      let actual = tl.getVariable("AZURE_CLIENT_SECRET");
+      expect(expected).to.eql(actual);
+    });
+
+    it("sets the AZURE_TENANT_ID env var", () => {
+      let expected = connectedService["tenantId"];
+      let actual = tl.getVariable("AZURE_TENANT_ID");
+      expect(expected).to.eql(actual);
     });
   });
 

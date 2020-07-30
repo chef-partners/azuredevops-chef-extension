@@ -6,7 +6,7 @@
  */
 
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
+import { IExecSyncResult, IExecSyncOptions } from "azure-pipelines-task-lib/toolrunner";
 import { TaskConfiguration } from "./taskConfiguration";
 import { sprintf } from "sprintf-js";
 import { existsSync, readFileSync, writeFileSync } from "fs";
@@ -48,13 +48,20 @@ export class Utils {
     let cmd = parts.shift();
     let args = parts.join(" ");
     let result: IExecSyncResult;
+    let execOptions: IExecSyncOptions;
 
     // add the command to the command stack
     let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
     if (!process.env.TESTS_RUNNING) {
-      result = tl.tool(cmd).line(args).execSync();
+
+      // if a workingdir has been set add it as an option to the execOptions
+      if (this.taskConfiguration.Inputs.WorkingDir !== "") {
+        execOptions.cwd = this.taskConfiguration.Inputs.WorkingDir;
+      }
+
+      result = tl.tool(cmd).line(args).execSync(execOptions);
 
       // check the result of the command
       if (result.error) {

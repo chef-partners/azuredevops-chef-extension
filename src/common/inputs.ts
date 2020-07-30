@@ -7,6 +7,7 @@ export class Inputs {
     public Channel: string = null; // WHat channel should the software component be installed from
     public TargetPath: string = null; // The path to download software to
     public Arguments: string = null; // Arguments that need to be passed to the component being executed
+    public WorkingDir: string = null; // Directory that commands should be run within
     public EnvVars: string = null; // EnvVars that have been requested on the task
 
     // Declare properties to be used for determining the helper to run

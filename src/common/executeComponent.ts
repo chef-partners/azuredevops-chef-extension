@@ -2,7 +2,7 @@ import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
 import { connect } from "http2";
-import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
+import { IExecSyncResult, IExecSyncOptions } from "azure-pipelines-task-lib/toolrunner";
 
 /**
  * ExecuteComponent is responsible for executing the command that has been selected
@@ -69,6 +69,7 @@ export class ExecuteComponent {
 
     // Attempt to execute the command
     try {
+
       execResult = this.utils.ExecCmd(cmdParts);
 
       if (!process.env.TESTS_RUNNING) {

@@ -90,6 +90,8 @@ export class TaskConfiguration {
     let mapping = {
       "arguments": "Inputs.Arguments",
       "channel": "Inputs.Channel",
+      "clientId": "Inputs.ClientId",
+      "clientSecret": "Inputs.ClientSecret",
       "component": "Inputs.ComponentName",
       "cookbookMetadataPath": "Inputs.CookbookMetadataPath",
       "cookbookName": "Inputs.CookbookName",
@@ -109,8 +111,10 @@ export class TaskConfiguration {
       "sudo": "Inputs.UseSudo",
       "targetPath": "Inputs.TargetPath",
       "targetUrl": "Inputs.TargetURL",
+      "tenantId": "Inputs.TenantId",
       "username": "Inputs.Username",
-      "version": "Inputs.Version"
+      "version": "Inputs.Version",
+      "workingdir": "Inputs.WorkingDir"
     };
 
     try {
@@ -262,11 +266,13 @@ export class TaskConfiguration {
     }
 
     // if the component is kitchen then set the azure variables
+    /*
     if (this.Inputs.ComponentName === "kitchen") {
       tl.setVariable("AZURE_CLIENT_ID", this.Inputs.ClientId);
       tl.setVariable("AZURE_CLIENT_SECRET", this.Inputs.ClientSecret);
       tl.setVariable("AZURE_TENANT_ID", this.Inputs.TenantId);
     }
+    */
   }
 
   private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {

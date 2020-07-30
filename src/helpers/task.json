@@ -27,10 +27,12 @@
       "defaultValue": "",
       "helpMarkDown": "Select the Helper to use for this task",
       "options": {
-        "setCookbookVersion": "Set Cookbook Version Number",
-        "setupHabitat": "Setup Habitat Environment",
         "envCookbookVersion": "Set Cookbook Version on Chef Environment",
-        "setupChef": "Setup Chef"
+        "setCookbookVersion": "Set Cookbook Version Number",
+        "setupBerkshelf": "Setup Berkshelf",
+        "setupChef": "Setup Chef",
+        "setupHabitat": "Setup Habitat Environment",
+        "setupTestKitchen": "Setup Test Kitchen Environment"
       },
       "required": true
     },
@@ -71,22 +73,23 @@
       "required": true
     },
     {
-      "name": "sudo",
-      "type": "boolean",
-      "label": "Use Sudo",
-      "defaultValue": false,
-      "helpMarkdown": "Use Sudo to perform the installation. (Only valid on Linux build agents).",
-      "groupName": "advanced"
-    },
-    {
       "name": "chefendpoint",
       "type": "connectedService:chefendpointv1",
-      "label": "Endpoint",
+      "label": "Chef Endpoint",
       "defaultValue": "",
-      "visibleRule": "helper = setupChef",
+      "visibleRule": "helper = setupChef || helper = setupBerkshelf",
       "helpMarkdown": "Select the endpoint to use when communicating with the Chef server",
       "required": true
     },
+    {
+      "name": "azureendpoint",
+      "type": "connectedService:AzureRM",
+      "label": "Azure RM Endpoint",
+      "defaultValue": "",
+      "visibleRule": "helper = setupTestKitchen",
+      "helpMarkdown": "Endpoint containing credentials to communicate with Azure to perform Test Kitchen tests",
+      "required": true
+    },    
     {
       "name": "environmentName",
       "type": "string",

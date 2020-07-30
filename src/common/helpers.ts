@@ -49,7 +49,9 @@ export class Helpers {
       "setCookbookVersion": [],
       "setupHabitat": ["habitatOrigin"],
       "envCookbookVersion": [],
-      "setupChef": ["chefendpoint"]
+      "setupBerkshelf": ["chefendpoint"],
+      "setupChef": ["chefendpoint"],
+      "setupTestKitchen": ["azureendpoint"]
     };
 
     // configure the task parameters and setup the utils
@@ -58,22 +60,36 @@ export class Helpers {
 
     // determine the method to run based on the utility that has been chosen
     switch (this.taskConfiguration.Inputs.Helper) {
+
+      case "envCookbookVersion": {
+        this.setEnvCookbookVersion();
+        break;
+      }
+
       case "setCookbookVersion": {
         this.setCookbookVersion();
+        break;
+      }
+
+      case "setupBerkshelf": {
+        this.setupBerkshelf();
+        break;
+      }
+
+      case "setupChef": {
+        this.setupChef();
         break;
       }
       case "setupHabitat": {
         this.setupHabitatEnvironment();
         break;
       }
-      case "setupChef": {
-        this.setupChef();
+
+      case "setupTestKitchen": {
+        this.setupTestKitchenEnvironment();
         break;
       }
-      case "envCookbookVersion": {
-        this.setEnvCookbookVersion();
-        break;
-      }
+
     }
   }
 
@@ -271,5 +287,62 @@ chef_server_url "%s"
     // set environment variables for knife
     tl.setVariable("KNIFE_HOME", dirname(configPath));
     tl.setVariable("CHEF_CONFIG", configPath);
+  }
+
+  /**
+   * setupBerkshelf is responsible for configuring the Berkshelf configuration file with the data from the endpoint and then
+   * setting the environment variable for the `berks` command
+   *
+   * This is so that the command does not have to have all of the options set on the command line
+   */
+  public setupBerkshelf() {
+
+    // Define the path to the client key
+    let clientKeyPath: string = pathJoin(this.taskConfiguration.Paths.ConfigDir, "berks-client.pem");
+    let berksConfigPath: string = pathJoin(process.env.AGENT_TEMPDIRECTORY, "berks.json");
+
+    // ensure that the configdir exists
+    if (!tl.exist(this.taskConfiguration.Paths.ConfigDir)) {
+      tl.debug(sprintf("Creating Chef config directory: %s", this.taskConfiguration.Paths.ConfigDir));
+      tl.mkdirP(this.taskConfiguration.Paths.ConfigDir);
+    }
+
+    // create object for the config so it can be turned into JSON
+    let config = JSON.stringify({
+      chef: {
+        chef_server_url: this.taskConfiguration.Inputs.TargetURL,
+        client_key: clientKeyPath,
+        node_name: this.taskConfiguration.Inputs.Username
+      },
+      ssl: {
+        verify: this.taskConfiguration.Inputs.SSLVerify
+      }
+    });
+
+    // write out the files
+    console.log("Writing out configuration files");
+    console.log(clientKeyPath);
+    tl.writeFile(clientKeyPath, this.taskConfiguration.Inputs.Password);
+    console.log(berksConfigPath);
+    tl.writeFile(berksConfigPath, config);
+
+    // write out the contents of the config if in debug
+    tl.debug(config);
+  }
+
+  /**
+   * setupTestKitchenEnvironment sets the necessary environment variables for running
+   * Test Kitchen in Azure. Its will set the following env vars:
+   *
+   *  AZURE_CLIENT_ID
+   *  AZURE_CLIENT_SECRET
+   *  AZURE_TENANT_ID
+   */
+  public setupTestKitchenEnvironment() {
+
+    // set the environment variables required for TK to access Azure
+    tl.setVariable("AZURE_CLIENT_ID", this.taskConfiguration.Inputs.ClientId);
+    tl.setVariable("AZURE_CLIENT_SECRET", this.taskConfiguration.Inputs.ClientSecret);
+    tl.setVariable("AZURE_TENANT_ID", this.taskConfiguration.Inputs.TenantId);
   }
 }

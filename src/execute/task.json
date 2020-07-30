@@ -80,6 +80,15 @@
       "required": false,
       "helpMarkDown": "Allows the configuration of environment variables for the task.<br />Each key/value pair should be on a new line.<br />For example `KITCHEN_YAML=$(Build.SourcesDirectory)/build/kitchen.yml`",
       "groupName": "advanced"
+    },
+    {
+      "name": "workingdir",
+      "type": "string",
+      "label": "Working Directory",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "If set the execution of the specified command will be run within this directory",
+      "groupName": "advanced"
     }
   ],
   "execution": {
