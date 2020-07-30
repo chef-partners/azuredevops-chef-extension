@@ -563,15 +563,15 @@ describe("Helpers", () => {
       });
 
       it("sets var1 as an environment variable", () => {
-        expect(process.env.VAR1).to.not.be.undefined;
+        expect(process.env.var1).to.not.be.undefined;
       });
 
       it("var1 value is set correctly", () => {
-        expect(process.env.VAR1).to.eql("Hello");
+        expect(process.env.var1).to.eql("Hello");
       });
 
       it("var2 value is set correctly", () => {
-        expect(process.env.VAR2).to.eql("HabitatPkg");
+        expect(process.env.var2).to.eql("HabitatPkg");
       });
 
       after(() => {
