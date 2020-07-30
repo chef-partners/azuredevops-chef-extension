@@ -136,7 +136,7 @@ describe("Helpers", () => {
       });
 
       it("fails the task", () => {
-        sinon.assert.called(tlsetResult);
+        tlsetResult.calledWith(tl.TaskResult.Failed);
       });
     });
 
