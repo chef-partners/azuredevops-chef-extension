@@ -132,7 +132,7 @@ describe("Helpers", () => {
         tc = new TaskConfiguration();
         h = new Helpers(tc);
 
-        h.setCookbookVersion();
+        h.Run();
       });
 
       it("fails the task", () => {
@@ -184,14 +184,6 @@ describe("Helpers", () => {
         "platform": LINUX,
         "helper": "setupHabitat"
       };
-
-      // set the inputs
-      /*
-      inputs["habitatOrigin"] = "myorigin";
-      inputs["habitatOriginRevision"] = "202007221100";
-      inputs["habitatOriginPublicKey"] = "Hab public key";
-      inputs["habitatOriginSigningKey"] = "Hab signing key";
-      */
 
       // configure the connected service
       connectedService = {
