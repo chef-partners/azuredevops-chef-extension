@@ -12,6 +12,6 @@ local
 .nyc_output/
 coverage/
 .taskkey
-test/temp
+test/unit/temp
 docs/_site
 docs/.sass-cache

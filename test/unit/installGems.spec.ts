@@ -4,8 +4,8 @@
 
 // Import libraries --------------------------------------------------
 // - local libs
-import { TaskConfiguration } from "../src/common/taskConfiguration";
-import { InstallComponents } from "../src/common/installComponents";
+import { TaskConfiguration } from "../../src/common/taskConfiguration";
+import { InstallComponents } from "../../src/common/installComponents";
 
 // - External task libs
 import * as tl from "azure-pipelines-task-lib";
@@ -65,7 +65,7 @@ describe("Installing Ruby Gems within Chef", () => {
     it("should return the correct command to check for installation", () => {
 
       tc = new TaskConfiguration();
-      ic = new InstallComponents(tc);      
+      ic = new InstallComponents(tc);
 
       tc.getTaskParameters();
 
@@ -84,7 +84,7 @@ describe("Installing Ruby Gems within Chef", () => {
 
     it("should return command without version condition", () => {
       tc.getTaskParameters();
-  
+
       expect(ic.installCmd()).to.eql(expected);
     });
 
@@ -113,7 +113,7 @@ describe("Installing Ruby Gems within Chef", () => {
 
     it("should return the command with the required version", () => {
       tc.getTaskParameters();
-  
+
       expect(ic.installCmd()).to.eql(expected);
     });
 

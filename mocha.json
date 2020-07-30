@@ -3,14 +3,14 @@
   "full-trace": true,
   "reporter": "mocha-multi-reporters",
   "reporter-options": [
-    "configFile=test/config.json"
+    "configFile=test/unit/config.json"
   ],
   "require": [
     "ts-node/register",
     "source-map-support/register"
   ],
   "file": [
-    "test/setup.ts"
+    "test/unit/setup.ts"
   ],
-  "spec": "test/*.spec.ts"
+  "spec": "test/unit/*.spec.ts"
 }

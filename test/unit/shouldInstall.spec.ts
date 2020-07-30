@@ -5,8 +5,8 @@
 
 // Import libraries --------------------------------------------------
 // - local libs
-import { TaskConfiguration } from "../src/common/taskConfiguration";
-import { InstallComponents } from "../src/common/installComponents";
+import { TaskConfiguration } from "../../src/common/taskConfiguration";
+import { InstallComponents } from "../../src/common/installComponents";
 
 // - External task libs
 import * as tl from "azure-pipelines-task-lib";

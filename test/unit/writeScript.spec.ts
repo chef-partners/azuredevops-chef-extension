@@ -4,9 +4,9 @@
 
 // Import libraries --------------------------------------------------
 // - local libs
-import { TaskConfiguration } from "../src/common/taskConfiguration";
-import { InstallComponents } from "../src/common/installComponents";
-import { Scripts } from "../src/common/scripts";
+import { TaskConfiguration } from "../../src/common/taskConfiguration";
+import { InstallComponents } from "../../src/common/installComponents";
+import { Scripts } from "../../src/common/scripts";
 
 // - External task libs
 import * as tl from "azure-pipelines-task-lib";
@@ -20,7 +20,6 @@ import { mkdirSync, existsSync } from "fs";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import * as os from "os";
-
 
 // -------------------------------------------------------------------
 
@@ -61,12 +60,12 @@ describe("Write Script", () => {
     getInput = sinon.stub(tl, "getInput").callsFake((name) => {
       return inputs[name];
     });
-  
+
     // stub out the platform function from the os object
     platform = sinon.stub(os, "platform").callsFake(() => {
       return inputs["platform"];
     });
-  
+
     // stub the azdo tasklib setResult function
     tlsetResult = sinon.stub(tl, "setResult");
 
@@ -131,6 +130,6 @@ describe("Write Script", () => {
       expect(scripts.VerifyScript(false, tc.Paths.Script, "chef-workstation")).to.be.true;
     });
 
-  });  
+  });
 
 });

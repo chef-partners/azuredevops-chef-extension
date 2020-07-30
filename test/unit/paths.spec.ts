@@ -4,7 +4,7 @@
 
 // Import libraries --------------------------------------------------
 // - local libs
-import { Paths } from "../src/common/paths";
+import { Paths } from "../../src/common/paths";
 
 // - External task libs
 import * as rimraf from "rimraf";
