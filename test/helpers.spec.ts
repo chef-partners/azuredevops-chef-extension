@@ -101,7 +101,7 @@ describe("Helpers", () => {
     });
 
     // stub the azdo tasklib setResult function
-    tlsetResult = sinon.spy(tl, "setResult");
+    tlsetResult = sinon.stub(tl, "setResult");
 
     process.env.AGENT_TEMPDIRECTORY = tempDir();
   });
