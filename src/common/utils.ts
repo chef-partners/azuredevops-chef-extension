@@ -58,6 +58,7 @@ export class Utils {
 
       // if a workingdir has been set add it as an option to the execOptions
       if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
+        tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
         execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
       }
 
