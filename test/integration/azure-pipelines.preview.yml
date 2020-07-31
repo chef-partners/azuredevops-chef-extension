@@ -29,8 +29,7 @@ stages:
           displayName: Run InSpec tests
           inputs:
             component: inspec
-            arguments: exec . --reporter cli junit:$(Build.SourcesDirectory)/test/inspec_results.xml
-            workingDir: $(Build.SourcesDirectory)/test/integration
+            arguments: exec $(Build.SourcesDirectory)/test/integration --reporter cli junit:$(Build.SourcesDirectory)/test/inspec_results.xml
 
         # Publish the test results
         - task: PublishTestResults@2
