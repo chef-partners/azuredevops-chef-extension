@@ -18,14 +18,14 @@ stages:
       steps:
 
         # Install Chef workstation
-        - task: chef-software.chef$(ExtensionSuffix).install.component$(ExtensionSuffix)@2
+        - task: chef-software.chef-preview.install.component-preview@2
           displayName: Install Chef Component
           inputs:
             component: chef-workstation
             sudo: true
 
         # Run InSpec tests
-        - task: chef-software.chef$(ExtensionSuffix).execute.component$(ExtensionSuffix)@2
+        - task: chef-software.chef-preview.execute.component-preview@2
           displayName: Run InSpec tests
           inputs:
             component: inspec
