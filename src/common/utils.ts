@@ -57,7 +57,7 @@ export class Utils {
     if (!process.env.TESTS_RUNNING) {
 
       // if a workingdir has been set add it as an option to the execOptions
-      if (this.taskConfiguration.Inputs.WorkingDir !== "") {
+      if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
         execOptions.cwd = this.taskConfiguration.Inputs.WorkingDir;
       }
 
