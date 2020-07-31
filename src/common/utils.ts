@@ -58,7 +58,7 @@ export class Utils {
 
       // if a workingdir has been set add it as an option to the execOptions
       if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
-        execOptions.cwd = this.taskConfiguration.Inputs.WorkingDir;
+        execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
       }
 
       result = tl.tool(cmd).line(args).execSync(execOptions);
