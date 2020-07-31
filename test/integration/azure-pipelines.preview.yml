@@ -3,6 +3,7 @@ name: 0.0$(Rev:.r)
 # Define variables
 variables:
   buildImage: ubuntu-latest
+  CHEF_LICENSE: accept
 
 stages:
 - stage: Build
@@ -29,7 +30,8 @@ stages:
           displayName: Run InSpec tests
           inputs:
             component: inspec
-            arguments: exec $(Build.SourcesDirectory)/test/integration --reporter cli junit:$(Build.SourcesDirectory)/test/inspec_results.xml
+            arguments: exec . --reporter cli junit:$(Build.SourcesDirectory)/test/inspec_results.xml
+            workingDir: $(Build.SourcesDirectory)/test/integration
 
         # Publish the test results
         - task: PublishTestResults@2
