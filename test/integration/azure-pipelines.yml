@@ -1,0 +1,46 @@
+name: 0.0$(Rev:.r)
+
+# Define variables
+variables:
+  buildImage: ubuntu-latest
+
+stages:
+- stage: Build
+  displayName: Integration Tests
+  jobs:
+
+    # Tasks using the chef extension
+    - job: test_chef_tasks
+      displayName: Test Chef Extension Tasks
+      pool:
+        vmImage: $(buildImage)
+
+      steps:
+
+        # Install Chef workstation
+        - task: chef-software.chef.install.component@2
+          displayName: Install Chef Component
+          inputs:
+            component: chef-workstation
+            sudo: true
+
+        # Run InSpec tests
+        - task: chef-software.chef.execute.component@2
+          displayName: Run InSpec tests
+          inputs:
+            component: inspec
+            arguments: exec . --reporter cli junit:$(Build.SourcesDirectory)/test/inspec_results.xml
+            workingDir: $(Build.SourcesDirectory)/test/integration
+
+        # Publish the test results
+        - task: PublishTestResults@2
+          condition: and(succeeded())
+          inputs:
+            testResultsFormat: JUnit
+            testResultsFiles: $(Build.SourcesDirectory)/test/inspec_results.xml
+            testRunTitle: Chef Extension Tests
+
+        
+
+
+    
