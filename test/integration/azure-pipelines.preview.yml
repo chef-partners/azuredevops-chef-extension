@@ -34,7 +34,7 @@ stages:
 
         # Publish the test results
         - task: PublishTestResults@2
-          condition: and(succeeded())
+          condition: succeeded()
           inputs:
             testResultsFormat: JUnit
             testResultsFiles: $(Build.SourcesDirectory)/test/inspec_results.xml
