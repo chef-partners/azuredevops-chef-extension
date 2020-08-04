@@ -89,6 +89,14 @@
       "required": false,
       "helpMarkDown": "If set the execution of the specified command will be run within this directory",
       "groupName": "advanced"
+    },
+    {
+      "name": "sudo",
+      "type": "boolean",
+      "label": "Use Sudo",
+      "defaultValue": false,
+      "helpMarkdown": "Use Sudo to perform the installation. (Only valid on Linux build agents).",
+      "groupName": "advanced"
     }
   ],
   "execution": {
