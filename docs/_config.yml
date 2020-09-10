@@ -22,7 +22,7 @@ url: # "/" # "" # the base hostname & protocol for your site, e.g. http://exampl
 
 # Build settings
 markdown: kramdown
-theme: just-the-docs #minima
+# theme: just-the-docs #minima
 remote_theme: pmarsceill/just-the-docs
 plugins:
   - jekyll-feed
