@@ -10,7 +10,7 @@ There are two ways to access the documentation.
 
 ### Published online
 
-The first way is to access the published using Github Pages and is accessible from [http://chef-partners.github.io/azuredevops-chef-extension](http://chef-partners.github.io/azuredevop-chef-extension)
+The first way is to access the published using Github Pages and is accessible from [http://chef-partners.github.io/azuredevops-chef-extension](http://chef-partners.github.io/azuredevops-chef-extension)
 
 ### Local documentation using Docker
 
