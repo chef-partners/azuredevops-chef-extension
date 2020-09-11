@@ -3,7 +3,6 @@ layout: default
 title: Setup Habitat Environment
 parent: Helpers
 grand_parent: Tasks
-nav_order: 20
 permalink: /tasks/helpers/habitat_environment.html
 ---
 

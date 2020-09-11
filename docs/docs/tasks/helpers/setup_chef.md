@@ -3,7 +3,6 @@ layout: default
 title: Setup Chef
 parent: Helpers
 grand_parent: Tasks
-nav_order: 40
 permalink: /tasks/helpers/setup_chef.html
 ---
 

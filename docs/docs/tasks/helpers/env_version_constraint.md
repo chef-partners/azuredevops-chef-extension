@@ -3,7 +3,6 @@ layout: default
 title: Set Cookbook Version on Chef Environment
 parent: Helpers
 grand_parent: Tasks
-nav_order: 30
 permalink: /tasks/helpers/env_version_constraint.html
 ---
 

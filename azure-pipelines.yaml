@@ -2,7 +2,7 @@ name: 2.4$(Rev:.r)
 
 # Define variables
 variables:
-  shareAccounts: turtlesystems, chefcorp-partnerengineering, jmassardo-chef
+  shareAccounts: turtlesystems, chefcorp-partnerengineering, jmassardo-chef, devopsdina
   connectedServiceName: Azure DevOps Extension Pub Token
 
 stages:

@@ -3,7 +3,6 @@ layout: default
 title: Set Cookbook Version
 parent: Helpers
 grand_parent: Tasks
-nav_order: 10
 permalink: /tasks/helpers/cookbook_version.html
 ---
 
