@@ -17,7 +17,8 @@ var config = {
   devtool: "inline-source-map",
   devServer: {
     https: true,
-    port: 3000
+    port: 3000,
+    contentBase: path.join(__dirname, "build", "preview")
   },
   entry: entries,
   module: {
@@ -30,6 +31,7 @@ var config = {
     ]
   },
   output: {
+    publicPath: "/dist/",
     filename: "[name]/[name].js"
   },  
   plugins: [

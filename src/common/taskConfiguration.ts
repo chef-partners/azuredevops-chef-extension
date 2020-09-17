@@ -260,22 +260,27 @@ export class TaskConfiguration {
       return;
     }
 
-    tl.debug(this.Inputs.EnvVars);
-
-    // configure the regex pattern to find the K/V pairs
+    // initalise variables
+    // - item to hold the matches
+    let matches: RegExpExecArray;
+    // - regex to find the K/V pairs
     let regexp: RegExp = /((.*)=(.*)$)/mg;
 
-    // get the matches from the string
-    let matches = this.Inputs.EnvVars.match(regexp);
+    // use a do while loop to keep parsing the en vars
+    do {
 
-    // if there are any matches, use the capture groups to get the name and the value
-    // and then set as environment using the tl library
-    if (matches.length > 0) {
-      for (let match in matches) {
-        tl.debug(sprintf("Attempting to set environment variable: %s", match[2]));
-        tl.setVariable(match[2], match[3]);
+      // get the match for the iteration
+      matches = regexp.exec(this.Inputs.EnvVars);
+
+      // if there are matchees, create env var from it
+      // - 2 is the name
+      // - 3 is the value
+      if (matches) {
+        tl.debug(sprintf("Attempting to set environment variable: %s", matches[2]));
+        tl.setVariable(matches[2], matches[3]);
       }
-    }
+
+    } while (matches);
   }
 
   private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {
