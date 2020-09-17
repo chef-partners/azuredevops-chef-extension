@@ -276,8 +276,13 @@ export class TaskConfiguration {
       // - 2 is the name
       // - 3 is the value
       if (matches) {
-        tl.debug(sprintf("Attempting to set environment variable: %s", matches[2]));
-        tl.setVariable(matches[2], matches[3]);
+
+        // remove any quotes around the value
+        let name = matches[2];
+        let value = matches[3].replace(/^"+|"+$/g, "");
+
+        tl.debug(sprintf("Attempting to set environment variable: %s", name));
+        tl.setVariable(name, value);
       }
 
     } while (matches);
