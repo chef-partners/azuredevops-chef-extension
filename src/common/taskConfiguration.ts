@@ -252,8 +252,11 @@ export class TaskConfiguration {
    */
   public setEnvVars() {
 
+    tl.debug("Checking for specified environment variables");
+
     // return if the envvars is empty
     if (this.Inputs.EnvVars === undefined || this.Inputs.EnvVars === null) {
+      tl.debug("No environment variables specified");
       return;
     }
 
@@ -267,6 +270,7 @@ export class TaskConfiguration {
     // and then set as environment using the tl library
     if (matches.length > 0) {
       for (let match in matches) {
+        tl.debug(sprintf("Attempting to set environment variable: %s", match[2]));
         tl.setVariable(match[2], match[3]);
       }
     }
