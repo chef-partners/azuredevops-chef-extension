@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 The "Execute Chef Component" task allows the execution of Test Kitchen. To make Test Kitchen work correctly with Azure it requires credential information from a service principal. This needs to be configured as a Azure RM Service connection and selected in the helper configuration.
 
-![Setup Test Kitchen](../images/helper_setup_test_kitchen.png)
+![Setup Test Kitchen](../../images/helper_setup_test_kitchen.png)
 
 When run the helper will set the following environment variables which Test Kitchen will use to authenticate against Azure.
 

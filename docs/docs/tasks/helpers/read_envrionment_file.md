@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 During a build `.env` files maybe generated, as is the case with when Habitat builds a package. These `.env` files contain a lot of information about what has been built including the name and location etc. This can be very useful in later stages of the pipeline where the values can be reused.
 
-![Read Environment File](../images/helper_read_env_file.png)
+![Read Environment File](../../images/helper_read_env_file.png)
 
 This helper task reads in the specified file and checks if it exists. If it does exist then the file is read and the values set as environment variables. For example, a `myfile.env` file contains the following:
 

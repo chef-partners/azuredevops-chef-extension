@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 When using the Helpers task the operation to be performed is selected from the dropdown menu. Once selected the required extra options will be displayed. The following screenshot shows the form after the 'Set Cookbook Version' operation has been selected.
 
-![Set Cookbook Version Number](../images/helper_set_cookbook_version.png)
+![Set Cookbook Version Number](../../images/helper_set_cookbook_version.png)
 
 This helper will set the specified version number in the cookbook metadata file. This allows the use of an Azure DevOps pipeline to manage cookbooks.
 

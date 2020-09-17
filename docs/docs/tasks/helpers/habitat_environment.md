@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 When using the Helpers task the operation to be performed is selected from the dropdown menu. Once selected the required extra options will be displayed. The following screenshot shows the form after the 'Setup Habitat Environment' operation has been selected.
 
-![Setup Habitat Environment](../images/helper_habitat_environment.png)
+![Setup Habitat Environment](../../images/helper_habitat_environment.png)
 
 When working with Habitat a nunmber of files needs to be written out, these are the signing key pair of your origin, the origin itself and the revision. This task performs those operations.
 

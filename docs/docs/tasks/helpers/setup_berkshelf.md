@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 A cookbook and its dependencies can be uploaded to a Chef server using Berkshelf. However in order to use the command, a configuration file needs to created. This helper creates the configuration file based on the selected Chef Endpoint connected service.
 
-![Setup Berkshelf](../images/helper_setup_berkshelf.png)
+![Setup Berkshelf](../../images/helper_setup_berkshelf.png)
 
 When executed the helper task will generate a Berkshelf configuration file as follows:
 
