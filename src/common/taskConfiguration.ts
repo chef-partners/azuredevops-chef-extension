@@ -270,15 +270,6 @@ export class TaskConfiguration {
         tl.setVariable(match[2], match[3]);
       }
     }
-
-    // if the component is kitchen then set the azure variables
-    /*
-    if (this.Inputs.ComponentName === "kitchen") {
-      tl.setVariable("AZURE_CLIENT_ID", this.Inputs.ClientId);
-      tl.setVariable("AZURE_CLIENT_SECRET", this.Inputs.ClientSecret);
-      tl.setVariable("AZURE_TENANT_ID", this.Inputs.TenantId);
-    }
-    */
   }
 
   private getParamValue(name: string, required: boolean, type: string = null, connectedService: string = null): string {

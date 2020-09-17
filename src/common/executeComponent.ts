@@ -32,9 +32,12 @@ export class ExecuteComponent {
    * @param taskConfiguration The current tas configuration
    */
   constructor (taskConfiguration: TaskConfiguration, utils: Utils = null) {
+    tl.debug("Creating execute component");
+
     this.taskConfiguration = taskConfiguration;
 
     if (utils === null) {
+      tl.debug("Creating new Utils component with passed taskConfiguration");
       this.utils = new Utils(this.taskConfiguration);
     } else {
       this.utils = utils;
@@ -48,23 +51,10 @@ export class ExecuteComponent {
    */
   public async Execute() {
 
+    tl.debug("Preparing to execute component");
+
     let cmdParts: string[] = [];
     let execResult: IExecSyncResult;
-
-    // perform any setup that is required for the command
-    // for example, in order for berkshelf to run a configuration file must be created
-    /*
-    switch (this.taskConfiguration.Inputs.ComponentName) {
-      case "berks": {
-        this.utils.WriteFile(
-          this.taskConfiguration.Paths.BerksConfig,
-          JSON.stringify(this.generateBerksConfig())
-        );
-
-        break;
-      }
-    }
-    */
 
     // get the command to be executed
     cmdParts = this.generateCmd();
