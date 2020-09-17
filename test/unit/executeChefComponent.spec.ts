@@ -181,6 +181,7 @@ describe("Execute Components", () => {
       process.env.AGENT_TEMPDIRECTORY = "";
     });
 
+    /*
     it("writes out the private key", async () => {
 
       // call the method to create the private key file
@@ -188,7 +189,9 @@ describe("Execute Components", () => {
 
       expect(existsSync(tc.Paths.PrivateKey)).to.be.true;
     });
+    */
 
+    /*
     it("returns the correct configuration", async () => {
 
       // create the expected object
@@ -209,6 +212,7 @@ describe("Execute Components", () => {
       // perform the test to make sure they are the ame
       expect(actual).to.eql(expected);
     });
+    */
 
     it("installs cookbooks", async () => {
 

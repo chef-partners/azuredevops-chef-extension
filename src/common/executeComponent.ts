@@ -1,8 +1,8 @@
 import { TaskConfiguration } from "./taskConfiguration";
 import { Utils } from "./utils";
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import { connect } from "http2";
-import { IExecSyncResult, IExecSyncOptions } from "azure-pipelines-task-lib/toolrunner";
+import {sprintf} from "sprintf-js"; // provides sprintf functionality
+import { IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 
 /**
  * ExecuteComponent is responsible for executing the command that has been selected
@@ -53,6 +53,7 @@ export class ExecuteComponent {
 
     // perform any setup that is required for the command
     // for example, in order for berkshelf to run a configuration file must be created
+    /*
     switch (this.taskConfiguration.Inputs.ComponentName) {
       case "berks": {
         this.utils.WriteFile(
@@ -63,6 +64,7 @@ export class ExecuteComponent {
         break;
       }
     }
+    */
 
     // get the command to be executed
     cmdParts = this.generateCmd();
@@ -92,6 +94,8 @@ export class ExecuteComponent {
     let components = {
       "chefclient": "chef-client"
     };
+
+    tl.debug(sprintf("Attempting to build up command string: %s", this.taskConfiguration.Inputs.ComponentName));
 
     // it might be necessary to run with Sudo on linux, so determine the platform being
     // run on to see if this should be added to the cmdParts
@@ -128,6 +132,7 @@ export class ExecuteComponent {
     return cmdParts;
   }
 
+  /*
   public generateBerksConfig(): {} {
 
     // write out the privatekey so that it can be used by berkshelf
@@ -152,6 +157,7 @@ export class ExecuteComponent {
 
     return config;
   }
+  */
 
   /**
    * updateConfiguration sets the taskconfiguration on the object
