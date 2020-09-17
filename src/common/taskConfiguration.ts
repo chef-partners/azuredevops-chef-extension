@@ -169,10 +169,12 @@ export class TaskConfiguration {
       for (let connectedServiceName of connectedServiceNames) {
 
         // get the connected service from the inputs
+        tl.debug(sprintf("Getting connected service: %s", connectedServiceName));
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
 
         // if the connectedService is null move onto the next iteration
         if (connectedService === "" || connectedService === "undefined") {
+          tl.debug("Connected service is undefined, moving onto next one");
           continue;
         }
 
