@@ -260,6 +260,8 @@ export class TaskConfiguration {
       return;
     }
 
+    tl.debug(this.Inputs.EnvVars);
+
     // configure the regex pattern to find the K/V pairs
     let regexp: RegExp = /((.*)=(.*)$)/mg;
 
