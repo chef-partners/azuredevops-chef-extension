@@ -21,7 +21,7 @@ Pipeline task name: `chef-software.chef.helpers.helper`
 
 In order to use the `chef-client` or `knife` commands a configuration file is required. This task sets up the `config.rb` file that is used by these commands and configures it with the settings as provided on the task as well as writing out the key.
 
-![Setup Chef](/images/helper_setup_chef.png)
+![Setup Chef](../images/helper_setup_chef.png)
 
 {% include note.html contents="The files are written out the agent's temporary directory which is deleted after every pipeline, this ensures that no configuration or private keys are left on the agent" %}
 

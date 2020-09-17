@@ -25,7 +25,7 @@ So that these are not added in clear text in your pipeline, and therefore possib
 
 The following screen shot shows the service connection form for a Chef Server.
 
-![Chef Server Service Connection](/images/service_connection_chef_server.png)
+![Chef Server Service Connection](../images/service_connection_chef_server.png)
 
 ## Properties
 

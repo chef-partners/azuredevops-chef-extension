@@ -23,7 +23,7 @@ Chef provides a mechanism whereby cookbook versions can be constraint on an envi
 
 This helper task sets the cookbook and the version it should work with on the specified environment.
 
-![Set Version Constraint](/images/helper_env_version_constraint.png)
+![Set Version Constraint](../images/helper_env_version_constraint.png)
 
 Under the covers this helper performs the following operations:
 

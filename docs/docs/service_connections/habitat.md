@@ -25,7 +25,7 @@ So that these are not added to your pipeline, and therefore possibly into source
 
 The following screen shot shows the service connection form for Habitat.
 
-![Habitat Service Connection](/images/service_connection_habitat.png)
+![Habitat Service Connection](../images/service_connection_habitat.png)
 
 ## Properties
 
