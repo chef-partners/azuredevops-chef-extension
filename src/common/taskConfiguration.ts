@@ -172,7 +172,7 @@ export class TaskConfiguration {
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
 
         // if the connectedService is null move onto the next iteration
-        if (connectedService === "") {
+        if (connectedService === "" || connectedService === "undefined") {
           continue;
         }
 
