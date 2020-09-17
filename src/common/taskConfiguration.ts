@@ -169,11 +169,10 @@ export class TaskConfiguration {
       for (let connectedServiceName of connectedServiceNames) {
 
         // get the connected service from the inputs
-        tl.debug(sprintf("Getting connected service: %s", connectedServiceName));
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
 
         // if the connectedService is null move onto the next iteration
-        if (connectedService === "" || connectedService === "undefined") {
+        if (connectedService === "" || typeof connectedService === "undefined") {
           tl.debug("Connected service is undefined, moving onto next one");
           continue;
         }
@@ -190,11 +189,6 @@ export class TaskConfiguration {
             this.Inputs.SSLVerify = !!+this.getParamValue("sslVerify", true, "data", connectedService);
             this.Inputs.Username = this.getParamValue("username", true, "auth", connectedService);
             this.Inputs.Password = this.getParamValue("password", true, "auth", connectedService);
-
-            // get the username and the key using the authorization
-            // let chefAuth = tl.getEndpointAuthorization(connectedService, true);
-            // this.Inputs.Username = chefAuth.parameters.username;
-            // this.Inputs.Password = chefAuth.parameters.password;
 
             tl.debug(
               sprintf("SSL Verify: %s", this.Inputs.SSLVerify)
