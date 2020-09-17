@@ -171,6 +171,11 @@ export class TaskConfiguration {
         // get the connected service from the inputs
         let connectedService = this.getParamValue(connectedServiceName, false, "input");
 
+        // if the connectedService is null move onto the next iteration
+        if (connectedService === "") {
+          continue;
+        }
+
         tl.debug(sprintf("Getting connected service: %s", connectedService));
 
         // get the properties based on the name of the endpoint

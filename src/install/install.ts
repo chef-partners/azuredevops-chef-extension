@@ -8,7 +8,7 @@ async function run() {
   // initialise required classes
   let taskConfiguration = new task.TaskConfiguration();
 
-  await taskConfiguration.getTaskParameters();
+  await taskConfiguration.getTaskParameters({}, []);
 
   let installComponent = new ic.InstallComponents(taskConfiguration);
 
