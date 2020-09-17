@@ -23,7 +23,7 @@ In order to use the `chef-client` or `knife` commands a configuration file is re
 
 ![Setup Chef](../../images/helper_setup_chef.png)
 
-{% include note.html contents="The files are written out the agent's temporary directory which is deleted after every pipeline, this ensures that no configuration or private keys are left on the agent" %}
+{% include note.html content="The files are written out the agent's temporary directory which is deleted after every pipeline, this ensures that no configuration or private keys are left on the agent" %}
 
 When the file has been written out the following environment variables are set and can be used in later stages of the pipeline:
 

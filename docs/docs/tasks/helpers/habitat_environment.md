@@ -25,7 +25,7 @@ When using the Helpers task the operation to be performed is selected from the d
 
 When working with Habitat a nunmber of files needs to be written out, these are the signing key pair of your origin, the origin itself and the revision. This task performs those operations.
 
-{% include note.html contents="To use this helper a [Habitat Service Connection](/service_connections/habitat.html) must have been created beforehand" %}
+{% include note.html content="To use this helper a [Habitat Service Connection](/service_connections/habitat.html) must have been created beforehand" %}
 
 ## Parameters
 
