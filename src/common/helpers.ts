@@ -153,7 +153,7 @@ export class Helpers {
       signing: pathJoin(this.taskConfiguration.Paths.TmpDir, sprintf("%s.sig.key", originBaseText))
     };
 
-    console.log("Creating keys files an configuration");
+    console.log("Creating keys files and configuration");
 
     // Ensure that the directories exist
     if (!tl.exist(dirname(keyPaths.public))) {
