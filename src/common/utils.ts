@@ -62,6 +62,9 @@ export class Utils {
         execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
       }
 
+      // run the command inside a shell
+      execOptions.shell = true;
+
       result = tl.tool(cmd).line(args).execSync(execOptions);
 
       // check the result of the command
