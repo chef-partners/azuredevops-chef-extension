@@ -41,7 +41,7 @@ export class Utils {
    *
    * @param parts String array of command and arguments
    */
-  public async ExecCmd(parts: string[]): IExecSyncResult {
+  public async ExecCmd(parts: string[]) {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
@@ -52,7 +52,7 @@ export class Utils {
     let result: IExecSyncResult;
 
     // add the command to the command stack
-    let element = this.commandStack.push(sprintf("%s %s", cmd, args));
+    // let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
     if (!process.env["TESTS_RUNNING"]) {
@@ -116,7 +116,7 @@ export class Utils {
 
       // build up a command to check if a password is required or not
       let sudoParts = ["sudo", "-n", "true"];
-      result = this.ExecCmd(sudoParts);
+      result = tl.tool("sudo").line("-n true").execSync(); // this.ExecCmd(sudoParts);
 
       tl.debug(sprintf("Sudo check result: %s", result.stderr));
 

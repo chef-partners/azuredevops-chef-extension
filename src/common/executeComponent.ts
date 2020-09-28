@@ -54,12 +54,15 @@ export class ExecuteComponent {
     tl.debug("Preparing to execute component");
 
     let cmdParts: string[] = [];
-    let execResult: IExecSyncResult;
+    // let execResult: IExecSyncResult;
 
     // get the command to be executed
     cmdParts = this.generateCmd();
 
     // Attempt to execute the command
+    this.utils.ExecCmd(cmdParts);
+
+    /*
     try {
 
       execResult = this.utils.ExecCmd(cmdParts);
@@ -70,6 +73,7 @@ export class ExecuteComponent {
     } catch (err) {
       tl.setResult(tl.TaskResult.Failed, err.message);
     }
+    */
   }
 
   /**
