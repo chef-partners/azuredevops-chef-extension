@@ -47,6 +47,7 @@ let metadataFile;
 let commandStack: string[];
 let tc: TaskConfiguration;
 let h: Helpers;
+let resourceFile = pathJoin(__dirname, "task.json");
 
 // define a tempdir that the scripts can be written out to
 function tempDir(remove: boolean = false): string {

@@ -14,6 +14,7 @@ export class Paths {
     public Kitchen: string = null;
     public Knife: string = null;
     public PrivateKey: string = null;
+    public ResourceFile: string = null;
     public Script: string = null;
     public Sudo: string = "/usr/bin/sudo";
     public TmpDir: string;
@@ -23,7 +24,7 @@ export class Paths {
      * Depending on the OS the correct defaults will be set on the paths
      * @param osName Name of the operating system that the task is running o
      */
-    constructor(osName: string) {
+    constructor(osName: string, resourceFile?: string) {
 
       let extension: string = "";
 
@@ -74,6 +75,11 @@ export class Paths {
 
       // Set a path to the configdir for chef
       this.ConfigDir = pathJoin(this.TmpDir, "chef");
+
+      // Set the ResourceFile
+      if (resourceFile) {
+        this.ResourceFile = resourceFile;
+      }
     }
 
     /**

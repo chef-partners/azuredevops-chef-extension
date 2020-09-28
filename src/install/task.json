@@ -1,5 +1,5 @@
 {
-  "id": "20a315a3-ad1f-4864-87c9-60eda3ac5e7c",
+  "id": "e243a9dd-eec9-4968-a5d2-ebf26fd89b18",
   "name": "component",
   "friendlyName": "Install Chef Components",
   "description": "This task will install either Chef Workstation, InSpec or Ruby Gems into the Chef context",

@@ -34,7 +34,9 @@ export class TaskConfiguration {
   public IsWindows: boolean = false; // State if running on Windows
 
   // constructor method which will determine some initial settings
-  constructor() {
+  constructor(
+    resourceFile?: string
+  ) {
 
     // Determine if running in DEV mode
     // this is so that tasks cen be run on a local workstation if required
@@ -63,7 +65,7 @@ export class TaskConfiguration {
     }
 
     // Initialise sub classes based on the platform
-    this.Paths = new Paths(this.platformName);
+    this.Paths = new Paths(this.platformName, resourceFile);
     this.Inputs = new Inputs();
 
   }

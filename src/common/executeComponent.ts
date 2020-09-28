@@ -49,10 +49,14 @@ export class ExecuteComponent {
    * on the platform), any credentials that are required and then runs that command with
    * any arguments that have been specified
    */
-  public async Execute(resourceFile: string, sync: boolean = false) {
+  public async Execute(sync: boolean = false) {
 
     tl.debug(sprintf("Preparing to execute component. (Synchronous: %s)", sync));
-    tl.setResourcePath(resourceFile);
+
+    // set the resource path if one has been set in the taskConfiguration Paths
+    if (this.taskConfiguration.Paths.ResourceFile) {
+      tl.setResourcePath(this.taskConfiguration.Paths.ResourceFile);
+    }
 
     let cmdParts: string[] = [];
     let execResult: IExecSyncResult;

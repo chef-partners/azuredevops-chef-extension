@@ -47,6 +47,11 @@ export class InstallComponents {
    */
   public async Install() {
 
+    // set the resource path if one has been set in the taskConfiguration Paths
+    if (this.taskConfiguration.Paths.ResourceFile) {
+      tl.setResourcePath(this.taskConfiguration.Paths.ResourceFile);
+    }
+
     // Determine if the component is installed
     let shouldInstall: boolean = this.shouldInstall();
 

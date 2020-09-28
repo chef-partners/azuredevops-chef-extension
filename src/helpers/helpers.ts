@@ -1,12 +1,15 @@
 // import the necessary items
 import * as task from "../common/taskConfiguration";
 import * as h from "../common/helpers";
+import { join as pathJoin} from "path";
 
 // Execute the utitlies task
 async function run() {
 
-  // initialise required classes
-  let taskConfiguration = new task.TaskConfiguration();
+  // initialise the required classes
+  let taskConfiguration = new task.TaskConfiguration(
+    pathJoin(__dirname, "task.json")
+  );
 
   // await taskConfiguration.getTaskParameters(["habitatOrigin"]);
 
