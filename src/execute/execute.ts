@@ -7,8 +7,7 @@ import { join as pathJoin} from "path";
 async function run() {
 
   // initialise the required classes
-  console.log(__dirname);
-  let resourceFile = pathJoin(__dirname, "task.json");
+  let resourceFile = "./task.json";
   console.log(resourceFile);
   let taskConfiguration = new task.TaskConfiguration(resourceFile);
 
@@ -22,5 +21,4 @@ async function run() {
   executeComponent.Execute();
 }
 
-console.log(__dirname);
 run ();
