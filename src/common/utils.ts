@@ -62,8 +62,12 @@ export class Utils {
 
       console.log("----- HERE ---------");
 
+      let code: number = await tl.tool(cmd).line(args).exec(execOptions);
+      console.log(sprintf("Exit code: %s", code));
+
       // execute the command as a promise so that the logs are streamed to the console
       // instead of waiting until the command has completed
+      /*
       try {
         let code: number = await tl.tool(cmd).line(args).exec(execOptions);
         message = sprintf("'%s' exited with code: %d", cmd, code);
@@ -75,6 +79,7 @@ export class Utils {
         message = sprintf("'%s' failed with error: %s", cmd, err.message);
         tl.setResult(tl.TaskResult.Failed, message);
       }
+      */
 
       console.log("----- THERE ---------");
     }
