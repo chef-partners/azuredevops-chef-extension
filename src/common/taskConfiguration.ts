@@ -328,7 +328,10 @@ export class TaskConfiguration {
     }
 
     // return the value to the calling function
-    tl.debug(sprintf("Value: %s", value));
+    if (typeof value !== "undefined") {
+      tl.debug(sprintf("Value: %s", value));
+    }
+
     return value;
   }
 }

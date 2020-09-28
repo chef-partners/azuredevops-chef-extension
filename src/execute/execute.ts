@@ -7,9 +7,8 @@ import { join as pathJoin} from "path";
 async function run() {
 
   // initialise the required classes
-  let taskConfiguration = new task.TaskConfiguration(
-    pathJoin(__dirname, "task.json")
-  );
+  let resourceFile = pathJoin(__dirname, "task.json");
+  let taskConfiguration = new task.TaskConfiguration(resourceFile);
 
   // get the parameters for the task, e.g. the settings that have been provided
   await taskConfiguration.getTaskParameters({}, []);
