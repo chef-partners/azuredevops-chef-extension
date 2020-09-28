@@ -64,7 +64,7 @@ export class Utils {
 
       // let code: number = await tl.tool(cmd).line(args).exec(execOptions);
 
-      let code = tl.exec(cmd, args, execOptions);
+      let code = await tl.exec(cmd, args, execOptions);
       console.log(sprintf("Exit code: %s", code));
 
       // execute the command as a promise so that the logs are streamed to the console
