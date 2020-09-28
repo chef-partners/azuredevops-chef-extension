@@ -72,19 +72,6 @@ export class ExecuteComponent {
     } else {
       this.utils.ExecCmd(cmdParts);
     }
-
-    /*
-    try {
-
-      execResult = this.utils.ExecCmd(cmdParts);
-
-      if (!process.env.TESTS_RUNNING) {
-        this.result = execResult.stdout;
-      }
-    } catch (err) {
-      tl.setResult(tl.TaskResult.Failed, err.message);
-    }
-    */
   }
 
   /**
