@@ -8,6 +8,7 @@ async function run() {
 
   // initialise the required classes
   let resourceFile = pathJoin(__dirname, "task.json");
+  console.log(resourceFile);
   let taskConfiguration = new task.TaskConfiguration(resourceFile);
 
   // get the parameters for the task, e.g. the settings that have been provided
