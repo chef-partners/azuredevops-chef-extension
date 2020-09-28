@@ -205,7 +205,7 @@ export class Helpers {
 
     // create an instance of the executeComponent class so that the execution methods can be used
     let executeComponent = new ex.ExecuteComponent(this.taskConfiguration, this.utils);
-    executeComponent.Execute();
+    executeComponent.Execute(true);
 
     // should the command that has been run
     tl.debug(this.utils.getCommandStack()[0]);
@@ -245,7 +245,7 @@ export class Helpers {
     // Update the arguments for knife to upload the environment file
     this.taskConfiguration.Inputs.Arguments = sprintf("environment from file %s", envFile);
     executeComponent.updateConfiguration(this.taskConfiguration);
-    executeComponent.Execute();
+    executeComponent.Execute(true);
 
     // should the command that has been run
     tl.debug(this.utils.getCommandStack()[1]);

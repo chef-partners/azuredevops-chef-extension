@@ -147,7 +147,7 @@ program.version("2.0.1")
 
           // fail if the build number is null
           if (typeof options.buildnumber === "undefined") {
-            console.log("A build number must be set");;
+            console.log("A build number must be set");
           } else {
             patchFiles(options);
           }

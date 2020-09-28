@@ -309,7 +309,7 @@ export class InstallComponents {
         // in the context of chef. The command is retrieved and then executed
 
         // execute the command to check if the gem is installed or not
-        let result = this.utils.ExecCmd(this.isGemInstalledCmd());
+        let result = this.utils.ExecCmdSync(this.isGemInstalledCmd());
 
         // if the result contains true then it is installed
         installed = (result.stdout.trim() === "true");

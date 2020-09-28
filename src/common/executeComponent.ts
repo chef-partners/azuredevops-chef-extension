@@ -49,18 +49,29 @@ export class ExecuteComponent {
    * on the platform), any credentials that are required and then runs that command with
    * any arguments that have been specified
    */
-  public async Execute() {
+  public async Execute(sync: boolean = false) {
 
     tl.debug("Preparing to execute component");
 
     let cmdParts: string[] = [];
-    // let execResult: IExecSyncResult;
+    let execResult: IExecSyncResult;
 
     // get the command to be executed
     cmdParts = this.generateCmd();
 
-    // Attempt to execute the command
-    this.utils.ExecCmd(cmdParts);
+    // Attempt to execute the command, but check to see if running sync or async
+    if (sync) {
+      try {
+        execResult = this.utils.ExecCmdSync(cmdParts);
+        if (!process.env.TESTS_RUNNING) {
+          this.result = execResult.stdout;
+        }
+      } catch (err) {
+        tl.setResult(tl.TaskResult.Failed, err.message);
+      }
+    } else {
+      this.utils.ExecCmd(cmdParts);
+    }
 
     /*
     try {

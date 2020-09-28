@@ -6,7 +6,7 @@
  */
 
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import { IExecSyncResult, IExecSyncOptions } from "azure-pipelines-task-lib/toolrunner";
+import { IExecSyncResult, IExecSyncOptions, IExecOptions } from "azure-pipelines-task-lib/toolrunner";
 import { TaskConfiguration } from "./taskConfiguration";
 import { sprintf } from "sprintf-js";
 import { existsSync, readFileSync, writeFileSync } from "fs";
@@ -41,27 +41,32 @@ export class Utils {
    *
    * @param parts String array of command and arguments
    */
-  public async ExecCmd(parts: string[]) {
+  public async ExecCmd(parts: string[]): Promise<IExecSyncResult> {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
-    let args = parts.join(" ");
+    
     let cmd = parts.shift();
+    let args = parts.join(" ");
     let execOptions: IExecSyncOptions;
     let message: string;
     let result: IExecSyncResult;
 
     // add the command to the command stack
-    // let element = this.commandStack.push(sprintf("%s %s", cmd, args));
+    let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
     if (!process.env["TESTS_RUNNING"]) {
 
       // if a workingdir has been set add it as an option to the execOptions
+      /*
       if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
         tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
-        execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
+        execOptions = <IExecOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
       }
+      */
+
+      execOptions = this.getExecOptions();
 
       // execute the command as a promise so that the logs are streamed to the console
       // instead of waiting until the command has completed
@@ -102,6 +107,40 @@ export class Utils {
     return result;
   }
 
+  // ExecCmdSync executes the command synchronously, this is useful for short running
+  // commands where the result is required
+  public ExecCmdSync(parts: string[]): IExecSyncResult {
+
+    // get the command from the string so that it can be set as the command
+    // on the Task library
+    
+    let cmd = parts.shift();
+    let args = parts.join(" ");
+    let execOptions: IExecSyncOptions;
+    let result: IExecSyncResult;
+
+    // add the command to the command stack
+    let element = this.commandStack.push(sprintf("%s %s", cmd, args));
+
+    // execute the command, unless being tested
+    if (!process.env["TESTS_RUNNING"]) {
+
+      // if a workingdir has been set add it as an option to the execOptions
+      /*
+      if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
+        tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
+        execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
+      }
+      */
+
+      execOptions = this.getExecOptions(true);
+
+      result = tl.tool(cmd).line(args).execSync(execOptions);
+    }
+
+    return result;
+  }
+
   /**
    * checkSudo determines if sudo is to be used
    * it also checks that sudo has been configured properly for the agent user
@@ -116,7 +155,7 @@ export class Utils {
 
       // build up a command to check if a password is required or not
       let sudoParts = ["sudo", "-n", "true"];
-      result = tl.tool("sudo").line("-n true").execSync(); // this.ExecCmd(sudoParts);
+      result = this.ExecCmdSync(sudoParts);
 
       tl.debug(sprintf("Sudo check result: %s", result.stderr));
 
@@ -277,5 +316,30 @@ export class Utils {
    */
   public getCommandStack(): string[] {
     return this.commandStack;
+  }
+
+  /**
+   * Returns either sync or async options for a command
+   * This is designed to return the working directory, it id has been defined
+   *
+   * @param sync Boolean State if the options should be a sync or async type
+   */
+  private getExecOptions(sync: boolean = false): IExecSyncOptions | IExecOptions {
+    let execOptions: IExecSyncOptions | IExecOptions;
+
+    // set the execOptions based on the sync.
+    // this sets to be empty but will always return a valid options list
+    if (sync) {
+      execOptions = <IExecSyncOptions>{};
+    } else {
+      execOptions = <IExecOptions>{};
+    }
+
+    if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
+      tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
+      execOptions["cwd"] = this.taskConfiguration.Inputs.WorkingDir;
+    }
+
+    return execOptions;
   }
 }
