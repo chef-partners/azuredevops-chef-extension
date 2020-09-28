@@ -41,7 +41,7 @@ export class Utils {
    *
    * @param parts String array of command and arguments
    */
-  public async ExecCmd(parts: string[]): Promise<IExecSyncResult> {
+  public async ExecCmd(parts: string[]) {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
@@ -50,21 +50,13 @@ export class Utils {
     let args = parts.join(" ");
     let execOptions: IExecSyncOptions;
     let message: string;
-    let result: IExecSyncResult;
+    // let result: IExecResult;
 
     // add the command to the command stack
     let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
     if (!process.env["TESTS_RUNNING"]) {
-
-      // if a workingdir has been set add it as an option to the execOptions
-      /*
-      if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
-        tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
-        execOptions = <IExecOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
-      }
-      */
 
       execOptions = this.getExecOptions();
 
@@ -80,31 +72,10 @@ export class Utils {
         tl.setResult(tl.TaskResult.Failed, message);
       }
 
-      /*
-      tl.tool(cmd).line(args).exec(execOptions).then(function(result) {
-
-        if (result.error) {
-          tl.setResult(tl.TaskResult.Failed, result.stderr);
-        }
-      });
-      */
-
-      /*
-      result = tl.tool(cmd).line(args).execSync(execOptions);
-
-      // check the result of the command
-      if (result.error) {
-        // fail the task
-        tl.setResult(tl.TaskResult.Failed, result.stderr);
-
-      } else {
-        // log stdout
-        console.log(result.stdout);
-      }
-      */
+      console.log(message);
     }
 
-    return result;
+    // return result;
   }
 
   // ExecCmdSync executes the command synchronously, this is useful for short running
@@ -124,14 +95,6 @@ export class Utils {
 
     // execute the command, unless being tested
     if (!process.env["TESTS_RUNNING"]) {
-
-      // if a workingdir has been set add it as an option to the execOptions
-      /*
-      if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
-        tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
-        execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
-      }
-      */
 
       execOptions = this.getExecOptions(true);
 
@@ -336,6 +299,7 @@ export class Utils {
     }
 
     if (this.taskConfiguration.Inputs.WorkingDir !== "" &&
+        this.taskConfiguration.Inputs.WorkingDir !== null &&
         typeof this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
       tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
       execOptions["cwd"] = this.taskConfiguration.Inputs.WorkingDir;
