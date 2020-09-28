@@ -67,6 +67,7 @@ export class Utils {
       try {
         let code: number = await tl.tool(cmd).line(args).exec(execOptions);
         message = sprintf("'%s' exited with code: %d", cmd, code);
+        console.log(message);
         tl.setResult(tl.TaskResult.Succeeded, message);
       } catch (err) {
         tl.error(err.message);
