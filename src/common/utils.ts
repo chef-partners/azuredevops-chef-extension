@@ -70,6 +70,7 @@ export class Utils {
         console.log(message);
         tl.setResult(tl.TaskResult.Succeeded, message);
       } catch (err) {
+        console.log("I AM HERE NOW");
         tl.error(err.message);
         message = sprintf("'%s' failed with error: %s", cmd, err.message);
         tl.setResult(tl.TaskResult.Failed, message);
