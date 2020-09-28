@@ -50,7 +50,7 @@ export class Utils {
     let execOptions: IExecSyncOptions;
     let message: string;
     let result: IExecSyncResult;
-    
+
     // add the command to the command stack
     let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
@@ -68,11 +68,11 @@ export class Utils {
       try {
         let code: number = await tl.tool(cmd).line(args).exec(execOptions);
         message = sprintf("'%s' exited with code: %d", cmd, code);
-        tl.setResult(tl.TaskResult.Succeeded, message)
-      } catch(err) {
+        tl.setResult(tl.TaskResult.Succeeded, message);
+      } catch (err) {
         tl.error(err.message);
         message = sprintf("'%s' failed with error: %s", cmd, err.message);
-        tl.setResult(tl.TaskResult.Failed)
+        tl.setResult(tl.TaskResult.Failed, message);
       }
 
       /*
