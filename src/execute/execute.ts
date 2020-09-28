@@ -1,13 +1,13 @@
 // Import the necessary tasks
 import * as task from "../common/taskConfiguration";
 import * as ex from "../common/executeComponent";
-import { join as pathJoin} from "path";
+import { resolve } from "path";
 
 // Execute the chosen Chef component command with the specified arguments
 async function run() {
 
   // initialise the required classes
-  let resourceFile = "./task.json";
+  let resourceFile = resolve("./task.json");
   console.log(resourceFile);
   let taskConfiguration = new task.TaskConfiguration(resourceFile);
 
