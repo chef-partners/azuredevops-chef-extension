@@ -45,7 +45,7 @@ export class Utils {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
-    
+
     let cmd = parts.shift();
     let args = parts.join(" ");
     let execOptions: IExecSyncOptions;
@@ -113,7 +113,7 @@ export class Utils {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
-    
+
     let cmd = parts.shift();
     let args = parts.join(" ");
     let execOptions: IExecSyncOptions;
@@ -335,7 +335,8 @@ export class Utils {
       execOptions = <IExecOptions>{};
     }
 
-    if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
+    if (this.taskConfiguration.Inputs.WorkingDir !== "" &&
+        typeof this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
       tl.debug(sprintf("Working dir: %s", this.taskConfiguration.Inputs.WorkingDir));
       execOptions["cwd"] = this.taskConfiguration.Inputs.WorkingDir;
     }

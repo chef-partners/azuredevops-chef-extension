@@ -126,7 +126,7 @@ export class TaskConfiguration {
         let value = this.getParamValue(paramName, false, "input");
 
         // Set the property on the object with the value
-        if (value !== "undefined") {
+        if (typeof value !== "undefined") {
           toDotted(mapping[paramName], value, this);
         }
       }
@@ -255,7 +255,7 @@ export class TaskConfiguration {
     tl.debug("Checking for specified environment variables");
 
     // return if the envvars is empty
-    if (this.Inputs.EnvVars === undefined || this.Inputs.EnvVars === null) {
+    if (typeof this.Inputs.EnvVars === "undefined" || this.Inputs.EnvVars === null) {
       tl.debug("No environment variables specified");
       return;
     }
