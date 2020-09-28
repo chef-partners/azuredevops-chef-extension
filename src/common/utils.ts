@@ -60,6 +60,8 @@ export class Utils {
 
       execOptions = this.getExecOptions();
 
+      console.log("----- HERE ---------");
+
       // execute the command as a promise so that the logs are streamed to the console
       // instead of waiting until the command has completed
       try {
@@ -72,7 +74,7 @@ export class Utils {
         tl.setResult(tl.TaskResult.Failed, message);
       }
 
-      console.log(message);
+      console.log("----- THERE ---------");
     }
 
     // return result;
