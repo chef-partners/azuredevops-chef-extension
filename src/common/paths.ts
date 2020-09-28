@@ -78,7 +78,12 @@ export class Paths {
 
       // Set the ResourceFile
       if (resourceFile) {
-        this.ResourceFile = resourceFile;
+        if (tl.exist(resourceFile)) {
+          console.log(sprintf("Setting resource file: %s", resourceFile));
+          this.ResourceFile = resourceFile;
+        } else {
+          console.log(sprintf("Resource file does not exist: %s", resourceFile));
+        }
       }
     }
 
