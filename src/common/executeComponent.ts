@@ -51,7 +51,7 @@ export class ExecuteComponent {
    */
   public async Execute(sync: boolean = false) {
 
-    tl.debug("Preparing to execute component");
+    tl.debug(sprintf("Preparing to execute component. (Synchronous: %s)", sync));
 
     let cmdParts: string[] = [];
     let execResult: IExecSyncResult;
