@@ -3,7 +3,7 @@ name: 3.0$(Rev:.r)
 # Define variables
 variables:
   shareAccounts: turtlesystems, chefcorp-partnerengineering
-  connectedServiceName: Azure DevOps Extension Pub Token
+  connectedServiceName: AzDo Extension Publish Token
 
 stages:
 - stage: Build
