@@ -41,20 +41,21 @@ export class Utils {
    *
    * @param parts String array of command and arguments
    */
-  public ExecCmd(parts: string[]): IExecSyncResult {
+  public async ExecCmd(parts: string[]): IExecSyncResult {
 
     // get the command from the string so that it can be set as the command
     // on the Task library
-    let cmd = parts.shift();
     let args = parts.join(" ");
-    let result: IExecSyncResult;
+    let cmd = parts.shift();
     let execOptions: IExecSyncOptions;
-
+    let message: string;
+    let result: IExecSyncResult;
+    
     // add the command to the command stack
     let element = this.commandStack.push(sprintf("%s %s", cmd, args));
 
     // execute the command, unless being tested
-    if (!process.env.TESTS_RUNNING) {
+    if (!process.env["TESTS_RUNNING"]) {
 
       // if a workingdir has been set add it as an option to the execOptions
       if (this.taskConfiguration.Inputs.WorkingDir !== "" && this.taskConfiguration.Inputs.WorkingDir !== "undefined") {
@@ -62,6 +63,28 @@ export class Utils {
         execOptions = <IExecSyncOptions>{ cwd: this.taskConfiguration.Inputs.WorkingDir };
       }
 
+      // execute the command as a promise so that the logs are streamed to the console
+      // instead of waiting until the command has completed
+      try {
+        let code: number = await tl.tool(cmd).line(args).exec(execOptions);
+        message = sprintf("'%s' exited with code: %d", cmd, code);
+        tl.setResult(tl.TaskResult.Succeeded, message)
+      } catch(err) {
+        tl.error(err.message);
+        message = sprintf("'%s' failed with error: %s", cmd, err.message);
+        tl.setResult(tl.TaskResult.Failed)
+      }
+
+      /*
+      tl.tool(cmd).line(args).exec(execOptions).then(function(result) {
+
+        if (result.error) {
+          tl.setResult(tl.TaskResult.Failed, result.stderr);
+        }
+      });
+      */
+
+      /*
       result = tl.tool(cmd).line(args).execSync(execOptions);
 
       // check the result of the command
@@ -73,6 +96,7 @@ export class Utils {
         // log stdout
         console.log(result.stdout);
       }
+      */
     }
 
     return result;

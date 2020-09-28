@@ -122,33 +122,6 @@ export class ExecuteComponent {
     return cmdParts;
   }
 
-  /*
-  public generateBerksConfig(): {} {
-
-    // write out the privatekey so that it can be used by berkshelf
-    try {
-      tl.writeFile(this.taskConfiguration.Paths.PrivateKey, this.taskConfiguration.Inputs.Password);
-    } catch (err) {
-      tl.setResult(tl.TaskResult.Failed, err.message);
-    }
-
-    // use the configuration of the task to build up the necessary configuration
-    // for Berkshelf
-    let config = {
-      "chef": {
-        "chef_server_url": this.taskConfiguration.Inputs.TargetURL,
-        "client_key": this.taskConfiguration.Paths.PrivateKey,
-        "node_name": this.taskConfiguration.Inputs.Username
-      },
-      "ssl": {
-        "verify": this.taskConfiguration.Inputs.SSLVerify
-      }
-    };
-
-    return config;
-  }
-  */
-
   /**
    * updateConfiguration sets the taskconfiguration on the object
    * This is used to reset the config when the execute component is used multiple times
