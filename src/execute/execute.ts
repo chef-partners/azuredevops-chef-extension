@@ -5,15 +5,6 @@ import * as ex from "../common/executeComponent";
 import { join as pathJoin } from "path";
 import { sprintf } from "sprintf-js";
 
-// set the path to the resourceFile
-try {
-  let resourceFile = pathJoin(__dirname, "task.json");
-  tl.debug(sprintf("Resource file path: %s", resourceFile));
-  tl.setResourcePath(resourceFile);
-} catch (err) {
-  tl.setResult(tl.TaskResult.Failed, err);
-}
-
 // Execute the chosen Chef component command with the specified arguments
 async function run() {
 
@@ -29,4 +20,14 @@ async function run() {
   executeComponent.Execute();
 }
 
-run ();
+// set the path to the resourceFile
+try {
+  let resourceFile = pathJoin(__dirname, "task.json");
+  tl.debug(sprintf("Resource file path: %s", resourceFile));
+  tl.setResourcePath(resourceFile);
+
+  // run the task
+  run ();
+} catch (err) {
+  tl.setResult(tl.TaskResult.Failed, err, true);
+}
