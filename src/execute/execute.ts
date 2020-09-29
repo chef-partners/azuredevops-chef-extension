@@ -24,6 +24,7 @@ async function run() {
 try {
   let resourceFile = pathJoin(__dirname, "task.json");
   tl.debug(sprintf("Resource file path: %s", resourceFile));
+  tl.debug(sprintf("Task filename: %s", __filename));
   tl.setResourcePath(resourceFile);
 
   // run the task
