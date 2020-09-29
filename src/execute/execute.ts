@@ -1,11 +1,12 @@
 // Import the necessary tasks
 import * as tl from "azure-pipelines-task-lib"; // task library for Azure DevOps
-import * as task from "../common/taskConfiguration";
-import * as ex from "../common/executeComponent";
+// import * as task from "../common/taskConfiguration";
+// import * as ex from "../common/executeComponent";
 import { join as pathJoin } from "path";
 import { sprintf } from "sprintf-js";
 
 // Execute the chosen Chef component command with the specified arguments
+/*
 async function run() {
 
   let taskConfiguration = new task.TaskConfiguration();
@@ -19,6 +20,7 @@ async function run() {
   // perform the execution of the selected command
   executeComponent.Execute();
 }
+*/
 
 // set the path to the resourceFile
 try {
@@ -28,7 +30,7 @@ try {
   tl.setResourcePath(resourceFile);
 
   // run the task
-  run ();
+  // run ();
 } catch (err) {
   tl.setResult(tl.TaskResult.Failed, err, true);
 }
