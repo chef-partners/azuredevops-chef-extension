@@ -98,6 +98,7 @@ export class Utils {
         }
       });
 
+      /*
       // register the stdout and stderr streams
       // - stdout
       child.stdout.on("data", (data) => {
@@ -108,6 +109,7 @@ export class Utils {
       child.stderr.on("data", (data) => {
         console.error(data.toString());
       });
+      */
 
       // execute the command as a promise so that the logs are streamed to the console
       // instead of waiting until the command has completed
