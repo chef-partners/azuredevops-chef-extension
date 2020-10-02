@@ -76,14 +76,8 @@ export class Utils {
       const child = spawn(cmd, parts);
 
       // register what happens when the command exits
-      child.on("exit", function(code, signal) {
-        console.log(
-          sprintf(
-            "Command exited with code: %s (%s)", code, signal
-          )
-        );
-
-        message = sprintf("'%s' exited with code: %d (%s)", cmd, code, signal);
+      child.on("exit", function(code) {
+        message = sprintf("'%s' exited with code: %d", cmd, code);
 
         // if the code is 0 then the command executed successfully
         if (code === 0) {
@@ -96,12 +90,12 @@ export class Utils {
       // register the stdout and stderr streams
       // - stdout
       child.stdout.on("data", (data) => {
-        console.log(data);
+        console.log(data.toString());
       });
 
       // - stderr
       child.stderr.on("data", (data) => {
-        console.log(data);
+        console.error(data.toString());
       });
 
       // execute the command as a promise so that the logs are streamed to the console
