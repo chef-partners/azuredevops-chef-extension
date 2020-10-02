@@ -20,7 +20,10 @@ async function run() {
   executeComponent.Execute();
 }
 
+run();
+
 // set the path to the resourceFile
+/*
 try {
   let resourceFile = pathJoin(__dirname, "task.json");
   tl.debug(sprintf("Resource file path: %s", resourceFile));
@@ -32,3 +35,4 @@ try {
 } catch (err) {
   tl.setResult(tl.TaskResult.Failed, err, true);
 }
+*/
