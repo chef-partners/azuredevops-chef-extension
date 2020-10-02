@@ -61,7 +61,7 @@ export class Utils {
 
       execOptions = this.getExecOptions();
 
-      console.log("----- HERE ---------");
+      // console.log("----- HERE ---------");
 
       // let code: number = await tl.tool(cmd).line(args).exec(execOptions);
 
@@ -70,14 +70,25 @@ export class Utils {
       console.log(sprintf("Exit code: %s", code));
       */
 
+      // Build up the command line that should be spawn'd
+      let cmdLine = cmd;
+      if (args !== null) {
+        cmdLine = sprintf("%s %s", cmdLine, args);
+      }
+
+      console.log(sprintf("Command: %s", cmdLine));
+
       // Create a child process for the command using the built-in spawn command
       // build up the full command
       // const cmdLine = sprintf("%s %s", cmd, args);
-      const child = spawn(cmd, parts);
+      const child = spawn(cmdLine, {
+        stdio: "inherit",
+        shell: true
+      });
 
       // register what happens when the command exits
       child.on("exit", function(code) {
-        message = sprintf("'%s' exited with code: %d", cmd, code);
+        message = sprintf("Command exited with code: %s", code);
 
         // if the code is 0 then the command executed successfully
         if (code === 0) {
@@ -114,7 +125,7 @@ export class Utils {
       }
       */
 
-      console.log("----- THERE ---------");
+      // console.log("----- THERE ---------");
     }
 
     // return result;
