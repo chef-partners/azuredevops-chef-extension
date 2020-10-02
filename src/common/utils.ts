@@ -98,6 +98,11 @@ export class Utils {
         }
       });
 
+      // register what happens on error
+      child.on("error", (err) => {
+        tl.setResult(tl.TaskResult.Failed, err.message);
+      });
+
       /*
       // register the stdout and stderr streams
       // - stdout
