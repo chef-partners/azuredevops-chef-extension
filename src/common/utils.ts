@@ -10,6 +10,7 @@ import { IExecSyncResult, IExecSyncOptions, IExecOptions } from "azure-pipelines
 import { TaskConfiguration } from "./taskConfiguration";
 import { sprintf } from "sprintf-js";
 import { existsSync, readFileSync, writeFileSync } from "fs";
+import { spawn } from "child_process";
 
 export class Utils {
 
@@ -64,8 +65,44 @@ export class Utils {
 
       // let code: number = await tl.tool(cmd).line(args).exec(execOptions);
 
+      /*
       let code = await tl.exec(cmd, args, execOptions);
       console.log(sprintf("Exit code: %s", code));
+      */
+
+      // Create a child process for the command using the built-in spawn command
+      // build up the full command
+      // const cmdLine = sprintf("%s %s", cmd, args);
+      const child = spawn(cmd, parts);
+
+      // register what happens when the command exits
+      child.on("exit", function(code, signal) {
+        console.log(
+          sprintf(
+            "Command exited with code: %s (%s)", code, signal
+          )
+        );
+
+        message = sprintf("'%s' exited with code: %d (%s)", cmd, code, signal);
+
+        // if the code is 0 then the command executed successfully
+        if (code === 0) {
+          tl.setResult(tl.TaskResult.Succeeded, message);
+        } else {
+          tl.setResult(tl.TaskResult.Failed, message);
+        }
+      });
+
+      // register the stdout and stderr streams
+      // - stdout
+      child.stdout.on("data", (data) => {
+        console.log(data);
+      });
+
+      // - stderr
+      child.stderr.on("data", (data) => {
+        console.log(data);
+      });
 
       // execute the command as a promise so that the logs are streamed to the console
       // instead of waiting until the command has completed
