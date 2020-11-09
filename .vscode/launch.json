@@ -49,6 +49,20 @@
         "outFiles": [
           "${workspaceFolder}/bin/*.js"
         ]
+      },
+
+      {
+        "name": "Launch Firefox",
+        "type": "firefox",
+        "request": "launch",
+        "url": "https://localhost:3000/",
+        "reAttach": true,
+        "pathMappings": [
+          {
+            "url": "webpack:///",
+            "path": "${workspaceFolder}/"
+          }
+        ]
       }
     ]
   }

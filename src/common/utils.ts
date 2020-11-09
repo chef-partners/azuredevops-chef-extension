@@ -191,7 +191,7 @@ export class Utils {
         console.log("    No (NOPASSWD appears to be enabled for the agent account)");
 
         // set sudo on the parts
-        parts.push("sudo");
+        parts.push("sudo --preserve-env");
       }
     }
 

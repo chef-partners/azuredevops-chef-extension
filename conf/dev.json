@@ -1,0 +1,13 @@
+{
+  "id": "chef-dev",
+  "name": "Chef - DEV",
+  "public": false,
+  "baseUri": "https://localhost:3000",
+  "version": "2.4.150",
+  "files": [
+    {
+      "path": "../build/dev/tasks",
+      "packagePath": "tasks"
+    }
+  ]
+}

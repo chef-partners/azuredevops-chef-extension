@@ -17,7 +17,7 @@ permalink: tasks/install.html
 
 ## Description
 
-Pipeline task name: `chef.component.install`
+Pipeline task name: `chef.component.install.component`
 
 The Install task is responsible for installing the following components on the Azure DevOps agent:
 

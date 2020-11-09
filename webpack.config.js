@@ -69,11 +69,25 @@ var config = {
 
 module.exports = (env, argv) => {
 
-  // set the output based on the mode
-  var buildPath = path.join(__dirname, "build", "preview", "tasks");
-  if (argv.mode === "production") {
-    buildPath = path.join(__dirname, "build", "release", "tasks");
+  // function variables
+  // - set the type the build
+  var buildType = "preview";
+
+  // - define buildPath
+  var buildPath;
+
+  // if the DEV env var is true, then set the development path to the dev build
+  if (argv.mode == "development" && process.env.dev == "true") {
+    buildType = "dev"
   }
+
+  // if the mode is production set the buildType
+  if (argv.mode == "production") {
+    buildType = "release";
+  }
+
+  // set the build path
+  buildPath = path.join(__dirname, "build", buildType, "tasks");
 
   console.log(buildPath);
   config.output.path = buildPath;

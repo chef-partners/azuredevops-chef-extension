@@ -6,7 +6,7 @@ variables:
   connectedServiceName: AzDo Extension Publish Token
 
 stages:
-- stage: Build
+- stage: build
   displayName: "Build:"
   jobs:
 
@@ -77,7 +77,9 @@ stages:
         targetPath: $(Build.ArtifactStagingDirectory)
         artifact: build
 
-- stage: Deploy
+- stage: preview
+  displayName: Preview
+  dependsOn: build
   jobs:
   - deployment: azdo_extension_preview
     displayName: Publish Preview Extension
@@ -91,7 +93,6 @@ stages:
 
             - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@3
               displayName: 'Install tfx-cli'
-
 
             - task: PublishAzureDevopsExtension@3
               displayName: Publish
@@ -108,27 +109,29 @@ stages:
                 vsixFile: $(Pipeline.Workspace)/build/preview/*.vsix
                 accounts: $(shareAccounts)
 
+- stage: production
+  displayName: Production
+  dependsOn: build
+  jobs:
+  - deployment: azdo_extension_release
+    displayName: Publish Release Extension
+    pool:
+      vmImage: ubuntu-latest
+    environment: 'Release'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
 
-#  - deployment: azdo_extension_release
-#    displayName: Publish Release Extension
-#    pool:
-#      vmImage: ubuntu-latest
-#    environment: 'Release'
-#    strategy:
-#      runOnce:
-#        deploy:
-#          steps:
-#            - task: DownloadPipelineArtifact@2
-#              inputs:
-#                buildType: current
-#                itemPattern: preview/*.vsix
-#                targetPath: $(Pipeline.Workspace)
-#
-#            - task: PublishAzureDevopsExtension@2
-#              displayName: Publish
-#              inputs:
-#                connectedServiceName: $(connectedServiceName)
-#                fileType: vsix
-#                vsixFile: $(Pipeline.Workspace)/release/*.vsix
+            - task: ms-devlabs.vsts-developer-tools-build-tasks.tfx-installer-build-task.TfxInstaller@3
+              displayName: 'Install tfx-cli'
+
+            - task: PublishAzureDevopsExtension@3
+              displayName: Publish
+              inputs:
+                connectedServiceName: $(connectedServiceName)
+                fileType: vsix
+                vsixFile: $(Pipeline.Workspace)/build/production/*.vsix
+
 
 
