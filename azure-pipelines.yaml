@@ -3,7 +3,7 @@ name: 3.0$(Rev:.r)
 # Define variables
 variables:
   shareAccounts: turtlesystems, chefcorp-partnerengineering
-  connectedServiceName: AzDo Extension Publish Token
+  connectedServiceName: AzDo Publish Extension - Progress
 
 stages:
 - stage: build
