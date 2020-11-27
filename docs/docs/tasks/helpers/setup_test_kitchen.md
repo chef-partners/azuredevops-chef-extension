@@ -17,7 +17,7 @@ permalink: /tasks/helpers/setup_test_kitchen.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 The "Execute Chef Component" task allows the execution of Test Kitchen. To make Test Kitchen work correctly with Azure it requires credential information from a service principal. This needs to be configured as a Azure RM Service connection and selected in the helper configuration.
 
@@ -46,7 +46,7 @@ The following table describes the options that are available for this helper.
 This task can be used in an Azure DevOps pipelines file.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Setup Test Kitchen"
   inputs:
     helper: setupTestKitchen

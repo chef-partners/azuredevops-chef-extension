@@ -10,7 +10,7 @@ permalink: /migrations/update_cookbook_version.html
 | Version | Task Name |
 |---|---|
 | 1.x | `chef-software.vsts-chef-tasks.vsts-chef-tasks-cookbook-version.vsts-chef-task-cookbook-version@1` |
-| 3.x | `chef-software.chef.helpers.helper@3` | 
+| 3.x | `chef-software.chef-azdo.helpers.helper@3` | 
 
 The following is an example of the yaml required to execute InSpec in version 1.x of the extension.
 

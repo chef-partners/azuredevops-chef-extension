@@ -17,7 +17,7 @@ permalink: /tasks/helpers/cookbook_version.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 When using the Helpers task the operation to be performed is selected from the dropdown menu. Once selected the required extra options will be displayed. The following screenshot shows the form after the 'Set Cookbook Version' operation has been selected.
 
@@ -44,7 +44,7 @@ This task can be used in an Azure DevOps pipelines file.
 ### Using default values
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Set Cookbook Version"
   inputs:
     helper: setCookbookVersion
@@ -57,7 +57,7 @@ As can be seen if the default values for the version, cookbook metadata file pat
 In the following example the path to the cookbook metadata file is nested so the default value needs to be overridden.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Set Cookbook Version"
   inputs:
     helper: setCookbookVersion

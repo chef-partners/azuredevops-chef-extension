@@ -10,7 +10,7 @@ permalink: /migrations/install_cookbook_gems.html
 | Version | Task Name |
 |---|---|
 | 1.x | `chef-software.vsts-chef-tasks.vsts-chef-task-cookbook-gems.vsts-chef-task-cookbook-gems@1` |
-| 3.x | `chef-software.chef.execute.component@3` | 
+| 3.x | `chef-software.chef-azdo.execute.component@3` | 
 
 The following is an example of the yaml required to execute InSpec in version 1.x of the extension.
 
@@ -22,7 +22,7 @@ The following is an example of the yaml required to execute InSpec in version 1.
 This needs to be migrated to the new "Execute Chef Component" task. So to achieve the same operation the following would be required.
 
 ```yaml
-- task: chef-software.chef.execute.component@3
+- task: chef-software.chef-azdo.execute.component@3
   displayName: Install Cookbook Gems
   inputs:
     component: chef

@@ -12,7 +12,7 @@ As the previous Azure DevOps extensions for Chef are now being consolidated into
 | Extension Name | Version | Task Name |
 |---|---|---|
 | Habitat Extension | 3.x | `chef-software.vsts-habitat-tasks.vsts-habitat-tasks-pkg-install.vsts-habitat-pkg-install@3` |
-| Chef Integration | 3.x | `chef-software.chef.execute.component@3` | 
+| Chef Integration | 3.x | `chef-software.chef-azdo.execute.component@3` | 
 
 The following YAML shows how to install Habitat using the Habitat Extension install task.
 
@@ -28,7 +28,7 @@ The following YAML shows how to install Habitat using the Habitat Extension inst
 This needs to be migrated to use one of the new Helper tasks and then the Chef Execute Component task. To achieve the same operation as before the following is required.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@3
+- task: chef-software.chef-azdo.helpers.helper@3
   displayName: Configure Habitat
   inputs: 
     helper: setupHabitat
@@ -40,7 +40,7 @@ This needs to be migrated to use one of the new Helper tasks and then the Chef E
     helper: readEnvFile
     envFilePath: $(System.DefaultWorkingDirectory)/$(System.TeamProject)-CI/drop/last_build.env
 
-- task: chef-software.chef.execute.component@3
+- task: chef-software.chef-azdo.execute.component@3
   displayName: Install Habitat Package
   inputs:
     component: habitat

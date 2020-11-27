@@ -17,7 +17,7 @@ permalink: /tasks/helpers/setup_chef.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 In order to use the `chef-client` or `knife` commands a configuration file is required. This task sets up the `config.rb` file that is used by these commands and configures it with the settings as provided on the task as well as writing out the key.
 
@@ -45,7 +45,7 @@ The following table describes the options that are available for this helper.
 This task can be used in an Azure DevOps pipelines file.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Setup Chef"
   inputs:
     helper: setupChef

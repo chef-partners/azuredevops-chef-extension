@@ -17,7 +17,7 @@ permalink: /tasks/helpers/env_version_constraint.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 Chef provides a mechanism whereby cookbook versions can be constraint on an environment. This means that a production environment can be constrained to version `1.0.0` of a cookbook whilst the development environment has not such constraint and can work with the latest and greatest version of the same cookbook.
 
@@ -50,7 +50,7 @@ The following table describes the options that are available for this helper.
 ## YAML Snippet
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Set Cookbook Version on Chef Environment"
   inputs:
     helper: envCookbookVersion

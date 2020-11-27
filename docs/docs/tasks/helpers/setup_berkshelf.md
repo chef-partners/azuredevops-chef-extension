@@ -17,7 +17,7 @@ permalink: /tasks/helpers/setup_berkshelf.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 A cookbook and its dependencies can be uploaded to a Chef server using Berkshelf. However in order to use the command, a configuration file needs to created. This helper creates the configuration file based on the selected Chef Endpoint connected service.
 
@@ -55,7 +55,7 @@ The following table describes the options that are available for this helper.
 This task can be used in an Azure DevOps pipelines file.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Setup Berkshelf"
   inputs:
     helper: setupBerkshelf

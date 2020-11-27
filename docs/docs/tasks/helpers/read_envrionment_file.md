@@ -17,7 +17,7 @@ permalink: /tasks/helpers/read_environment_file.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 During a build `.env` files maybe generated, as is the case with when Habitat builds a package. These `.env` files contain a lot of information about what has been built including the name and location etc. This can be very useful in later stages of the pipeline where the values can be reused.
 
@@ -52,7 +52,7 @@ The following table describes the options that are available for this helper.
 This task can be used in an Azure DevOps pipelines file.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Read Environment File"
   inputs:
     helper: readEnvFile

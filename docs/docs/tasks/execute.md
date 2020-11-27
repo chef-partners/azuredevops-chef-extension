@@ -17,7 +17,7 @@ permalink: tasks/execute.html
 
 ## Description
 
-Pipeline task name: `chef.component.execute.component`
+Pipeline task name: `chef-software.chef-azdo.execute.component`
 
 The execute task is responsible for running any of the Chef components that are installed with Chef Workstation. The component to run is selected from a drop down list, the arguments are user configurable.
 
@@ -58,7 +58,7 @@ The Execute task can be used in an Azure DevOps  Pipeline file.
 The following shows how to run Test Kitchen with a specific configuration file.
 
 ```yaml
-- task: chef-software.chef.execute.component@2
+- task: chef-software.chef-azdo.execute.component@2
   displayName: Execute kitchen
   inputs:
     component: kitchen

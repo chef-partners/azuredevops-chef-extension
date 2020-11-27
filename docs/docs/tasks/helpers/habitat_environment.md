@@ -17,7 +17,7 @@ permalink: /tasks/helpers/habitat_environment.html
 
 ## Description
 
-Pipeline task name: `chef-software.chef.helpers.helper`
+Pipeline task name: `chef-software.chef-azdo.helpers.helper`
 
 When using the Helpers task the operation to be performed is selected from the dropdown menu. Once selected the required extra options will be displayed. The following screenshot shows the form after the 'Setup Habitat Environment' operation has been selected.
 
@@ -43,7 +43,7 @@ The following table describes the options that are available for this helper.
 This task can be used in an Azure DevOps pipelines file.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef-azdo.helpers.helper@2
   displayName: "Helper: Setup Habitat Environment"
   inputs:
     helper: setupHabitat
