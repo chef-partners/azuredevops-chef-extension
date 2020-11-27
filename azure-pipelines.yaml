@@ -61,14 +61,14 @@ stages:
       displayName: 'Copy Preview Files to: Artefact Directory'
       inputs:
         SourceFolder: '$(build.sourcesdirectory)/build'
-        Contents: 'chef-software.chef-preview-$(Build.BuildNumber).vsix'
+        Contents: 'chef-software.chef-azdo-preview-$(Build.BuildNumber).vsix'
         TargetFolder: '$(build.artifactstagingdirectory)/preview'
 
     - task: CopyFiles@2
       displayName: 'Copy Production Files to: Artefact Directory'
       inputs:
         SourceFolder: '$(Build.SourcesDirectory)/build'
-        Contents: 'chef-software.chef-$(Build.BuildNumber).vsix'
+        Contents: 'chef-software.chef-azdo-$(Build.BuildNumber).vsix'
         TargetFolder: '$(build.artifactstagingdirectory)/production'
 
     - task: PublishPipelineArtifact@1
