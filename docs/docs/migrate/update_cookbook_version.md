@@ -10,7 +10,7 @@ permalink: /migrations/update_cookbook_version.html
 | Version | Task Name |
 |---|---|
 | 1.x | `chef-software.vsts-chef-tasks.vsts-chef-tasks-cookbook-version.vsts-chef-task-cookbook-version@1` |
-| 2.x | `chef-software.chef.helpers.helper@2` | 
+| 3.x | `chef-software.chef.helpers.helper@3` | 
 
 The following is an example of the yaml required to execute InSpec in version 1.x of the extension.
 
@@ -25,7 +25,7 @@ The following is an example of the yaml required to execute InSpec in version 1.
 This needs to be migrated to the new "Helpers" task. So to achieve the same operation the following would be required.
 
 ```yaml
-- task: chef-software.chef-preview.helpers.helper-preview@2
+- task: chef-software.chef-preview.helpers.helper-preview@3
   displayName: 'Helper: setCookbookVersion'
   inputs:
     helper: setCookbookVersion

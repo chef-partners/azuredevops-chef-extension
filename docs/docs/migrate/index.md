@@ -12,7 +12,7 @@ A lot of things have changed in this version of the Azure DevOps extension for C
 
 This section shows how to migrate YAML pipeline tasks from the old version to the new ones in this extension.
 
-{% include tip.html content="The migrations shown here describe how to migrate from version 1.x to version 2.x" %}
+{% include tip.html content="The migrations shown here describe how to migrate from version 1.x to version 3.x" %}
 
 1. TOC
 {:toc}

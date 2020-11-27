@@ -10,7 +10,7 @@ permalink: /migrations/release_env_cookbook.html
 | Version | Task Name |
 |---|---|
 | 1.x | `chef-software.vsts-chef-tasks.vsts-chef-tasks-environment-cookbook-version-constraint.vsts-chef-task-env-version-constraint@1` |
-| 2.x | `chef-software.chef.execute.component@2` | 
+| 3.x | `chef-software.chef.execute.component@3` | 
 
 The following is an example of the yaml required to execute InSpec in version 1.x of the extension.
 
@@ -26,13 +26,13 @@ The following is an example of the yaml required to execute InSpec in version 1.
 This needs to be migrated to use one of the new Helper tasks and then the Chef Execute Component task. To achieve the same operation as before the following is required.
 
 ```yaml
-- task: chef-software.chef.helpers.helper@2
+- task: chef-software.chef.helpers.helper@3
   displayName: Configure Chef
   inputs: 
     helper: setupChef
     chefendpoint: Automate Server
 
-- task: chef-software.chef-preview.helpers.helper-preview@2
+- task: chef-software.chef-preview.helpers.helper-preview@3
   displayName: 'Helper: envCookbookVersion'
   inputs:
     helper: envCookbookVersion
