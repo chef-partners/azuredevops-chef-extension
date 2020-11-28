@@ -9,7 +9,7 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],
-    "description": "Tasks for performing common Chef operations against the Chef Automate platform.",
+    "description": "Tasks to run CHef components in an Azure DevOps pipeline",
     "categories": [
         "Azure Pipelines"
     ],
