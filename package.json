@@ -82,7 +82,7 @@
     "dotenv": "^8.2.0",
     "is-admin": "^2.1.1",
     "is-root": "^2.1.0",
-    "moment": "^2.29.0",
+    "moment": "^2.29.2",
     "node-rsa": "^1.1.1",
     "replace-in-file": "^6.1.0",
     "spawn-sync": "^2.0.0"
