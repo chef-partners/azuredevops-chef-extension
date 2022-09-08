@@ -63,7 +63,7 @@
     "sinon-chai": "^3.5.0",
     "source-map-support": "^0.5.19",
     "sprintf-js": "^1.1.2",
-    "tfx-cli": "^0.8.3",
+    "tfx-cli": "^0.12.0",
     "ts-loader": "^8.0.4",
     "ts-node": "^8.10.2",
     "tsconfig-glob": "^0.4.3",
